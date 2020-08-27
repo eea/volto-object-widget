@@ -6,15 +6,10 @@ import Field from '@plone/volto/components/manage/Form/Field';
 
 const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
   return data.fields.map((field, idx) => {
-    const myIndex = idx;
-    const str = `${field}-${myIndex}-${id}`;
-    console.log('FIELDSET INDEX', str);
     return (
       <Field
         {...schema.properties[field]}
-        // TODO: putting fieldsetIndex in this expression makes the form not
-        // work (can't type in it)
-        id={str}
+        id={`${field}-${idx}-${id}`}
         fieldset={data.title.toLowerCase()}
         value={value?.[field]}
         required={schema.required.indexOf(field) !== -1}

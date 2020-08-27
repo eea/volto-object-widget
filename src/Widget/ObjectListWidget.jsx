@@ -61,9 +61,6 @@ const messages = defineMessages({
   },
 });
 
-// TODO: solve issue: having 3 objects in the list and deleting the second throws an error in the browser console
-// Possible solution: combine onChange and removeUuid into a single function (method) so that there is no escape for rerendering between these two operations.
-
 export const FlatObjectList = injectIntl(
   ({ id, value = [], schema, onChange, intl, uuids, removeUuid }) => {
     return (
@@ -122,148 +119,137 @@ export const FlatObjectList = injectIntl(
   },
 );
 
-export const ModalObjectListForm = injectIntl(
-  class ModalObjectListFormBase extends React.Component {
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        stateValue: props.value || [],
-        uuids: (props.value || []).map(() => uuid()),
-      };
-
-      this.modalContentRef = React.createRef(null);
+export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
+  React.useEffect(() => {
+    if (modalContentRef.current && modalContentRef.current.scrollIntoView) {
+      modalContentRef.current.scrollIntoView({
+        block: 'end',
+      });
     }
+  }, [modalContentRef, stateValue]);
+};
 
-    componentDidMount() {
-      if (
-        this.modalContentRef.current &&
-        this.modalContentRef.current.scrollIntoView
-      ) {
-        this.modalContentRef.current.scrollIntoView({
-          block: 'end',
-        });
-      }
-    }
+export const ModalObjectListForm = injectIntl((props) => {
+  const {
+    open,
+    title,
+    className,
+    onSave,
+    onCancel,
+    schema,
+    value = [],
+    id,
+    intl,
+  } = props;
 
-    createEmpty() {
-      return {};
-    }
+  const [stateValue, setStateValue] = useState(value);
+  const [uuids, setUuids] = React.useState(value.map(() => uuid()));
+  const modalContentRef = React.useRef(null);
 
-    removeUuid(index, cb) {
-      const newUuids = [...this.state.uuids].splice(index, 1);
-      this.setState({ uuids: newUuids }, cb);
-    }
+  useScrollToBottomAutomatically(modalContentRef, stateValue);
 
-    addUuid(cb) {
-      this.setState({ uuids: [...this.state.uuids, uuid()] }, cb);
-    }
+  const createEmpty = React.useCallback(() => {
+    return {};
+  }, []);
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-      this.setState({ stateValue: nextProps.value });
-    }
+  const removeUuid = React.useCallback(
+    (index) => {
+      const newUuids = [...uuids].splice(index, 1);
+      setUuids(newUuids);
+    },
+    [uuids],
+  );
 
-    render() {
-      const {
-        open,
-        title,
-        className,
-        onSave,
-        onCancel,
-        schema,
-        value = [],
-        id,
-        intl,
-      } = this.props;
+  const addUuid = React.useCallback(() => {
+    setUuids([...uuids, uuid()]);
+  }, [uuids]);
 
-      let jsx = (
-        <Modal open={open} className={className}>
-          <Modal.Header>{title}</Modal.Header>
-          <Modal.Content scrolling>
-            <div ref={this.modalContentRef} data-testid="modal-content">
-              {this.state.stateValue.length > 0 ? (
-                <FlatObjectList
-                  id={id}
-                  value={this.state.stateValue}
-                  schema={schema}
-                  onChange={(id, v, cb) => {
-                    this.setState({ stateValue: v }, cb);
-                  }}
-                  uuids={this.state.uuids}
-                  removeUuid={this.removeUuid.bind(this)}
-                />
-              ) : (
-                intl.formatMessage(messages.emptyListHint)
-              )}
-            </div>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button
-              primary
-              basic
-              circular
-              floated="left"
-              size="big"
-              className="icon"
-              title={intl.formatMessage(messages.add, {
-                schemaTitle: schema.title,
-              })}
-              aria-label={intl.formatMessage(messages.add, {
-                schemaTitle: schema.title,
-              })}
-              onClick={() => {
-                this.addUuid(() => {
-                  this.setState({
-                    stateValue: [...this.state.stateValue, this.createEmpty()],
-                  });
-                });
+  /**
+   * For when `value` is updated outside of the Modal and the Modal is reopened
+   * after that. (The current behaviour is that the contents of the reopened
+   * Modal are not updated.)
+   **/
+  React.useEffect(() => {
+    setStateValue(value);
+  }, [value]);
+
+  let jsx = (
+    <Modal open={open} className={className}>
+      <Modal.Header>{title}</Modal.Header>
+      <Modal.Content scrolling>
+        <div ref={modalContentRef} data-testid="modal-content">
+          {stateValue.length > 0 ? (
+            <FlatObjectList
+              id={id}
+              value={stateValue}
+              schema={schema}
+              onChange={(id, v) => {
+                setStateValue(v);
               }}
-              style={{ verticalAlign: 'bottom' }}
-            >
-              <VoltoIcon
-                size="1.5rem"
-                name={addSVG}
-                style={{ verticalAlign: 'bottom' }}
-              />
-              Add {schema.title}
-            </Button>
-
-            <Button
-              basic
-              circular
-              primary
-              floated="right"
-              icon="arrow right"
-              title={intl.formatMessage(messages.save)}
-              aria-label={intl.formatMessage(messages.save)}
-              size="big"
-              onClick={() => {
-                onSave(id, this.state.stateValue);
-              }}
+              uuids={uuids}
+              removeUuid={removeUuid}
             />
-            <Button
-              basic
-              circular
-              secondary
-              icon="remove"
-              title={intl.formatMessage(messages.cancel)}
-              aria-label={intl.formatMessage(messages.cancel)}
-              floated="right"
-              size="big"
-              onClick={() => {
-                this.setState({ stateValue: [...value] }, () => {
-                  onCancel();
-                });
-              }}
-            />
-          </Modal.Actions>
-        </Modal>
-      );
+          ) : (
+            intl.formatMessage(messages.emptyListHint)
+          )}
+        </div>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button
+          primary
+          basic
+          circular
+          floated="left"
+          size="big"
+          className="icon with-middle-aligned-icon"
+          title={intl.formatMessage(messages.add, {
+            schemaTitle: schema.title,
+          })}
+          aria-label={intl.formatMessage(messages.add, {
+            schemaTitle: schema.title,
+          })}
+          onClick={() => {
+            addUuid();
+            setStateValue([...stateValue, createEmpty()]);
+          }}
+        >
+          <VoltoIcon size="1.5rem" name={addSVG} />
+          Add {schema.title}
+        </Button>
 
-      return jsx;
-    }
-  },
-);
+        <Button
+          basic
+          circular
+          primary
+          floated="right"
+          icon="arrow right"
+          title={intl.formatMessage(messages.save)}
+          aria-label={intl.formatMessage(messages.save)}
+          size="big"
+          onClick={() => {
+            onSave(id, stateValue);
+          }}
+        />
+        <Button
+          basic
+          circular
+          secondary
+          icon="remove"
+          title={intl.formatMessage(messages.cancel)}
+          aria-label={intl.formatMessage(messages.cancel)}
+          floated="right"
+          size="big"
+          onClick={() => {
+            setStateValue([...value]);
+            onCancel();
+          }}
+        />
+      </Modal.Actions>
+    </Modal>
+  );
+
+  return jsx;
+});
 
 export const ObjectListWidget = injectIntl(
   (props) => {

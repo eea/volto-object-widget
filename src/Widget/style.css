@@ -10,3 +10,12 @@
 .field-just-changed {
   animation: field-just-changed-anim 0.5s;
 }
+
+/* TODO: stop using !important and use LESS override files */
+button.with-middle-aligned-icon {
+  vertical-align: bottom !important;
+}
+
+button.with-middle-aligned-icon > svg {
+  vertical-align: bottom !important;
+}
