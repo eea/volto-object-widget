@@ -64,14 +64,17 @@ const messages = defineMessages({
 });
 
 /**
- * Displays an internationalized list of objects of the same schema, each of them having a Delete button on its right.
- * In future this might also allow filtering, reordering etc.
+ * Displays an internationalized list of objects of the same schema, each of
+ * them having a Delete button on its right. In future this might also allow
+ * filtering, reordering etc.
  * @param {string} id
  * @param {array} value
  * @param {object} schema
  * @param {function} onChange
- * @param {string[]} uuids An array of IDs that are associated to each object in `value` with the same index.
- * @param {function} removeUuid A function that removes the ID passed to it from the lifted-up state data about IDs.
+ * @param {string[]} uuids An array of IDs that are associated to each object in
+ * `value` with the same index.
+ * @param {function} removeUuid A function that removes the ID passed to it from
+ * the lifted-up state data about IDs.
  */
 export const FlatObjectList = ({
   id,
@@ -140,8 +143,10 @@ export const FlatObjectList = ({
 
 /**
  * Custom React hook.
- * @param {React.RefObject} modalContentRef Ref of the element in which to scroll to bottom automatically.
- * @param {object[]} stateValue Scroll automatically also when this parameter's reference changes.
+ * @param {React.RefObject} modalContentRef Ref of the element in which to
+ * scroll to bottom automatically.
+ * @param {object[]} stateValue Scroll automatically also when this parameter's
+ * reference changes.
  */
 export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   React.useEffect(() => {
@@ -154,7 +159,10 @@ export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
 };
 
 /**
- * Internationalized component which renders a modal form with an object list. It retains internal state about the current value of the fields, and a separate array of UUIDs, one for each object. Scrolls to bottom automatically when adding a new object to the list or opening the form.
+ * Internationalized component which renders a modal form with an object list.
+ * It retains internal state about the current value of the fields, and a
+ * separate array of UUIDs, one for each object. Scrolls to bottom automatically
+ * when adding a new object to the list or opening the form.
  * @param {boolean} open
  * @param {string} title
  * @param {string} className
@@ -288,7 +296,9 @@ export const ModalObjectListForm = (props) => {
 };
 
 /**
- * Shows a field that is backed by a modal form which shows a list of objects of a specified schema. Shows a visual cue after saving the data in the form to highlight the field whose value was possibly changed.
+ * Shows a field that is backed by a modal form which shows a list of objects of
+ * a specified schema. Shows a visual cue after saving the data in the form to
+ * highlight the field whose value was possibly changed.
  * @param {string} id
  * @param {object[]} value
  * @param {object} schema
