@@ -19,12 +19,13 @@ import Field from '@plone/volto/components/manage/Form/Field';
  */
 const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
   return data.fields.map((field, idx) => {
+    const v = value?.[field] || schema.properties[field].default;
     return (
       <Field
         {...schema.properties[field]}
         id={`${field}-${idx}-${id}`}
         fieldset={data.title.toLowerCase()}
-        value={value?.[field]}
+        value={v}
         required={schema.required.indexOf(field) !== -1}
         onChange={(field2, fieldvalue) => {
           return onChange(id, { ...value, [field]: fieldvalue });
@@ -136,7 +137,7 @@ ObjectWidget.propTypes = {
   id: PropTypes.string.isRequired,
   schema: PropTypes.object.isRequired,
   errors: PropTypes.object,
-  value: PropTypes.object.isRequired,
+  value: PropTypes.object,
   onChange: PropTypes.func.isRequired,
 };
 
@@ -145,6 +146,8 @@ ObjectWidget.propTypes = {
  * @property {Object} defaultProps Default properties.
  * @static
  */
-ObjectWidget.defaultProps = {};
+ObjectWidget.defaultProps = {
+  value: null,
+};
 
 export default ObjectWidget;

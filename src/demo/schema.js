@@ -41,7 +41,7 @@ export const LinkSchema = {
     internal_link: {
       widget: 'object_browser',
       title: 'Internal link',
-      default: [],
+      default: '',
     },
     external_link: {
       title: 'External URL',
@@ -84,6 +84,7 @@ export const CombinedSchema = {
     link: {
       widget: 'object',
       schema: LinkSchema,
+      default: {},
     },
     link_target: {
       title: 'Target',
@@ -106,6 +107,7 @@ export const CombinedSchema = {
       widget: 'object_list',
       title: 'Tabs',
       schema: Tab,
+      description: 'This is a verification.',
     },
     position: {
       title: 'Position',

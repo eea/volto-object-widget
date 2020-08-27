@@ -373,8 +373,9 @@ export const ObjectListWidget = (props) => {
                   b: (val) => {
                     // `val` is  just `count` written above; w/o those nbsp-s
                     // there is no space on the left or on the right of the
-                    // number in the final HTML
-                    return <strong>&nbsp;{val}&nbsp;</strong>;
+                    // number in the final HTML; the key should not be needed
+                    // here but without it we get a browser console error
+                    return <strong key={uuid()}>&nbsp;{val}&nbsp;</strong>;
                   },
                 })}
               </div>
