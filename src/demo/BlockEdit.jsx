@@ -5,7 +5,7 @@ import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import CombinedSchema from './schema.js';
 
 export default (props) => {
-  const [data, setData] = React.useState({});
+  // const [data, setData] = React.useState({});
   return (
     <div
       role="presentation"
@@ -15,19 +15,19 @@ export default (props) => {
       }}
     >
       <div className="block-inner-wrapper">
-        <BlockView {...props} data={data} />
+        <BlockView {...props} />
       </div>
       <SidebarPortal selected={props.selected}>
         <InlineForm
           schema={CombinedSchema}
           title={CombinedSchema.title}
           onChangeField={(id, value) => {
-            setData({
-              ...data,
+            props.onChangeBlock(props.block, {
+              ...props.data,
               [id]: value,
             });
           }}
-          formData={data}
+          formData={props.data}
           block={props.block}
         />
       </SidebarPortal>
