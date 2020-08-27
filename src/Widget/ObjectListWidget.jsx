@@ -23,6 +23,8 @@ import cx from 'classnames';
 
 import { v4 as uuid } from 'uuid';
 
+import './style.css';
+
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard)
 // accessible (e.g. Esc should close the Modal)
 // - see: https://github.com/Semantic-Org/Semantic-UI/issues/5053

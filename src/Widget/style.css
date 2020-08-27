@@ -1,0 +1,12 @@
+@keyframes field-just-changed-anim {
+  0% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.field-just-changed {
+  animation: field-just-changed-anim 0.5s;
+}
