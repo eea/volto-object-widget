@@ -11,7 +11,9 @@
   animation: field-just-changed-anim 0.5s;
 }
 
-/* TODO: stop using !important and use LESS override files */
+/* TODO: stop using maybe-already-used class names and !important, use LESS
+.overrides files instead */
+
 button.with-middle-aligned-icon {
   vertical-align: bottom !important;
 }
@@ -24,5 +26,9 @@ button.with-middle-aligned-icon > svg {
   color: #878f93;
   display: flex;
   align-items: center;
-  align-self: flex-start;
+  align-self: center;
+}
+
+.field-toolbar {
+  text-align: center;
 }

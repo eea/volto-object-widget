@@ -315,12 +315,15 @@ export const ObjectListWidget = injectIntl(
                   {intl.formatMessage(messages.count, {
                     count: value.length,
                     b: (val) => {
+                      // `val` is  just `count` written above; w/o those nbsp-s
+                      // there is no space on the left or on the right of the
+                      // number in the final HTML
                       return <strong>&nbsp;{val}&nbsp;</strong>;
                     },
                   })}
                 </div>
 
-                <div className="toolbar">
+                <div className="field-toolbar">
                   <Button
                     aria-label={intl.formatMessage(messages.edit)}
                     title={intl.formatMessage(messages.edit)}
