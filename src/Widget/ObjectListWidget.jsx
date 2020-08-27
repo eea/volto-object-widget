@@ -4,13 +4,12 @@ import {
   Form,
   Grid,
   Icon,
-  Input,
   Label,
   Modal,
   Segment,
 } from 'semantic-ui-react';
 import React, { useState } from 'react';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 
@@ -29,6 +28,9 @@ import './style.css';
 // accessible (e.g. Esc should close the Modal)
 // - see: https://github.com/Semantic-Org/Semantic-UI/issues/5053
 
+/**
+ * The localizable string messages.
+ */
 const messages = defineMessages({
   add: {
     id: 'Add {schemaTitle}',
@@ -61,63 +63,70 @@ const messages = defineMessages({
   },
 });
 
-export const FlatObjectList = injectIntl(
-  ({ id, value = [], schema, onChange, intl, uuids, removeUuid }) => {
-    return (
-      <div className="objectlist-widget-content">
-        {value.map((obj, index) => {
-          // here we are using an ID instead of index for React key prop
-          // because, in future, the items might be filterable or reorderable
-          const k = uuids ? uuids[index] : index;
-          return (
-            <Grid key={k}>
-              <Grid.Column width={11}>
-                <Segment>
-                  <ObjectWidget
-                    id={`${id}-${k}`}
-                    key={k}
-                    schema={schema}
-                    value={obj}
-                    onChange={(fi, fv) => {
-                      const newvalue = value.map((v, i) =>
-                        i !== index ? v : fv,
-                      );
-                      onChange(id, newvalue);
-                    }}
-                  />
-                </Segment>
-              </Grid.Column>
-              <Grid.Column width={1}>
-                <Button.Group>
-                  <Button
-                    basic
-                    circular
-                    size="mini"
-                    title={intl.formatMessage(messages.delete)}
-                    aria-label={intl.formatMessage(messages.delete)}
-                    onClick={() => {
-                      onChange(
-                        id,
-                        value.filter((v, i) => i !== index),
-                        () => {
-                          if (removeUuid) {
-                            removeUuid(index);
-                          }
-                        },
-                      );
-                    }}
-                  >
-                    <VoltoIcon size="1.5rem" name={deleteSVG} />
-                  </Button>
-                </Button.Group>
-              </Grid.Column>
-            </Grid>
-          );
-        })}
-      </div>
-    );
-  },
-);
+export const FlatObjectList = ({
+  id,
+  value = [],
+  schema,
+  onChange,
+  uuids,
+  removeUuid,
+}) => {
+  const intl = useIntl();
+
+  return (
+    <div className="objectlist-widget-content">
+      {value.map((obj, index) => {
+        // here we are using an ID instead of index for React key prop
+        // because, in future, the items might be filterable or reorderable
+        const k = uuids ? uuids[index] : index;
+        return (
+          <Grid key={k}>
+            <Grid.Column width={11}>
+              <Segment>
+                <ObjectWidget
+                  id={`${id}-${k}`}
+                  key={k}
+                  schema={schema}
+                  value={obj}
+                  onChange={(fi, fv) => {
+                    const newvalue = value.map((v, i) =>
+                      i !== index ? v : fv,
+                    );
+                    onChange(id, newvalue);
+                  }}
+                />
+              </Segment>
+            </Grid.Column>
+            <Grid.Column width={1}>
+              <Button.Group>
+                <Button
+                  basic
+                  circular
+                  size="mini"
+                  title={intl.formatMessage(messages.delete)}
+                  aria-label={intl.formatMessage(messages.delete)}
+                  onClick={() => {
+                    onChange(
+                      id,
+                      value.filter((v, i) => i !== index),
+                      () => {
+                        if (removeUuid) {
+                          removeUuid(index);
+                        }
+                      },
+                    );
+                  }}
+                >
+                  <VoltoIcon size="1.5rem" name={deleteSVG} />
+                </Button>
+              </Button.Group>
+            </Grid.Column>
+          </Grid>
+        );
+      })}
+    </div>
+  );
+};
 
 export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   React.useEffect(() => {
@@ -129,7 +138,7 @@ export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   }, [modalContentRef, stateValue]);
 };
 
-export const ModalObjectListForm = injectIntl((props) => {
+export const ModalObjectListForm = (props) => {
   const {
     open,
     title,
@@ -139,8 +148,9 @@ export const ModalObjectListForm = injectIntl((props) => {
     schema,
     value = [],
     id,
-    intl,
   } = props;
+
+  const intl = useIntl();
 
   const [stateValue, setStateValue] = useState(value);
   const [uuids, setUuids] = React.useState(value.map(() => uuid()));
@@ -249,126 +259,124 @@ export const ModalObjectListForm = injectIntl((props) => {
   );
 
   return jsx;
-});
+};
 
-export const ObjectListWidget = injectIntl(
-  (props) => {
-    const {
-      id,
-      value = [],
-      schema,
-      onChange,
-      required,
-      error,
-      fieldSet,
-      title,
-      description,
-      intl,
-    } = props;
+export const ObjectListWidget = (props) => {
+  const {
+    id,
+    value = [],
+    schema,
+    onChange,
+    required,
+    error,
+    fieldSet,
+    title,
+    description,
+  } = props;
 
-    const [open, setOpen] = useState(false);
-    const [isJustChanged, setIsJustChanged] = useState(false);
+  const intl = useIntl();
 
-    return (
-      <>
-        <ModalObjectListForm
-          id={id}
-          schema={schema}
-          title={title}
-          value={value}
-          open={open}
-          onSave={(id, val) => {
-            onChange(id, val);
-            setOpen(false);
-            setIsJustChanged(true);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
-        <Form.Field
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-          inline
-          required={required}
-          error={(error || []).length > 0}
-          className={cx('text', {
-            help: description,
-            'field-just-changed': isJustChanged,
-          })}
-          id={`${fieldSet || 'field'}-${id}`}
-        >
-          <Grid>
-            <Grid.Row stretched>
-              <Grid.Column width="4">
-                <div className="wrapper">
-                  <label htmlFor={`field-${id}`}>{title}</label>
-                </div>
-              </Grid.Column>
-              <Grid.Column width="8">
-                <div
-                  id={`field-${id}`}
-                  name={id}
-                  className="field-object-counter"
+  const [open, setOpen] = useState(false);
+  const [isJustChanged, setIsJustChanged] = useState(false);
+
+  return (
+    <>
+      <ModalObjectListForm
+        id={id}
+        schema={schema}
+        title={title}
+        value={value}
+        open={open}
+        onSave={(id, val) => {
+          onChange(id, val);
+          setOpen(false);
+          setIsJustChanged(true);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
+      <Form.Field
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+        inline
+        required={required}
+        error={(error || []).length > 0}
+        className={cx('text', {
+          help: description,
+          'field-just-changed': isJustChanged,
+        })}
+        id={`${fieldSet || 'field'}-${id}`}
+      >
+        <Grid>
+          <Grid.Row stretched>
+            <Grid.Column width="4">
+              <div className="wrapper">
+                <label htmlFor={`field-${id}`}>{title}</label>
+              </div>
+            </Grid.Column>
+            <Grid.Column width="8">
+              <div
+                id={`field-${id}`}
+                name={id}
+                className="field-object-counter"
+              >
+                {intl.formatMessage(messages.count, {
+                  count: value.length,
+                  b: (val) => {
+                    // `val` is  just `count` written above; w/o those nbsp-s
+                    // there is no space on the left or on the right of the
+                    // number in the final HTML
+                    return <strong>&nbsp;{val}&nbsp;</strong>;
+                  },
+                })}
+              </div>
+
+              <div className="field-toolbar">
+                <Button
+                  aria-label={intl.formatMessage(messages.edit)}
+                  title={intl.formatMessage(messages.edit)}
+                  className="item ui noborder button"
+                  data-testid="big-pen-button"
+                  onClick={() => {
+                    setIsJustChanged(false);
+                    setOpen(true);
+                  }}
                 >
-                  {intl.formatMessage(messages.count, {
-                    count: value.length,
-                    b: (val) => {
-                      // `val` is  just `count` written above; w/o those nbsp-s
-                      // there is no space on the left or on the right of the
-                      // number in the final HTML
-                      return <strong>&nbsp;{val}&nbsp;</strong>;
-                    },
-                  })}
-                </div>
+                  <Icon name="write square" size="large" color="blue" />
+                </Button>
+                <Button
+                  aria-label={intl.formatMessage(messages.delete)}
+                  title={intl.formatMessage(messages.delete)}
+                  className="item ui noborder button"
+                  onClick={() => {
+                    onChange(id, []);
+                  }}
+                >
+                  <Icon name="close" size="large" color="red" />
+                </Button>
+              </div>
 
-                <div className="field-toolbar">
-                  <Button
-                    aria-label={intl.formatMessage(messages.edit)}
-                    title={intl.formatMessage(messages.edit)}
-                    className="item ui noborder button"
-                    data-testid="big-pen-button"
-                    onClick={() => {
-                      setIsJustChanged(false);
-                      setOpen(true);
-                    }}
-                  >
-                    <Icon name="write square" size="large" color="blue" />
-                  </Button>
-                  <Button
-                    aria-label={intl.formatMessage(messages.delete)}
-                    title={intl.formatMessage(messages.delete)}
-                    className="item ui noborder button"
-                    onClick={() => {
-                      onChange(id, []);
-                    }}
-                  >
-                    <Icon name="close" size="large" color="red" />
-                  </Button>
-                </div>
-
-                {map(error, (message) => (
-                  <Label key={message} basic color="red" pointing>
-                    {message}
-                  </Label>
-                ))}
+              {map(error, (message) => (
+                <Label key={message} basic color="red" pointing>
+                  {message}
+                </Label>
+              ))}
+            </Grid.Column>
+          </Grid.Row>
+          {description && (
+            <Grid.Row stretched>
+              <Grid.Column stretched width="12">
+                <p className="help">{description}</p>
               </Grid.Column>
             </Grid.Row>
-            {description && (
-              <Grid.Row stretched>
-                <Grid.Column stretched width="12">
-                  <p className="help">{description}</p>
-                </Grid.Column>
-              </Grid.Row>
-            )}
-          </Grid>
-        </Form.Field>
-      </>
-    );
-  },
-  { forwardRef: true },
-);
+          )}
+        </Grid>
+      </Form.Field>
+    </>
+  );
+};
 
 /**
  * Property types.
