@@ -9,7 +9,7 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import React, { useState } from 'react';
-import { defineMessages, injectIntl, useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 
@@ -63,6 +63,16 @@ const messages = defineMessages({
   },
 });
 
+/**
+ * Displays an internationalized list of objects of the same schema, each of them having a Delete button on its right.
+ * In future this might also allow filtering, reordering etc.
+ * @param {string} id
+ * @param {array} value
+ * @param {object} schema
+ * @param {function} onChange
+ * @param {string[]} uuids
+ * @param {function} removeUuid
+ */
 export const FlatObjectList = ({
   id,
   value = [],
@@ -128,6 +138,11 @@ export const FlatObjectList = ({
   );
 };
 
+/**
+ * Custom React hook.
+ * @param {React.RefObject} modalContentRef Ref of the element in which to scroll to bottom automatically.
+ * @param {object[]} stateValue Scroll automatically also when this parameter's reference changes.
+ */
 export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   React.useEffect(() => {
     if (modalContentRef.current && modalContentRef.current.scrollIntoView) {
