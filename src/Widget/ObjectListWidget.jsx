@@ -51,8 +51,8 @@ const messages = defineMessages({
     defaultMessage: 'Edit',
   },
   count: {
-    id: 'A collection of {count} items',
-    defaultMessage: 'A collection of {count} items',
+    id: 'A collection of <b>{count}</b> items',
+    defaultMessage: 'A collection of <b>{count}</b> items',
   },
   emptyListHint: {
     id: 'Click the Add button below to add an item to this empty list.',
@@ -307,15 +307,18 @@ export const ObjectListWidget = injectIntl(
                 </div>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* TODO: make the counter display bold (for this, stop using a disabled Input) */}
-                <Input
+                <div
                   id={`field-${id}`}
                   name={id}
-                  disabled={true}
-                  value={intl.formatMessage(messages.count, {
+                  className="field-object-counter"
+                >
+                  {intl.formatMessage(messages.count, {
                     count: value.length,
+                    b: (val) => {
+                      return <strong>&nbsp;{val}&nbsp;</strong>;
+                    },
                   })}
-                />
+                </div>
 
                 <div className="toolbar">
                   <Button

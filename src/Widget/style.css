@@ -19,3 +19,10 @@ button.with-middle-aligned-icon {
 button.with-middle-aligned-icon > svg {
   vertical-align: bottom !important;
 }
+
+.field-object-counter {
+  color: #878f93;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+}
