@@ -307,6 +307,7 @@ export const ObjectListWidget = injectIntl(
                 </div>
               </Grid.Column>
               <Grid.Column width="8">
+                {/* TODO: make the counter display bold (for this, stop using a disabled Input) */}
                 <Input
                   id={`field-${id}`}
                   name={id}
