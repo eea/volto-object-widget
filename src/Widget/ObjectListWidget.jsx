@@ -70,8 +70,8 @@ const messages = defineMessages({
  * @param {array} value
  * @param {object} schema
  * @param {function} onChange
- * @param {string[]} uuids
- * @param {function} removeUuid
+ * @param {string[]} uuids An array of IDs that are associated to each object in `value` with the same index.
+ * @param {function} removeUuid A function that removes the ID passed to it from the lifted-up state data about IDs.
  */
 export const FlatObjectList = ({
   id,
@@ -153,6 +153,17 @@ export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   }, [modalContentRef, stateValue]);
 };
 
+/**
+ * Internationalized component which renders a modal form with an object list. It retains internal state about the current value of the fields, and a separate array of UUIDs, one for each object. Scrolls to bottom automatically when adding a new object to the list or opening the form.
+ * @param {boolean} open
+ * @param {string} title
+ * @param {string} className
+ * @param {function} onSave
+ * @param {function} onCancel
+ * @param {object} schema
+ * @param {object[]} value
+ * @param {string} id
+ */
 export const ModalObjectListForm = (props) => {
   const {
     open,
@@ -276,6 +287,17 @@ export const ModalObjectListForm = (props) => {
   return jsx;
 };
 
+/**
+ * Shows a field that is backed by a modal form which shows a list of objects of a specified schema. Shows a visual cue after saving the data in the form to highlight the field whose value was possibly changed.
+ * @param {string} id
+ * @param {object[]} value
+ * @param {object} schema
+ * @param {function} onChange
+ * @param {boolean} required
+ * @param {string[]} error
+ * @param {string} title
+ * @param {string} description
+ */
 export const ObjectListWidget = (props) => {
   const {
     id,
@@ -283,8 +305,7 @@ export const ObjectListWidget = (props) => {
     schema,
     onChange,
     required,
-    error,
-    fieldSet,
+    errors,
     title,
     description,
   } = props;
@@ -317,12 +338,12 @@ export const ObjectListWidget = (props) => {
         }}
         inline
         required={required}
-        error={(error || []).length > 0}
+        error={(errors || []).length > 0}
         className={cx('text', {
           help: description,
           'field-just-changed': isJustChanged,
         })}
-        id={`${fieldSet || 'field'}-${id}`}
+        id={`field-${id}`}
       >
         <Grid>
           <Grid.Row stretched>
@@ -373,7 +394,7 @@ export const ObjectListWidget = (props) => {
                 </Button>
               </div>
 
-              {map(error, (message) => (
+              {map(errors, (message) => (
                 <Label key={message} basic color="red" pointing>
                   {message}
                 </Label>
@@ -401,11 +422,10 @@ export const ObjectListWidget = (props) => {
 ObjectListWidget.propTypes = {
   id: PropTypes.string.isRequired,
   schema: PropTypes.object.isRequired,
-  error: PropTypes.any,
+  errors: PropTypes.arrayOf(PropTypes.any),
   value: PropTypes.array,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool.isRequired,
-  fieldSet: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
 };
