@@ -2,7 +2,7 @@ import React from 'react';
 import BlockView from './BlockView';
 import { SidebarPortal } from '@plone/volto/components';
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
-import { CombinedSchema } from './schema.js';
+import CombinedSchema from './schema.js';
 
 export default (props) => {
   const [data, setData] = React.useState({});
@@ -15,7 +15,7 @@ export default (props) => {
       }}
     >
       <div className="block-inner-wrapper">
-        <BlockView {...props} properties={{}} />
+        <BlockView {...props} data={data} />
       </div>
       <SidebarPortal selected={props.selected}>
         <InlineForm

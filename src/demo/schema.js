@@ -59,37 +59,7 @@ export const LinkSchema = {
   required: [],
 };
 
-const LinkEditSchema = {
-  title: 'Insert link',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'Internal link',
-      fields: ['link', 'target', 'title'],
-    },
-  ],
-  properties: {
-    link: {
-      widget: 'object',
-      schema: LinkSchema,
-    },
-    target: {
-      title: 'Target',
-      choices: [
-        ['', 'Open in this window / frame'],
-        ['_blank', 'Open in new window'],
-        ['_parent', 'Open in parent window / frame'],
-        ['_top', 'Open in top frame (replaces all frames)'],
-      ],
-    },
-    title: {
-      title: 'Title',
-    },
-  },
-  required: [],
-};
-
-export const Tabs = {
+export const CombinedSchema = {
   title: 'Tabs',
 
   fieldsets: [
@@ -103,9 +73,30 @@ export const Tabs = {
       title: 'Settings',
       fields: ['position', 'css_class'],
     },
+    {
+      id: 'link',
+      title: 'Link',
+      fields: ['link', 'link_target', 'link_title'],
+    },
   ],
 
   properties: {
+    link: {
+      widget: 'object',
+      schema: LinkSchema,
+    },
+    link_target: {
+      title: 'Target',
+      choices: [
+        ['', 'Open in this window / frame'],
+        ['_blank', 'Open in new window'],
+        ['_parent', 'Open in parent window / frame'],
+        ['_top', 'Open in top frame (replaces all frames)'],
+      ],
+    },
+    link_title: {
+      title: 'Title',
+    },
     css_class: {
       title: 'CSS Class',
       default: 'default-tabsblock',

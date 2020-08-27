@@ -1,7 +1,8 @@
 import React from 'react';
-import { Tab } from 'semantic-ui-react';
-import Field from '../Form/Field';
 import PropTypes from 'prop-types';
+import { Tab } from 'semantic-ui-react';
+
+import Field from '@plone/volto/components/manage/Form/Field';
 
 const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
   return data.fields.map((field, idx) => {
