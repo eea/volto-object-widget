@@ -208,11 +208,8 @@ export const ModalObjectListForm = (props) => {
     setUuids([...uuids, uuid()]);
   }, [uuids]);
 
-  /**
-   * For when `value` is updated outside of the Modal and the Modal is reopened
-   * after that. (The current behaviour is that the contents of the reopened
-   * Modal are not updated.)
-   **/
+  // Update again the form state with passed-down value, in case it has been
+  // changed outside this component
   React.useEffect(() => {
     setStateValue(value);
   }, [value]);

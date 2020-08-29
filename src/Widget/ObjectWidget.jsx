@@ -1,3 +1,8 @@
+/**
+ * A generic widget for an object. If multiple
+ *
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from 'semantic-ui-react';
@@ -19,7 +24,7 @@ import Field from '@plone/volto/components/manage/Form/Field';
  */
 const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
   return data.fields.map((field, idx) => {
-    const v = value?.[field] || schema.properties[field].default;
+    const v = value?.[field] || schema.properties[field].defaultValue;
     return (
       <Field
         {...schema.properties[field]}
@@ -39,51 +44,18 @@ const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
 };
 
 /**
- * Returns a tab pane with a field set in it. All the props are passed on to the
- * FieldSet component defined above.
  *
- * @param {object} fieldSetData
- * @param {number} index
- * @param {object} schema
- * @param {object} errors
- * @param {object} value
- * @param {function} onChange
- * @param {string} id
- */
-const MyTabPane = ({
-  fieldSetData,
-  index,
-  schema,
-  errors,
-  value,
-  onChange,
-  id,
-}) => {
-  return (
-    <Tab.Pane>
-      <FieldSet
-        data={fieldSetData}
-        index={index}
-        schema={schema}
-        errors={errors}
-        value={value}
-        onChange={onChange}
-        id={id}
-      />
-    </Tab.Pane>
-  );
-};
-
-/**
+ * Provides an automatic form for complex JS objects, based on a schema
+ *
  * Creates an object widget with the given onChange handler and an ID. If there
  * are multiple field sets, it renders a Tab component with multiple tab panes.
  * Each tab has the title of the fieldset it renders.
  *
- * @param {object} schema
- * @param {object} value
- * @param {function} onChange
- * @param {object} errors
- * @param {string} id
+ * @param {object} schema Schema, follows Plone dexterity serialized schema
+ * @param {object} value Object value, a JS object
+ * @param {function} onChange Callback for object changed
+ * @param {object} errors A list errors
+ * @param {string} id Field id
  */
 const ObjectWidget = ({
   schema,
@@ -98,15 +70,17 @@ const ObjectWidget = ({
       return {
         menuItem: fieldset.title,
         render: () => (
-          <MyTabPane
-            errors={errors}
-            fieldSetData={fieldset}
-            index={index}
-            onChange={onChange}
-            schema={schema}
-            value={value}
-            id={id}
-          />
+          <Tab.Pane>
+            <FieldSet
+              data={fieldset}
+              index={index}
+              schema={schema}
+              errors={errors}
+              value={value}
+              onChange={onChange}
+              id={id}
+            />
+          </Tab.Pane>
         ),
       };
     },

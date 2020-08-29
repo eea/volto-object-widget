@@ -41,7 +41,7 @@ export const LinkSchema = {
     internal_link: {
       widget: 'object_browser',
       title: 'Internal link',
-      default: '',
+      defaultValue: '',
     },
     external_link: {
       title: 'External URL',
