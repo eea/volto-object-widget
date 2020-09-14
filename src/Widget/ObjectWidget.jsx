@@ -5,7 +5,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Divider, Item } from 'semantic-ui-react';
 
 import Field from '@plone/volto/components/manage/Form/Field';
 
@@ -88,15 +88,19 @@ const ObjectWidget = ({
   );
 
   return schema.fieldsets.length === 1 ? (
-    <FieldSet
-      data={schema.fieldsets[0]}
-      index={0}
-      schema={schema}
-      errors={errors}
-      value={value}
-      onChange={onChange}
-      id={id}
-    />
+    <>
+      <Divider />
+      <FieldSet
+        data={schema.fieldsets[0]}
+        index={0}
+        schema={schema}
+        errors={errors}
+        value={value}
+        onChange={onChange}
+        id={id}
+      />
+      <Divider />
+    </>
   ) : (
     <Tab panes={schema.fieldsets.map(createTab)} /> // lazy loading
   );
