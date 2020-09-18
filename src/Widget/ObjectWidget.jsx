@@ -31,7 +31,7 @@ const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
         id={`${field}-${idx}-${id}`}
         fieldset={data.title.toLowerCase()}
         value={v}
-        required={schema.required.indexOf(field) !== -1}
+        required={schema.required?.indexOf(field) !== -1}
         onChange={(field2, fieldvalue) => {
           return onChange(id, { ...value, [field]: fieldvalue });
         }}
@@ -89,7 +89,6 @@ const ObjectWidget = ({
 
   return schema.fieldsets.length === 1 ? (
     <>
-      <Divider />
       <FieldSet
         data={schema.fieldsets[0]}
         index={0}
@@ -99,7 +98,6 @@ const ObjectWidget = ({
         onChange={onChange}
         id={id}
       />
-      <Divider />
     </>
   ) : (
     <Tab panes={schema.fieldsets.map(createTab)} /> // lazy loading

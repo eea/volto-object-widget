@@ -1,4 +1,6 @@
 import { ObjectWidget, ObjectListWidget } from './Widget';
+export { ObjectWidget, ObjectListWidget } from './Widget';
+
 export installDemo from './demo';
 
 const applyConfig = (config) => {
