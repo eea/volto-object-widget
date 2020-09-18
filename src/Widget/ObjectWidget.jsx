@@ -5,7 +5,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Divider, Item } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 
 import Field from '@plone/volto/components/manage/Form/Field';
 
