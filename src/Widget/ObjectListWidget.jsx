@@ -1,18 +1,11 @@
-import { map } from 'lodash';
-import {
-  Button,
-  Form,
-  Grid,
-  Icon,
-  Label,
-  Modal,
-  Segment,
-} from 'semantic-ui-react';
+import { Input, Button, Grid, Modal, Segment } from 'semantic-ui-react';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Icon as VoltoIcon } from '@plone/volto/components';
+import { Icon as VoltoIcon, FormFieldWrapper } from '@plone/volto/components';
 
+import penSVG from '@plone/volto/icons/pen.svg';
+import clearSVG from '@plone/volto/icons/clear.svg';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import addSVG from '@plone/volto/icons/add.svg';
 
@@ -53,8 +46,8 @@ const messages = defineMessages({
     defaultMessage: 'Edit',
   },
   count: {
-    id: 'A collection of <b>{count}</b> items',
-    defaultMessage: 'A collection of <b>{count}</b> items',
+    id: '{count} x {type}',
+    defaultMessage: '{count} x {type}',
   },
   emptyListHint: {
     id: 'Click the Add button below to add an item to this empty list.',
@@ -130,7 +123,7 @@ export const FlatObjectList = ({
                     );
                   }}
                 >
-                  <VoltoIcon size="1.5rem" name={deleteSVG} />
+                  <VoltoIcon name={deleteSVG} size="18px" />
                 </Button>
               </Button.Group>
             </Grid.Column>
@@ -311,10 +304,10 @@ export const ObjectListWidget = (props) => {
     value = [],
     schema,
     onChange,
-    required,
-    errors,
+    onBlur,
     title,
     description,
+    placeholder,
   } = props;
 
   const intl = useIntl();
@@ -339,85 +332,54 @@ export const ObjectListWidget = (props) => {
           setOpen(false);
         }}
       />
-      <Form.Field
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-        inline
-        required={required}
-        error={(errors || []).length > 0}
-        className={cx('text', {
-          help: description,
-          'field-just-changed': isJustChanged,
-        })}
-        id={`field-${id}`}
-      >
-        <Grid>
-          <Grid.Row stretched>
-            <Grid.Column width="4">
-              <div className="wrapper">
-                <label htmlFor={`field-${id}`}>{title}</label>
-              </div>
-            </Grid.Column>
-            <Grid.Column width="8">
-              <div
-                id={`field-${id}`}
-                name={id}
-                className="field-object-counter"
-              >
-                {intl.formatMessage(messages.count, {
-                  count: value.length,
-                  b: (val) => {
-                    // `val` is  just `count` written above; w/o those nbsp-s
-                    // there is no space on the left or on the right of the
-                    // number in the final HTML; the key should not be needed
-                    // here but without it we get a browser console error
-                    return <strong key={uuid()}>&nbsp;{val}&nbsp;</strong>;
-                  },
-                })}
-              </div>
-
-              <div className="field-toolbar">
-                <Button
-                  aria-label={intl.formatMessage(messages.edit)}
-                  title={intl.formatMessage(messages.edit)}
-                  className="item ui noborder button"
-                  data-testid="big-pen-button"
-                  onClick={() => {
-                    setIsJustChanged(false);
-                    setOpen(true);
-                  }}
-                >
-                  <Icon name="write square" size="large" color="blue" />
-                </Button>
-                <Button
-                  aria-label={intl.formatMessage(messages.delete)}
-                  title={intl.formatMessage(messages.delete)}
-                  className="item ui noborder button"
-                  onClick={() => {
-                    onChange(id, []);
-                  }}
-                >
-                  <Icon name="close" size="large" color="red" />
-                </Button>
-              </div>
-
-              {map(errors, (message) => (
-                <Label key={message} basic color="red" pointing>
-                  {message}
-                </Label>
-              ))}
-            </Grid.Column>
-          </Grid.Row>
-          {description && (
-            <Grid.Row stretched>
-              <Grid.Column stretched width="12">
-                <p className="help">{description}</p>
-              </Grid.Column>
-            </Grid.Row>
-          )}
-        </Grid>
-      </Form.Field>
+      <FormFieldWrapper {...props} className="text">
+        <Input
+          id={`field-${id}`}
+          name={id}
+          disabled={false}
+          value={intl.formatMessage(messages.count, {
+            count: value.length,
+            type: schema.title,
+          })}
+          placeholder={placeholder}
+          onChange={({ target }) =>
+            onChange(id, target.value === '' ? undefined : target.value)
+          }
+          onBlur={onBlur}
+          onClick={() => {
+            setIsJustChanged(false);
+            setOpen(true);
+          }}
+          className={cx('text', {
+            help: description,
+            'field-just-changed': isJustChanged,
+          })}
+        >
+          <input type="text" disabled />
+          <Button
+            aria-label={intl.formatMessage(messages.edit)}
+            title={intl.formatMessage(messages.edit)}
+            className="item ui noborder button"
+            data-testid="big-pen-button"
+            onClick={() => {
+              setIsJustChanged(false);
+              setOpen(true);
+            }}
+          >
+            <VoltoIcon name={penSVG} size="18px" color="blue" />
+          </Button>
+          <Button
+            aria-label={intl.formatMessage(messages.delete)}
+            title={intl.formatMessage(messages.delete)}
+            className="item ui noborder button"
+            onClick={() => {
+              onChange(id, []);
+            }}
+          >
+            <VoltoIcon name={clearSVG} size="18px" color="red" />
+          </Button>
+        </Input>
+      </FormFieldWrapper>
     </>
   );
 };
