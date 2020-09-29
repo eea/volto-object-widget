@@ -15,9 +15,8 @@ import './style.css';
 const ObjectListInlineWidget = (props) => {
   const { id, schema, value = [], onChange } = props;
 
-  const [accordionStates, setAccordionStates] = React.useState({});
+  // const [accordionStates, setAccordionStates] = React.useState({});
 
-  console.log('oliw', props);
   return (
     <>
       <FormFieldWrapper {...props} className="objectlist-inline-widget">
@@ -39,27 +38,29 @@ const ObjectListInlineWidget = (props) => {
         </div>
       </FormFieldWrapper>
       <DragDropList
-        childList={value.map((o, i) => [i, o])}
+        childList={value.map((o) => [o['@id'], o])}
         onMoveItem={(result) => {
-          console.log('moved', result);
           const { source, destination } = result;
           if (!destination) {
             return;
           }
-          const s = parseInt(source);
-          const d = parseInt(destination);
 
-          const first = value[s];
-          const second = value[d];
-          value[d] = first;
-          value[s] = second;
+          const first = value[source.index];
+          const second = value[destination.index];
+          value[destination.index] = first;
+          value[source.index] = second;
 
           onChange(id, value);
+          return true;
         }}
       >
         {({ child, childId, index, draginfo }) => {
           return (
-            <div ref={draginfo.innerRef} {...draginfo.draggableProps}>
+            <div
+              ref={draginfo.innerRef}
+              {...draginfo.draggableProps}
+              key={childId}
+            >
               <Segment.Group raised>
                 <Accordion key={index} fluid styled>
                   <Accordion.Title>
