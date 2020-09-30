@@ -25,6 +25,7 @@ Before starting make sure your development environment is properly set. See [Vol
             },
 
             "addons": [
+                "@eeacms/volto-blocks-form",
                 "@eeacms/volto-object-widget"
             ],
         }

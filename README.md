@@ -46,10 +46,12 @@ Demo GIF
 1. Update `package.json`:
     ``` JSON
     "addons": [
+        "@eeacms/volto-blocks-form",
         "@eeacms/volto-object-widget:installDemo"
     ],
 
     "dependencies": {
+        "@eeacms/volto-blocks-form": "github:eea/volto-blocks-form#"0.4.1",
         "@eeacms/volto-object-widget": "github:eea/volto-object-widget#0.1.0"
     }
     ```
