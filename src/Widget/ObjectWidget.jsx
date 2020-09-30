@@ -31,6 +31,7 @@ const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
         id={`${field}-${idx}-${id}`}
         fieldset={data.title.toLowerCase()}
         value={v}
+        objectvalue={value}
         required={schema.required?.indexOf(field) !== -1}
         onChange={(field2, fieldvalue) => {
           return onChange(id, { ...value, [field]: fieldvalue });
