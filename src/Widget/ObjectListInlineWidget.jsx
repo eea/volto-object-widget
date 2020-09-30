@@ -13,9 +13,11 @@ import { v4 as uuid } from 'uuid';
 import './style.css';
 
 const ObjectListInlineWidget = (props) => {
-  const { id, schema, value = [], onChange } = props;
+  const { id, schema, value = [], onChange, mode = {} } = props;
 
+  // TODO: add `mode.saveConfirmation` and mode.useAccordion
   // const [accordionStates, setAccordionStates] = React.useState({});
+  // TODO: prompt for <Enter> key to confirm map URL
 
   return (
     <>
