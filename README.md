@@ -5,35 +5,22 @@
 
 ## Features
 
-This package provides two widgets: ObjectWidget and ObjectListWidget.
+Several widgets to organize complex information for block schemas.
 
-The ObjectWidget is a generic widget that provides a form for other javascript
-objects. That means that, if you have a value such as:
+### FlatListObject
 
-```
-const myvalue = {
-  firstname: "John",
-  lastname: "Doe",
-}
-```
+![Flat List object](./img/flat-list-widget.png)
 
-the ObjectWidget component would provide a set of widgets to edit it.
+### Mapping Widget
 
-The ObjectListWidget component provides a way to edit lists of JS objects using
-the ObjectWidget as the editor.
+![Mapping widget](./img/mapping-widget.png)
 
-If you're using a schema to describe the information, you can need to pass
-a `schema` parameter to the field. See the `src/demo/schema.js` file for an
-example. This package provides a demo block, with a schema that uses 2 object
-widgets: the `link` field which uses the ObjectWidget and the `tabs` field
-which uses the `ObjectListWidget`. Activate the demo by passing
-`@eeacms/volto-object-widget:installDemo` in the `addons` key of your
-`package.json`.
+### Object by type
 
-###
+![Object by type](./img/object-by-type-widget.png)
 
-Demo GIF
 
+##
 ## Getting started
 
 1. Create new volto project if you don't already have one:
