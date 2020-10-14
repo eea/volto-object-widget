@@ -21,6 +21,7 @@ export const ObjectByTypeWidget = (props) => {
         <Menu.Item
           onClick={() => setActiveTab(index)}
           active={activeTab === index}
+          key={id}
         >
           <Icon size="24px" name={icon} title={schema.title} />
         </Menu.Item>
