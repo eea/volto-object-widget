@@ -13,11 +13,7 @@ import { v4 as uuid } from 'uuid';
 import './style.css';
 
 const ObjectListInlineWidget = (props) => {
-  const { id, schema, value = [], onChange, mode = {} } = props;
-
-  // TODO: add `mode.saveConfirmation` and mode.useAccordion
-  // const [accordionStates, setAccordionStates] = React.useState({});
-  // TODO: prompt for <Enter> key to confirm map URL
+  const { id, schema, value = [], onChange, schemaExtender } = props;
 
   return (
     <>
@@ -94,7 +90,11 @@ const ObjectListInlineWidget = (props) => {
                       <ObjectWidget
                         id={`${id}-${index}`}
                         key={`ow-${id}-${index}`}
-                        schema={schema}
+                        schema={
+                          schemaExtender
+                            ? schemaExtender(schema, child)
+                            : schema
+                        }
                         value={child}
                         onChange={(fi, fv) => {
                           const newvalue = value.map((v, i) =>

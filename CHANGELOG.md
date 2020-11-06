@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- Add `schemaExtender` support in ObjectListInlineWidget @tiberiuichim
+
 ## 0.2.0
 
 - add ObjectByTypeWidget @tiberiuichim
