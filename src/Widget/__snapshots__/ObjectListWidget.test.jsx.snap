@@ -1,0 +1,975 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a flat object list component with an item 1`] = `
+<DocumentFragment>
+  <div
+    class="objectlist-widget-content"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="inline field text"
+                id="field-internal_link-0-my-widget-0"
+              >
+                <div
+                  class="ui grid"
+                >
+                  <div
+                    class="stretched row"
+                  >
+                    <div
+                      class="four wide column"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <label
+                          for="field-internal_link-0-my-widget-0"
+                        >
+                          Internal link
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="eight wide column"
+                    >
+                      <div
+                        class="ui input"
+                      >
+                        <input
+                          id="field-internal_link-0-my-widget-0"
+                          name="internal_link-0-my-widget-0"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="inline field text"
+                id="field-internal_link-0-my-widget-1"
+              >
+                <div
+                  class="ui grid"
+                >
+                  <div
+                    class="stretched row"
+                  >
+                    <div
+                      class="four wide column"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <label
+                          for="field-internal_link-0-my-widget-1"
+                        >
+                          Internal link
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="eight wide column"
+                    >
+                      <div
+                        class="ui input"
+                      >
+                        <input
+                          id="field-internal_link-0-my-widget-1"
+                          name="internal_link-0-my-widget-1"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders a flat object list component with an item 2`] = `
+<DocumentFragment>
+  <div
+    class="objectlist-widget-content"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="item"
+              >
+                Internal
+              </a>
+              <a
+                class="active item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="inline field text"
+                id="field-external_link-0-my-widget-0"
+              >
+                <div
+                  class="ui grid"
+                >
+                  <div
+                    class="stretched row"
+                  >
+                    <div
+                      class="four wide column"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <label
+                          for="field-external_link-0-my-widget-0"
+                        >
+                          External URL (can be relative within this site or absolute if it starts with http:// or https://)
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="eight wide column"
+                    >
+                      <div
+                        class="ui input"
+                      >
+                        <input
+                          id="field-external_link-0-my-widget-0"
+                          name="external_link-0-my-widget-0"
+                          type="text"
+                          value="https://ddg.gg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="inline field text"
+                id="field-internal_link-0-my-widget-1"
+              >
+                <div
+                  class="ui grid"
+                >
+                  <div
+                    class="stretched row"
+                  >
+                    <div
+                      class="four wide column"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <label
+                          for="field-internal_link-0-my-widget-1"
+                        >
+                          Internal link
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="eight wide column"
+                    >
+                      <div
+                        class="ui input"
+                      >
+                        <input
+                          id="field-internal_link-0-my-widget-1"
+                          name="internal_link-0-my-widget-1"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders a flat object list component with an item 3`] = `
+<DocumentFragment>
+  <div
+    class="objectlist-widget-content"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="item"
+              >
+                Internal
+              </a>
+              <a
+                class="active item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="inline field text"
+                id="field-external_link-0-my-widget-0"
+              >
+                <div
+                  class="ui grid"
+                >
+                  <div
+                    class="stretched row"
+                  >
+                    <div
+                      class="four wide column"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <label
+                          for="field-external_link-0-my-widget-0"
+                        >
+                          External URL (can be relative within this site or absolute if it starts with http:// or https://)
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="eight wide column"
+                    >
+                      <div
+                        class="ui input"
+                      >
+                        <input
+                          id="field-external_link-0-my-widget-0"
+                          name="external_link-0-my-widget-0"
+                          type="text"
+                          value="https://ddg.gg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="item"
+              >
+                Internal
+              </a>
+              <a
+                class="active item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="inline field text"
+                id="field-external_link-0-my-widget-1"
+              >
+                <div
+                  class="ui grid"
+                >
+                  <div
+                    class="stretched row"
+                  >
+                    <div
+                      class="four wide column"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <label
+                          for="field-external_link-0-my-widget-1"
+                        >
+                          External URL (can be relative within this site or absolute if it starts with http:// or https://)
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="eight wide column"
+                    >
+                      <div
+                        class="ui input"
+                      >
+                        <input
+                          id="field-external_link-0-my-widget-1"
+                          name="external_link-0-my-widget-1"
+                          type="text"
+                          value="https://wikipedia.org"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders a modal object list form component and tests it in other various ways 1`] = `<DocumentFragment />`;
+
+exports[`renders a modal object list form component and tests it in various ways 1`] = `<DocumentFragment />`;
+
+exports[`renders an object list widget component 1`] = `
+<div
+  className="inline required field help text"
+  id="my-field-set-my-widget"
+>
+  <div
+    className="ui grid"
+  >
+    <div
+      className="stretched row"
+    >
+      <div
+        className="four wide column"
+      >
+        <div
+          className="wrapper"
+        >
+          <label
+            htmlFor="field-my-widget"
+          >
+            My Widget
+          </label>
+        </div>
+      </div>
+      <div
+        className="eight wide column"
+      >
+        <div
+          className="toolbar"
+          style={
+            Object {
+              "zIndex": "2",
+            }
+          }
+        >
+          <button
+            aria-label="Edit"
+            className="item ui noborder button"
+            onClick={[Function]}
+          >
+            <i
+              aria-hidden="true"
+              className="blue write square large icon"
+              onClick={[Function]}
+            />
+          </button>
+          <button
+            aria-label="Delete"
+            className="item ui noborder button"
+            onClick={[Function]}
+          >
+            <i
+              aria-hidden="true"
+              className="red close large icon"
+              onClick={[Function]}
+            />
+          </button>
+        </div>
+        <div
+          className="ui input text help"
+        >
+          <input
+            disabled={true}
+            id="field-my-widget"
+            name="my-widget"
+            onChange={[Function]}
+            onClick={[Function]}
+            type="text"
+            value="2 x Link"
+          />
+          <button
+            aria-label="Edit"
+            className="ui button item ui noborder button"
+            data-testid="big-pen-button"
+            onClick={[Function]}
+            title="Edit"
+          >
+            <svg
+              className="icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": undefined,
+                }
+              }
+              onClick={null}
+              style={
+                Object {
+                  "fill": "blue",
+                  "height": "18px",
+                  "width": "auto",
+                }
+              }
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+          <button
+            aria-label="Delete"
+            className="ui button item ui noborder button"
+            onClick={[Function]}
+            title="Delete"
+          >
+            <svg
+              className="icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": undefined,
+                }
+              }
+              onClick={null}
+              style={
+                Object {
+                  "fill": "red",
+                  "height": "18px",
+                  "width": "auto",
+                }
+              }
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="stretched row"
+    >
+      <div
+        className="stretched twelve wide column"
+      >
+        <p
+          className="help"
+        >
+          My description
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders an object list widget component and changes its value by clicking a button 1`] = `
+<DocumentFragment>
+  <div
+    class="inline required field help text"
+    id="field-my-widget"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="stretched row"
+      >
+        <div
+          class="four wide column"
+        >
+          <div
+            class="wrapper"
+          >
+            <label
+              for="field-my-widget"
+            >
+              My Widget
+            </label>
+          </div>
+        </div>
+        <div
+          class="eight wide column"
+        >
+          <div
+            class="toolbar"
+            style="z-index: 2;"
+          >
+            <button
+              aria-label="Edit"
+              class="item ui noborder button"
+            >
+              <i
+                aria-hidden="true"
+                class="blue write square large icon"
+              />
+            </button>
+            <button
+              aria-label="Delete"
+              class="item ui noborder button"
+            >
+              <i
+                aria-hidden="true"
+                class="red close large icon"
+              />
+            </button>
+          </div>
+          <div
+            class="ui input text help"
+          >
+            <input
+              disabled=""
+              id="field-my-widget"
+              name="my-widget"
+              type="text"
+              value="2 x Link"
+            />
+            <button
+              aria-label="Edit"
+              class="ui button item ui noborder button"
+              data-testid="big-pen-button"
+              title="Edit"
+            >
+              <svg
+                class="icon"
+                style="height: 18px; width: auto; fill: blue;"
+                viewBox=""
+                xmlns=""
+              />
+            </button>
+            <button
+              aria-label="Delete"
+              class="ui button item ui noborder button"
+              title="Delete"
+            >
+              <svg
+                class="icon"
+                style="height: 18px; width: auto; fill: red;"
+                viewBox=""
+                xmlns=""
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="stretched row"
+      >
+        <div
+          class="stretched twelve wide column"
+        >
+          <p
+            class="help"
+          >
+            My description
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button>
+    Click me !
+  </button>
+</DocumentFragment>
+`;
+
+exports[`renders an object list widget component and changes its value by clicking a button 2`] = `
+<DocumentFragment>
+  <div
+    class="inline required field help text"
+    id="field-my-widget"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="stretched row"
+      >
+        <div
+          class="four wide column"
+        >
+          <div
+            class="wrapper"
+          >
+            <label
+              for="field-my-widget"
+            >
+              My Widget
+            </label>
+          </div>
+        </div>
+        <div
+          class="eight wide column"
+        >
+          <div
+            class="toolbar"
+            style="z-index: 2;"
+          >
+            <button
+              aria-label="Edit"
+              class="item ui noborder button"
+            >
+              <i
+                aria-hidden="true"
+                class="blue write square large icon"
+              />
+            </button>
+            <button
+              aria-label="Delete"
+              class="item ui noborder button"
+            >
+              <i
+                aria-hidden="true"
+                class="red close large icon"
+              />
+            </button>
+          </div>
+          <div
+            class="ui input text help"
+          >
+            <input
+              disabled=""
+              id="field-my-widget"
+              name="my-widget"
+              type="text"
+              value="2 x Link"
+            />
+            <button
+              aria-label="Edit"
+              class="ui button item ui noborder button"
+              data-testid="big-pen-button"
+              title="Edit"
+            >
+              <svg
+                class="icon"
+                style="height: 18px; width: auto; fill: blue;"
+                viewBox=""
+                xmlns=""
+              />
+            </button>
+            <button
+              aria-label="Delete"
+              class="ui button item ui noborder button"
+              title="Delete"
+            >
+              <svg
+                class="icon"
+                style="height: 18px; width: auto; fill: red;"
+                viewBox=""
+                xmlns=""
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="stretched row"
+      >
+        <div
+          class="stretched twelve wide column"
+        >
+          <p
+            class="help"
+          >
+            My description
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button>
+    Click me !
+  </button>
+</DocumentFragment>
+`;
