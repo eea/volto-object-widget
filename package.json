@@ -12,5 +12,8 @@
   "scripts": {
     "release": "release-it",
     "bootstrap": "./bootstrap"
+  },
+  "dependencies": {
+    "@eeacms/volto-blocks-form": "eea/volto-blocks-form"
   }
 }
