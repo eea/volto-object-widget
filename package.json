@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "volto-object-widget: Volto add-on",
   "main": "src/index.js",
-  "repository": "https://github.com/eea/volto-object-widget",
   "author": "European Environment Agency: IDM2 A-Team",
   "license": "MIT",
   "devDependencies": {
@@ -15,5 +14,17 @@
   },
   "dependencies": {
     "@eeacms/volto-blocks-form": "eea/volto-blocks-form"
+  },
+  "homepage": "https://github.com/eea/volto-object-widget",
+  "keywords": [
+    "volto-addon",
+    "volto-widget",
+    "volto",
+    "plone",
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:eea/volto-object-widget.git"
   }
 }
