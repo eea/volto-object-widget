@@ -167,8 +167,8 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
     ],
 
     "dependencies": {
-        "@eeacms/volto-blocks-form": "github:eea/volto-blocks-form",
-        "@eeacms/volto-object-widget": "github:eea/volto-object-widget"
+        "@eeacms/volto-blocks-form": "^1.0.0",
+        "@eeacms/volto-object-widget": "^1.0.0"
     }
     ```
 
