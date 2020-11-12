@@ -10,7 +10,7 @@
   },
   "scripts": {
     "release": "release-it",
-    "bootstrap": "./bootstrap"
+    "bootstrap": "node bootstrap"
   },
   "dependencies": {
     "@eeacms/volto-blocks-form": "^1.0.0"
