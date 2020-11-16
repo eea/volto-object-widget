@@ -149,28 +149,26 @@ const LinkEditSchema = {
 
 To use this widget, in the schema, set the `widget` field to `object_by_type`.
 
-##
-
 ## Getting started
 
 1. Create new volto project if you don't already have one:
 
    ```
-   $ npm install -g @plone/create-volto-app
-   $ create-volto-app my-volto-project
+   $ npm install -g yo @plone/generator-volto
+   $ yo @plone/volto my-volto-project --addon @eeacms/volto-object-widget
+
    $ cd my-volto-project
+   $ yarn add -W @eeacms/volto-object-widget
    ```
 
-1. Update `package.json`:
+1. If you already have a volto project, just update `package.json`:
 
    ```JSON
    "addons": [
-       "@eeacms/volto-blocks-form",
-       "@eeacms/volto-object-widget:installDemo"
+       "@eeacms/volto-object-widget"
    ],
 
    "dependencies": {
-       "@eeacms/volto-blocks-form": "^1.0.0",
        "@eeacms/volto-object-widget": "^1.0.0"
    }
    ```
@@ -186,16 +184,17 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
 
 1. Happy editing!
 
+
 ## How to contribute
 
-See [DEVELOP.md](DEVELOP.md).
+See [DEVELOP.md](https://github.com/eea/volto-object-widget/blob/master/DEVELOP.md).
 
 ## Copyright and license
 
 The Initial Owner of the Original Code is European Environment Agency (EEA).
 All Rights Reserved.
 
-See [LICENSE.md](LICENSE.md) for details.
+See [LICENSE.md](https://github.com/eea/volto-object-widget/blob/master/LICENSE.md) for details.
 
 ## Funding
 
