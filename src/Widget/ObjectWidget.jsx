@@ -24,7 +24,9 @@ import Field from '@plone/volto/components/manage/Form/Field';
  */
 const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
   return data.fields.map((field, idx) => {
-    const v = value?.[field] || schema.properties[field].defaultValue;
+    const v = schema.properties[field].defaultValue
+      ? value?.[field] || schema.properties[field].defaultValue
+      : value?.[field];
     return (
       <Field
         {...schema.properties[field]}
