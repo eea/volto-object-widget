@@ -13,7 +13,14 @@ import { v4 as uuid } from 'uuid';
 import './style.css';
 
 const ObjectListInlineWidget = (props) => {
-  const { id, schema, value = [], onChange, schemaExtender, defaultData = {} } = props;
+  const {
+    id,
+    schema,
+    value = [],
+    onChange,
+    schemaExtender,
+    defaultData = {},
+  } = props;
 
   return (
     <>
@@ -26,7 +33,7 @@ const ObjectListInlineWidget = (props) => {
                 ...value,
                 {
                   '@id': uuid(),
-                  ...defaultData
+                  ...defaultData,
                 },
               ])
             }
