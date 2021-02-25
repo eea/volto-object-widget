@@ -169,7 +169,7 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
    ],
 
    "dependencies": {
-       "@eeacms/volto-object-widget": "^1.0.0"
+       "@eeacms/volto-object-widget": "^2.0.0"
    }
    ```
 
