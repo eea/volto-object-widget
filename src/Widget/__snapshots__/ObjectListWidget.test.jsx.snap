@@ -38,44 +38,10 @@ exports[`renders a flat object list component with an item 1`] = `
               class="ui bottom attached segment active tab"
             >
               <div
-                class="inline field text"
-                id="field-internal_link-0-my-widget-0"
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-0"
               >
-                <div
-                  class="ui grid"
-                >
-                  <div
-                    class="stretched row"
-                  >
-                    <div
-                      class="four wide column"
-                    >
-                      <div
-                        class="wrapper"
-                      >
-                        <label
-                          for="field-internal_link-0-my-widget-0"
-                        >
-                          Internal link
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="eight wide column"
-                    >
-                      <div
-                        class="ui input"
-                      >
-                        <input
-                          id="field-internal_link-0-my-widget-0"
-                          name="internal_link-0-my-widget-0"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                Internal link - No description
               </div>
             </div>
           </div>
@@ -135,44 +101,10 @@ exports[`renders a flat object list component with an item 1`] = `
               class="ui bottom attached segment active tab"
             >
               <div
-                class="inline field text"
-                id="field-internal_link-0-my-widget-1"
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-1"
               >
-                <div
-                  class="ui grid"
-                >
-                  <div
-                    class="stretched row"
-                  >
-                    <div
-                      class="four wide column"
-                    >
-                      <div
-                        class="wrapper"
-                      >
-                        <label
-                          for="field-internal_link-0-my-widget-1"
-                        >
-                          Internal link
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="eight wide column"
-                    >
-                      <div
-                        class="ui input"
-                      >
-                        <input
-                          id="field-internal_link-0-my-widget-1"
-                          name="internal_link-0-my-widget-1"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                Internal link - No description
               </div>
             </div>
           </div>
@@ -241,44 +173,10 @@ exports[`renders a flat object list component with an item 2`] = `
               class="ui bottom attached segment active tab"
             >
               <div
-                class="inline field text"
-                id="field-external_link-0-my-widget-0"
+                class="mocked-default-widget"
+                id="mocked-field-external_link-0-my-widget-0"
               >
-                <div
-                  class="ui grid"
-                >
-                  <div
-                    class="stretched row"
-                  >
-                    <div
-                      class="four wide column"
-                    >
-                      <div
-                        class="wrapper"
-                      >
-                        <label
-                          for="field-external_link-0-my-widget-0"
-                        >
-                          External URL (can be relative within this site or absolute if it starts with http:// or https://)
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="eight wide column"
-                    >
-                      <div
-                        class="ui input"
-                      >
-                        <input
-                          id="field-external_link-0-my-widget-0"
-                          name="external_link-0-my-widget-0"
-                          type="text"
-                          value="https://ddg.gg"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                External URL (can be relative within this site or absolute if it starts with http:// or https://) - No description
               </div>
             </div>
           </div>
@@ -338,44 +236,10 @@ exports[`renders a flat object list component with an item 2`] = `
               class="ui bottom attached segment active tab"
             >
               <div
-                class="inline field text"
-                id="field-internal_link-0-my-widget-1"
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-1"
               >
-                <div
-                  class="ui grid"
-                >
-                  <div
-                    class="stretched row"
-                  >
-                    <div
-                      class="four wide column"
-                    >
-                      <div
-                        class="wrapper"
-                      >
-                        <label
-                          for="field-internal_link-0-my-widget-1"
-                        >
-                          Internal link
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="eight wide column"
-                    >
-                      <div
-                        class="ui input"
-                      >
-                        <input
-                          id="field-internal_link-0-my-widget-1"
-                          name="internal_link-0-my-widget-1"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                Internal link - No description
               </div>
             </div>
           </div>
@@ -444,44 +308,10 @@ exports[`renders a flat object list component with an item 3`] = `
               class="ui bottom attached segment active tab"
             >
               <div
-                class="inline field text"
-                id="field-external_link-0-my-widget-0"
+                class="mocked-default-widget"
+                id="mocked-field-external_link-0-my-widget-0"
               >
-                <div
-                  class="ui grid"
-                >
-                  <div
-                    class="stretched row"
-                  >
-                    <div
-                      class="four wide column"
-                    >
-                      <div
-                        class="wrapper"
-                      >
-                        <label
-                          for="field-external_link-0-my-widget-0"
-                        >
-                          External URL (can be relative within this site or absolute if it starts with http:// or https://)
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="eight wide column"
-                    >
-                      <div
-                        class="ui input"
-                      >
-                        <input
-                          id="field-external_link-0-my-widget-0"
-                          name="external_link-0-my-widget-0"
-                          type="text"
-                          value="https://ddg.gg"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                External URL (can be relative within this site or absolute if it starts with http:// or https://) - No description
               </div>
             </div>
           </div>
@@ -541,44 +371,10 @@ exports[`renders a flat object list component with an item 3`] = `
               class="ui bottom attached segment active tab"
             >
               <div
-                class="inline field text"
-                id="field-external_link-0-my-widget-1"
+                class="mocked-default-widget"
+                id="mocked-field-external_link-0-my-widget-1"
               >
-                <div
-                  class="ui grid"
-                >
-                  <div
-                    class="stretched row"
-                  >
-                    <div
-                      class="four wide column"
-                    >
-                      <div
-                        class="wrapper"
-                      >
-                        <label
-                          for="field-external_link-0-my-widget-1"
-                        >
-                          External URL (can be relative within this site or absolute if it starts with http:// or https://)
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="eight wide column"
-                    >
-                      <div
-                        class="ui input"
-                      >
-                        <input
-                          id="field-external_link-0-my-widget-1"
-                          name="external_link-0-my-widget-1"
-                          type="text"
-                          value="https://wikipedia.org"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                External URL (can be relative within this site or absolute if it starts with http:// or https://) - No description
               </div>
             </div>
           </div>
@@ -616,7 +412,6 @@ exports[`renders a modal object list form component and tests it in various ways
 exports[`renders an object list widget component 1`] = `
 <div
   className="inline required field help text"
-  id="my-field-set-my-widget"
 >
   <div
     className="ui grid"
@@ -632,6 +427,7 @@ exports[`renders an object list widget component 1`] = `
         >
           <label
             htmlFor="field-my-widget"
+            id="fieldset-my-field-set-field-label-my-widget"
           >
             My Widget
           </label>
@@ -758,7 +554,6 @@ exports[`renders an object list widget component and changes its value by clicki
 <DocumentFragment>
   <div
     class="inline required field help text"
-    id="field-my-widget"
   >
     <div
       class="ui grid"
@@ -774,6 +569,7 @@ exports[`renders an object list widget component and changes its value by clicki
           >
             <label
               for="field-my-widget"
+              id="fieldset-undefined-field-label-my-widget"
             >
               My Widget
             </label>
@@ -868,7 +664,6 @@ exports[`renders an object list widget component and changes its value by clicki
 <DocumentFragment>
   <div
     class="inline required field help text"
-    id="field-my-widget"
   >
     <div
       class="ui grid"
@@ -884,6 +679,7 @@ exports[`renders an object list widget component and changes its value by clicki
           >
             <label
               for="field-my-widget"
+              id="fieldset-undefined-field-label-my-widget"
             >
               My Widget
             </label>

@@ -26,44 +26,10 @@ exports[`renders an object widget component with clicks on each tab in root leve
       class="ui bottom attached segment active tab"
     >
       <div
-        class="inline field text"
-        id="field-internal_link-0-my-widget"
+        class="mocked-default-widget"
+        id="mocked-field-internal_link-0-my-widget"
       >
-        <div
-          class="ui grid"
-        >
-          <div
-            class="stretched row"
-          >
-            <div
-              class="four wide column"
-            >
-              <div
-                class="wrapper"
-              >
-                <label
-                  for="field-internal_link-0-my-widget"
-                >
-                  Internal link
-                </label>
-              </div>
-            </div>
-            <div
-              class="eight wide column"
-            >
-              <div
-                class="ui input"
-              >
-                <input
-                  id="field-internal_link-0-my-widget"
-                  name="internal_link-0-my-widget"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        Internal link - No description
       </div>
     </div>
   </div>
@@ -96,44 +62,10 @@ exports[`renders an object widget component with clicks on each tab in root leve
       class="ui bottom attached segment active tab"
     >
       <div
-        class="inline field text"
-        id="field-external_link-0-my-widget"
+        class="mocked-default-widget"
+        id="mocked-field-external_link-0-my-widget"
       >
-        <div
-          class="ui grid"
-        >
-          <div
-            class="stretched row"
-          >
-            <div
-              class="four wide column"
-            >
-              <div
-                class="wrapper"
-              >
-                <label
-                  for="field-external_link-0-my-widget"
-                >
-                  External URL (can be relative within this site or absolute if it starts with http:// or https://)
-                </label>
-              </div>
-            </div>
-            <div
-              class="eight wide column"
-            >
-              <div
-                class="ui input"
-              >
-                <input
-                  id="field-external_link-0-my-widget"
-                  name="external_link-0-my-widget"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        External URL (can be relative within this site or absolute if it starts with http:// or https://) - No description
       </div>
     </div>
   </div>
@@ -166,84 +98,16 @@ exports[`renders an object widget component with clicks on each tab in root leve
       class="ui bottom attached segment active tab"
     >
       <div
-        class="inline field text"
-        id="field-email_address-0-my-widget"
+        class="mocked-default-widget"
+        id="mocked-field-email_address-0-my-widget"
       >
-        <div
-          class="ui grid"
-        >
-          <div
-            class="stretched row"
-          >
-            <div
-              class="four wide column"
-            >
-              <div
-                class="wrapper"
-              >
-                <label
-                  for="field-email_address-0-my-widget"
-                >
-                  Email address
-                </label>
-              </div>
-            </div>
-            <div
-              class="eight wide column"
-            >
-              <div
-                class="ui input"
-              >
-                <input
-                  id="field-email_address-0-my-widget"
-                  name="email_address-0-my-widget"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        Email address - No description
       </div>
       <div
-        class="inline field text"
-        id="field-email_subject-1-my-widget"
+        class="mocked-default-widget"
+        id="mocked-field-email_subject-1-my-widget"
       >
-        <div
-          class="ui grid"
-        >
-          <div
-            class="stretched row"
-          >
-            <div
-              class="four wide column"
-            >
-              <div
-                class="wrapper"
-              >
-                <label
-                  for="field-email_subject-1-my-widget"
-                >
-                  Email subject (optional)
-                </label>
-              </div>
-            </div>
-            <div
-              class="eight wide column"
-            >
-              <div
-                class="ui input"
-              >
-                <input
-                  id="field-email_subject-1-my-widget"
-                  name="email_subject-1-my-widget"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        Email subject (optional) - No description
       </div>
     </div>
   </div>
@@ -278,49 +142,12 @@ exports[`renders an object widget component with invalid field in value 1`] = `
     className="ui bottom attached segment active tab"
   >
     <div
-      className="inline field text"
-      id="field-internal_link-0-my-widget"
+      className="mocked-default-widget"
+      id="mocked-field-internal_link-0-my-widget"
     >
-      <div
-        className="ui grid"
-      >
-        <div
-          className="stretched row"
-        >
-          <div
-            className="four wide column"
-          >
-            <div
-              className="wrapper"
-            >
-              <label
-                htmlFor="field-internal_link-0-my-widget"
-              >
-                Internal link
-              </label>
-            </div>
-          </div>
-          <div
-            className="eight wide column"
-          >
-            <div
-              className="ui input"
-            >
-              <input
-                id="field-internal_link-0-my-widget"
-                maxLength={null}
-                minLength={null}
-                name="internal_link-0-my-widget"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onClick={[Function]}
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      Internal link
+       - 
+      No description
     </div>
   </div>
 </div>
