@@ -9,7 +9,7 @@ import clearSVG from '@plone/volto/icons/clear.svg';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import addSVG from '@plone/volto/icons/add.svg';
 
-import ObjectWidget from './ObjectWidget';
+import { ObjectWidget } from '@plone/volto/components';
 
 import cx from 'classnames';
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Menu, Tab } from 'semantic-ui-react';
-import { Icon } from '@plone/volto/components';
-import { ObjectWidget } from '@eeacms/volto-object-widget/Widget';
+import { Icon, ObjectWidget } from '@plone/volto/components';
 
 export const ObjectByTypeWidget = (props) => {
   const { schemas, value = {}, onChange, errors = {}, id } = props;
