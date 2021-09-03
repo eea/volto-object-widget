@@ -411,7 +411,7 @@ exports[`renders a modal object list form component and tests it in various ways
 
 exports[`renders an object list widget component 1`] = `
 <div
-  className="inline required field help text"
+  className="inline required field help text field-wrapper-my-widget"
 >
   <div
     className="ui grid"
@@ -553,7 +553,7 @@ exports[`renders an object list widget component 1`] = `
 exports[`renders an object list widget component and changes its value by clicking a button 1`] = `
 <DocumentFragment>
   <div
-    class="inline required field help text"
+    class="inline required field help text field-wrapper-my-widget"
   >
     <div
       class="ui grid"
@@ -663,7 +663,7 @@ exports[`renders an object list widget component and changes its value by clicki
 exports[`renders an object list widget component and changes its value by clicking a button 2`] = `
 <DocumentFragment>
   <div
-    class="inline required field help text"
+    class="inline required field help text field-wrapper-my-widget"
   >
     <div
       class="ui grid"

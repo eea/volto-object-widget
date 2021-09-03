@@ -1,5 +1,4 @@
 import {
-  ObjectWidget,
   ObjectListWidget,
   ObjectListInlineWidget,
   ObjectByTypeWidget,
@@ -7,7 +6,6 @@ import {
 } from './Widget';
 
 export {
-  ObjectWidget,
   ObjectListWidget,
   ObjectListInlineWidget,
   ObjectByTypeWidget,
@@ -17,7 +15,6 @@ export {
 export installDemo from './demo';
 
 const applyConfig = (config) => {
-  config.widgets.widget.object = ObjectWidget;
   config.widgets.widget.object_list_popup = ObjectListWidget;
   config.widgets.widget.object_list_inline = ObjectListInlineWidget;
   config.widgets.widget.object_by_type = ObjectByTypeWidget;

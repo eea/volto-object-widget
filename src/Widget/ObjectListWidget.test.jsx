@@ -65,7 +65,7 @@ test('renders an object list widget component', () => {
         schema={LinkSchema}
         title="My Widget"
         onChange={() => {}}
-        error={{}}
+        error={[]}
         value={[
           { external_link: 'https://dgg.gg' },
           { external_link: 'https://wikipedia.org' },
@@ -108,7 +108,7 @@ test('renders an object list widget component and changes its value by clicking 
             valueState = v;
             rerender(jsx);
           }}
-          error={{}}
+          error={[]}
           value={valueState}
           required={true}
           description="My description"
