@@ -1,9 +1,20 @@
 # volto-object-widget
 [![Releases](https://img.shields.io/github/v/release/eea/volto-object-widget)](https://github.com/eea/volto-object-widget/releases)
-[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-object-widget%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-object-widget/job/master/display/redirect)
-[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-object-widget%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-object-widget/job/develop/display/redirect)
 
-[Volto](https://github.com/plone/volto) add-on
+[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-object-widget%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-object-widget/job/master/display/redirect)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
+
+[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-object-widget%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-object-widget/job/develop/display/redirect)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
+
+
+[Volto](https://github.com/plone/volto) add-on: Various Volto schema-based widgets.
 
 ## Features
 
