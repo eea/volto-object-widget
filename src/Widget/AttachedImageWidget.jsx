@@ -260,7 +260,7 @@ export class AttachedImageWidget extends Component {
                             e.stopPropagation();
                             e.preventDefault();
                             this.props.openObjectBrowser({
-                              mode: 'link',
+                              mode: 'image',
                               onSelectItem: (url) => {
                                 this.setState({ url });
                               },
