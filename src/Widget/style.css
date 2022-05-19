@@ -12,6 +12,25 @@
   animation: field-just-changed-anim 0.5s;
 }
 
+/* .field-attached-image .preview {
+  position: relative;
+} */
+
+.field-attached-image .toolbar-inner {
+  display: flex;
+  align-items: center;
+}
+
+.field-attached-image .preview img {
+  width: 100%;
+}
+
+.field-attached-image .preview .ui.buttons {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+}
+
 /* TODO: stop using maybe-already-used class names and !important, use LESS
 .overrides files instead */
 

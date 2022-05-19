@@ -23,9 +23,7 @@ import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
 import uploadSVG from '@plone/volto/icons/upload.svg';
 
-export const thumbUrl = (url, preview_size) => {
-  return `${url}/@@images/image/${preview_size}`;
-};
+import './style.css';
 
 const Dropzone = loadable(() => import('react-dropzone'));
 
@@ -200,9 +198,16 @@ export class AttachedImageWidget extends Component {
       );
 
     return (
-      <FormFieldWrapper className="wide" {...this.props}>
+      <FormFieldWrapper
+        columns={1}
+        className="field-attached-image"
+        {...this.props}
+      >
+        <div className="wrapper">
+          <label>{this.props.title}</label>
+        </div>
         {this.props.value && (
-          <>
+          <div className="preview">
             <img
               src={
                 isInternalURL(this.props.value)
@@ -216,6 +221,7 @@ export class AttachedImageWidget extends Component {
             <Button.Group>
               <Button
                 basic
+                icon
                 className="cancel"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -227,7 +233,7 @@ export class AttachedImageWidget extends Component {
                 <Icon name={clearSVG} size="30px" />
               </Button>
             </Button.Group>
-          </>
+          </div>
         )}
         {!this.props.value && (
           <Dropzone
@@ -269,9 +275,7 @@ export class AttachedImageWidget extends Component {
                         >
                           <Icon name={navTreeSVG} size="24px" />
                         </Button>
-                      </Button.Group>
-                      <Button.Group>
-                        <label className="ui button basic icon">
+                        <Button as="label" basic icon>
                           <Icon name={uploadSVG} size="24px" />
                           <input
                             {...getInputProps({
@@ -280,30 +284,33 @@ export class AttachedImageWidget extends Component {
                               style: { display: 'none' },
                             })}
                           />
-                        </label>
+                        </Button>
                       </Button.Group>
+                      <div style={{ flexGrow: 1 }} />
                       <Input
                         onChange={this.onChangeUrl}
                         placeholder={placeholder}
                         value={this.state.url}
                       />
-                      {this.state.url && (
-                        <Button.Group>
+                      <div style={{ flexGrow: 1 }} />
+                      <Button.Group>
+                        {this.state.url && (
                           <Button
                             basic
+                            icon
+                            secondary
                             className="cancel"
                             onClick={(e) => {
                               e.stopPropagation();
                               this.setState({ url: '' });
                             }}
                           >
-                            <Icon name={clearSVG} size="30px" />
+                            <Icon name={clearSVG} size="24px" />
                           </Button>
-                        </Button.Group>
-                      )}
-                      <Button.Group>
+                        )}
                         <Button
                           basic
+                          icon
                           primary
                           disabled={!this.state.url}
                           onClick={(e) => {
@@ -311,7 +318,7 @@ export class AttachedImageWidget extends Component {
                             this.onSubmitUrl();
                           }}
                         >
-                          <Icon name={aheadSVG} size="30px" />
+                          <Icon name={aheadSVG} size="24px" />
                         </Button>
                       </Button.Group>
                     </div>
