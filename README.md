@@ -197,7 +197,7 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
 
 ## Release
 
-See [RELEASE.md](https://github.com/eea/volto-addon-template/blob/master/RELEASE.md).
+See [RELEASE.md](https://github.com/eea/volto-object-widget/blob/master/RELEASE.md).
 
 ## How to contribute
 
