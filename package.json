@@ -23,6 +23,9 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "md5": "^2.3.0"
   },
+  "dependencies": {
+    "@eeacms/volto-resize-helper": "*"
+  },
   "scripts": {
     "release": "release-it",
     "release-major-beta": "release-it major --preRelease=beta",
