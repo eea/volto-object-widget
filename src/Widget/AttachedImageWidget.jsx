@@ -17,8 +17,6 @@ import {
   isInternalURL,
 } from '@plone/volto/helpers';
 
-import { getURL } from '@eeacms/volto-widgets-view/helpers';
-
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
@@ -77,10 +75,7 @@ export class AttachedImageWidget extends Component {
       this.setState({
         uploading: false,
       });
-      this.props.onChange(this.props.id, {
-        '@type': 'URL',
-        value: nextProps.content['@id'],
-      });
+      this.props.onChange(this.props.id, nextProps.content['@id']);
     }
   }
 
@@ -146,10 +141,7 @@ export class AttachedImageWidget extends Component {
    * @returns {undefined}
    */
   onSubmitUrl = () => {
-    this.props.onChange(this.props.id, {
-      '@type': 'URL',
-      value: flattenToAppURL(this.state.url),
-    });
+    this.props.onChange(this.props.id, flattenToAppURL(this.state.url));
   };
 
   resetSubmitUrl = () => {
@@ -205,8 +197,6 @@ export class AttachedImageWidget extends Component {
         messages.AttachedImageWidgetInputPlaceholder,
       );
 
-    const imgSrc = getURL(this.props.value);
-
     return (
       <FormFieldWrapper
         columns={1}
@@ -216,13 +206,15 @@ export class AttachedImageWidget extends Component {
         <div className="wrapper">
           <label>{this.props.title}</label>
         </div>
-        {imgSrc && (
+        {this.props.value && (
           <div className="preview">
             <img
               src={
-                isInternalURL(imgSrc)
-                  ? `${flattenToAppURL(imgSrc)}/@@images/image/preview`
-                  : imgSrc
+                isInternalURL(this.props.value)
+                  ? `${flattenToAppURL(
+                      this.props.value,
+                    )}/@@images/image/preview`
+                  : this.props.value
               }
               alt="Preview"
             />
@@ -243,7 +235,7 @@ export class AttachedImageWidget extends Component {
             </Button.Group>
           </div>
         )}
-        {!imgSrc && (
+        {!this.props.value && (
           <Dropzone
             noClick
             onDrop={this.onDrop}
@@ -277,9 +269,7 @@ export class AttachedImageWidget extends Component {
                               mode: 'image',
                               currentPath: this.props.pathname,
                               onSelectItem: (url) => {
-                                this.setState({ url }, () => {
-                                  this.onSubmitUrl();
-                                });
+                                this.setState({ url });
                               },
                             });
                           }}
