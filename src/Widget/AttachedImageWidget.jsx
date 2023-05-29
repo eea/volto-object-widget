@@ -7,6 +7,9 @@ import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
 
 import { defineMessages, injectIntl } from 'react-intl';
+import isArray from 'lodash/isArray';
+import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
 import { Dimmer, Loader, Message, Button, Input } from 'semantic-ui-react';
 import { FormFieldWrapper, Icon } from '@plone/volto/components';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
@@ -16,8 +19,6 @@ import {
   getBaseUrl,
   isInternalURL,
 } from '@plone/volto/helpers';
-
-import { getURL } from '@eeacms/volto-widgets-view/helpers';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
@@ -35,6 +36,21 @@ const messages = defineMessages({
     defaultMessage: 'Browse the site, drop an image, or type an URL',
   },
 });
+
+export const getFieldURL = (data) => {
+  let url = data;
+  const _isObject = data && isObject(data) && !isArray(data);
+  if (_isObject && data['@type'] === 'URL') {
+    url = data['value'] ?? data['url'] ?? data['href'] ?? data;
+  } else if (_isObject) {
+    url = data['@id'] ?? data['url'] ?? data['href'] ?? data;
+  }
+  if (isArray(data)) {
+    url = data.map((item) => getFieldURL(item));
+  }
+  if (isString(url) && isInternalURL(url)) return flattenToAppURL(url);
+  return url;
+};
 
 export class AttachedImageWidget extends Component {
   /**
@@ -205,7 +221,7 @@ export class AttachedImageWidget extends Component {
         messages.AttachedImageWidgetInputPlaceholder,
       );
 
-    const imgSrc = getURL(this.props.value);
+    const imgSrc = getFieldURL(this.props.value);
 
     return (
       <FormFieldWrapper
