@@ -1,8 +1,3 @@
-/**
- * FileWidget component.
- * @module components/manage/Widgets/FileWidget
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dimmer, Input } from 'semantic-ui-react';
