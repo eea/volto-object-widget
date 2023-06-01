@@ -40,7 +40,9 @@ const FileWidget = (props) => {
   const { id, value, onChange, isDisabled, openObjectBrowser } = props;
   const [nameOfFile, setNameOfFile] = React.useState('');
   const intl = useIntl();
-  const [url, setUrl] = React.useState(props.value);
+  const [url, setUrl] = React.useState(
+    typeof props.value === 'string' ? props.value : '',
+  );
   const placeholder =
     props.placeholder ||
     intl.formatMessage(messages.FilePickerWidgetInputPlaceholder);
