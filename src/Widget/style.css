@@ -8,6 +8,15 @@
   }
 }
 
+.file-picker-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-toolbar {
+  width: 60% !important;
+}
+
 .field-just-changed {
   animation: field-just-changed-anim 0.5s;
 }
