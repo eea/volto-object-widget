@@ -11,27 +11,14 @@ import { injectIntl } from 'react-intl';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import { Icon, FormFieldWrapper } from '@plone/volto/components';
 import loadable from '@loadable/component';
-import {
-  flattenToAppURL,
-  getBaseUrl,
-  isInternalURL,
-} from '@plone/volto/helpers';
+import { flattenToAppURL, isInternalURL } from '@plone/volto/helpers';
 import { useSelector } from 'react-redux';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
 import { defineMessages, useIntl } from 'react-intl';
-import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
-import uploadSVG from '@plone/volto/icons/upload.svg';
 import './style.css';
-const imageMimetypes = [
-  'image/png',
-  'image/jpeg',
-  'image/webp',
-  'image/jpg',
-  'image/gif',
-  'image/svg+xml',
-];
+
 const Dropzone = loadable(() => import('react-dropzone'));
 
 const messages = defineMessages({
@@ -49,29 +36,6 @@ const messages = defineMessages({
   },
 });
 
-/**
- * FileWidget component class.
- * @function FileWidget
- * @returns {string} Markup of the component.
- *
- * To use it, in schema properties, declare a field like:
- *
- * ```jsx
- * {
- *  title: "File",
- *  widget: 'file',
- * }
- * ```
- * or:
- *
- * ```jsx
- * {
- *  title: "File",
- *  type: 'object',
- * }
- * ```
- *
- */
 const FileWidget = (props) => {
   const { id, value, onChange, isDisabled, openObjectBrowser } = props;
   const [nameOfFile, setNameOfFile] = React.useState('');
@@ -80,13 +44,17 @@ const FileWidget = (props) => {
   const placeholder =
     props.placeholder ||
     intl.formatMessage(messages.FilePickerWidgetInputPlaceholder);
+  const pathname = useSelector((state) => state.router.location.pathname);
+
+  /**
+   * Submit url handler
+   * @method onSubmitUrl
+   * @param {object} e Event
+   * @returns {undefined}
+   */
   const onSubmitUrl = () => {
     onChange(id, flattenToAppURL(url));
   };
-
-  const pathname = useSelector((state) => state.router.location.pathname);
-
-  React.useEffect(() => {}, [url]);
 
   const onChangeUrl = ({ target }) => {
     setUrl(target.value);
@@ -109,15 +77,16 @@ const FileWidget = (props) => {
         filename: file.name,
       });
     });
-
     let reader = new FileReader();
     reader.readAsDataURL(files[0]);
   };
+
   React.useEffect(() => {
     if (typeof value === 'string' && isInternalURL(value)) {
       setNameOfFile(value.split('/').at(-1));
     } else if (value) setNameOfFile(value.filename);
   }, [value]);
+
   return (
     <FormFieldWrapper {...props}>
       {value !== undefined && value !== null ? (
@@ -219,12 +188,10 @@ FileWidget.propTypes = {
   description: PropTypes.string,
   required: PropTypes.bool,
   error: PropTypes.arrayOf(PropTypes.string),
-  value: PropTypes.shape({
-    '@type': PropTypes.string,
-    title: PropTypes.string,
-  }),
   onChange: PropTypes.func.isRequired,
   wrapped: PropTypes.bool,
+  openObjectBrowser: PropTypes.func.isRequired,
+  value: PropTypes.any,
 };
 
 /**
