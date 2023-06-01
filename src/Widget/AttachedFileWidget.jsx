@@ -23,6 +23,7 @@ import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
 import uploadSVG from '@plone/volto/icons/upload.svg';
+import './style.css';
 const imageMimetypes = [
   'image/png',
   'image/jpeg',
@@ -85,10 +86,10 @@ const messages = defineMessages({
  */
 const FileWidget = (props) => {
   const { id, value, onChange, isDisabled, openObjectBrowser } = props;
-  console.log({ openObjectBrowser });
-  const [fileType, setFileType] = React.useState(false);
+  const [mode, setMode] = React.useState('upload');
+  const [nameOfFile, setNameOfFile] = React.useState('');
   const intl = useIntl();
-  const [url, setUrl] = React.useState('');
+  const [url, setUrl] = React.useState(props.value);
   const placeholder =
     props.placeholder ||
     intl.formatMessage(messages.AttachedImageWidgetInputPlaceholder);
@@ -97,27 +98,18 @@ const FileWidget = (props) => {
   };
 
   const pathname = useSelector((state) => state.router.location.pathname);
-  const request = useSelector(
-    (state) => state.content.subrequests[props.block] || {},
-  );
-  const content = useSelector(
-    (state) => state.content.subrequests[props.block]?.data,
-  );
-  React.useEffect(() => {
-    if (value && imageMimetypes.includes(value['content-type'])) {
-      setFileType(true);
-    }
-  }, [value]);
 
-  const imgsrc = value?.download
-    ? `${flattenToAppURL(value?.download)}?id=${Date.now()}`
-    : null || value?.data
-    ? `data:${value['content-type']};${value.encoding},${value.data}`
-    : null;
+  React.useEffect(() => {}, [url]);
+
   const onChangeUrl = ({ target }) => {
     setUrl(target.value);
   };
 
+  const changeMode = () => {
+    onChange(id, null);
+    if (mode === 'upload') setMode('object_browser');
+    else setMode('upload');
+  };
   /**
    * Drop handler
    * @method onDrop
@@ -137,141 +129,129 @@ const FileWidget = (props) => {
     });
 
     let reader = new FileReader();
-    reader.onload = function () {
-      const fields = reader.result.match(/^data:(.*);(.*),(.*)$/);
-      if (imageMimetypes.includes(fields[1])) {
-        setFileType(true);
-        let imagePreview = document.getElementById(`field-${id}-image`);
-        imagePreview.src = reader.result;
-      } else {
-        setFileType(false);
-      }
-    };
     reader.readAsDataURL(files[0]);
   };
   React.useEffect(() => {
     if (typeof value === 'string' && isInternalURL(value)) {
-      console.log(true);
-    }
-  });
-  console.log(value);
+      setMode('object_browser');
+    } else if (value) setMode('upload');
+  }, [value]);
+
   return (
     <FormFieldWrapper {...props}>
-      <Dropzone onDrop={onDrop}>
-        {({ getRootProps, getInputProps, isDragActive }) => (
-          <>
-            <div className="file-widget-dropzone" {...getRootProps()}>
-              {isDragActive && <Dimmer active></Dimmer>}
-              {fileType ? (
-                <Image
-                  className="image-preview"
-                  id={`field-${id}-image`}
-                  size="small"
-                  src={imgsrc}
-                />
-              ) : (
-                <div className="dropzone-placeholder">
-                  {isDragActive ? (
-                    <p className="dropzone-text">
-                      {intl.formatMessage(messages.releaseDrag)}
-                    </p>
-                  ) : value ? (
-                    <p className="dropzone-text">
-                      {intl.formatMessage(messages.editFile)}
-                    </p>
-                  ) : (
-                    <p className="dropzone-text">
-                      {intl.formatMessage(messages.fileDrag)}
-                    </p>
-                  )}
+      {mode === 'upload' ? (
+        <>
+          <Dropzone onDrop={onDrop}>
+            {({ getRootProps, getInputProps, isDragActive }) => (
+              <>
+                <div className="file-widget-dropzone" {...getRootProps()}>
+                  {isDragActive && <Dimmer active></Dimmer>}
+
+                  <div className="dropzone-placeholder">
+                    {isDragActive ? (
+                      <p className="dropzone-text">
+                        {intl.formatMessage(messages.releaseDrag)}
+                      </p>
+                    ) : value ? (
+                      <p className="dropzone-text">
+                        {intl.formatMessage(messages.editFile)}
+                      </p>
+                    ) : (
+                      <p className="dropzone-text">
+                        {intl.formatMessage(messages.fileDrag)}
+                      </p>
+                    )}
+                  </div>
+
+                  <label className="label-file-widget-input">
+                    {value
+                      ? intl.formatMessage(messages.replaceFile)
+                      : intl.formatMessage(messages.addNewFile)}
+                  </label>
+                  <input
+                    {...getInputProps({
+                      type: 'file',
+                      style: { display: 'none' },
+                    })}
+                    id={`field-${id}`}
+                    name={id}
+                    type="file"
+                    disabled={isDisabled}
+                  />
                 </div>
-              )}
-
-              <label className="label-file-widget-input">
-                {value
-                  ? intl.formatMessage(messages.replaceFile)
-                  : intl.formatMessage(messages.addNewFile)}
-              </label>
-              <input
-                {...getInputProps({
-                  type: 'file',
-                  style: { display: 'none' },
-                })}
-                id={`field-${id}`}
-                name={id}
-                type="file"
+              </>
+            )}
+          </Dropzone>
+          <div className="field-file-name">
+            {value && value.filename}
+            {value && (
+              <Button
+                icon
+                basic
+                className="delete-button"
+                aria-label="delete file"
                 disabled={isDisabled}
-              />
-            </div>
-
-            <div
-              className=""
-              {...getRootProps()}
-              style={{ paddingRight: '100px' }}
-            >
-              <div style={{ flexGrow: 1 }} />
-              <Input
-                onChange={onChangeUrl}
-                placeholder={placeholder}
-                value={url}
-              />
-              <Button.Group>
-                <Button
-                  basic
-                  icon
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    openObjectBrowser({
-                      mode: 'link',
-                      currentPath: pathname,
-                      onSelectItem: (url) => {
-                        setUrl(url);
-                      },
-                    });
-                  }}
-                >
-                  <Icon name={navTreeSVG} size="24px" />
-                </Button>
-                <Button as="label" basic icon>
-                  <Icon name={uploadSVG} size="24px" />
-                </Button>
-                <Button
-                  basic
-                  icon
-                  primary
-                  disabled={!url}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSubmitUrl();
-                  }}
-                >
-                  <Icon name={aheadSVG} size="24px" />
-                </Button>
-              </Button.Group>
-            </div>
-          </>
-        )}
-      </Dropzone>
-
-      <div className="field-file-name">
-        {value && value.filename}
-        {value && (
-          <Button
-            icon
-            basic
-            className="delete-button"
-            aria-label="delete file"
-            disabled={isDisabled}
-            onClick={() => {
-              onChange(id, null);
-              setFileType(false);
-            }}
-          >
-            <Icon name={deleteSVG} size="20px" />
+                onClick={() => {
+                  onChange(id, null);
+                }}
+              >
+                <Icon name={deleteSVG} size="20px" />
+              </Button>
+            )}
+          </div>
+          <Button className="change-mode-btn" onClick={changeMode}>
+            Choose from website
           </Button>
-        )}
-      </div>
+        </>
+      ) : (
+        <>
+          <div className="">
+            <div style={{ flexGrow: 1 }} />
+            <Input
+              onChange={onChangeUrl}
+              placeholder={placeholder}
+              value={url}
+            />
+            <Button.Group>
+              <Button
+                basic
+                icon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  openObjectBrowser({
+                    mode: 'link',
+                    currentPath: pathname,
+                    onSelectItem: (url) => {
+                      setUrl(url);
+                    },
+                  });
+                }}
+              >
+                <Icon name={navTreeSVG} size="24px" />
+              </Button>
+              <Button as="label" basic icon>
+                <Icon name={uploadSVG} size="24px" />
+              </Button>
+              <Button
+                basic
+                icon
+                primary
+                disabled={!url}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSubmitUrl();
+                }}
+              >
+                <Icon name={aheadSVG} size="24px" />
+              </Button>
+            </Button.Group>
+            <Button className="change-mode-btn" onClick={changeMode}>
+              Pick File
+            </Button>
+          </div>
+        </>
+      )}
     </FormFieldWrapper>
   );
 };
