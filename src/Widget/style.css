@@ -7,18 +7,15 @@
     background-color: transparent;
   }
 }
-.change-mode-btn {
-  display: inline-block !important;
-  padding: 7px 10px !important;
-  border: 2px solid #004b7f !important;
-  margin-bottom: 10px !important;
-  background-color: transparent !important;
-  border-radius: 10px !important;
-  color: #004b7f !important;
-  cursor: pointer !important;
-  font-size: 16px !important;
-  opacity: 0.8 !important;
+
+.file-picker-toolbar {
+  display: flex;
+  justify-content: space-between;
 }
+.input-toolbar {
+  width: 60% !important;
+}
+
 .field-just-changed {
   animation: field-just-changed-anim 0.5s;
 }
