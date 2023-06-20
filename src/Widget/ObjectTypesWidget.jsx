@@ -32,10 +32,7 @@ export const ObjectTypesWidget = (props) => {
 
   const defaultActiveTab = 0;
 
-  const [activeTab, setActiveTab] = React.useState(
-    defaultActiveTab > -1 ? defaultActiveTab : 0,
-  );
-
+  const [activeTab, setActiveTab] = React.useState(defaultActiveTab);
   const device = screen?.page?.width
     ? getDeviceConfig(screen?.page?.width)
     : '';
