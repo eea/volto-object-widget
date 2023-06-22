@@ -5,7 +5,6 @@ import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import CombinedSchema from './schema.js';
 
 export default (props) => {
-  // const [data, setData] = React.useState({});
   return (
     <div
       role="presentation"
