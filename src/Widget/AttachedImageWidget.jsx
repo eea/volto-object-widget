@@ -21,6 +21,7 @@ import {
 } from '@plone/volto/helpers';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
+import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import navTreeSVG from '@plone/volto/icons/nav.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
@@ -93,10 +94,34 @@ export class AttachedImageWidget extends Component {
       this.setState({
         uploading: false,
       });
-      this.props.onChange(this.props.id, {
-        '@type': 'URL',
-        value: nextProps.content['@id'],
-      });
+      if (this.props.selectedItemAttrs) {
+        let resultantItem = nextProps.content;
+        const allowedItemKeys = [
+          ...this.props.selectedItemAttrs,
+          '@id',
+          'title',
+          'image',
+        ];
+        resultantItem = Object.keys(nextProps?.content)
+          .filter((key) => allowedItemKeys.includes(key))
+          .reduce((obj, key) => {
+            obj[key] = nextProps?.content?.[key];
+            return obj;
+          }, {});
+        resultantItem = {
+          ...resultantItem,
+          '@id': nextProps?.content?.['@id'],
+        };
+        this.props.onChange(this.props.id, {
+          ...(resultantItem || {}),
+          '@type': 'URL',
+        });
+      } else {
+        this.props.onChange(this.props.id, {
+          '@type': 'URL',
+          '@id': nextProps.content?.['@id'],
+        });
+      }
     }
   }
 
@@ -162,16 +187,40 @@ export class AttachedImageWidget extends Component {
    * @returns {undefined}
    */
   onSubmitUrl = () => {
-    this.props.onChange(this.props.id, {
-      '@type': 'URL',
-      value: flattenToAppURL(this.state.url),
-    });
+    if (this.props.selectedItemAttrs) {
+      if (isString(this.state.url)) {
+        this.props.onChange(this.props.id, {
+          '@id': this.state.url,
+          '@type': 'URL',
+        });
+      } else {
+        this.props.onChange(this.props.id, {
+          ...(this.state.url || {}),
+          '@type': 'URL',
+        });
+      }
+    } else {
+      this.props.onChange(this.props.id, {
+        '@type': 'URL',
+        '@id': flattenToAppURL(this.state.url),
+      });
+    }
   };
 
   resetSubmitUrl = () => {
-    this.setState({
-      url: '',
-    });
+    this.setState(
+      {
+        url: '',
+      },
+      () => {
+        if (this.props.selectedItemAttrs)
+          this.props.onChange(this.props.id, this.state.url);
+        else
+          this.props.onChange(this.props.id, {
+            '@id': flattenToAppURL(this.state.url),
+          });
+      },
+    );
   };
 
   /**
@@ -212,6 +261,24 @@ export class AttachedImageWidget extends Component {
     this.setState({ dragging: false });
   };
 
+  onChange = (url, item) => {
+    let resultantItem = item;
+    if (this.props.selectedItemAttrs) {
+      const allowedItemKeys = [...this.props.selectedItemAttrs, '@id', 'title'];
+      resultantItem = Object.keys(item)
+        .filter((key) => allowedItemKeys.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = item[key];
+          return obj;
+        }, {});
+      resultantItem = { ...resultantItem, '@id': item['@id'] };
+
+      this.setState({ url: resultantItem });
+    } else {
+      this.setState({ url }); // bbb
+    }
+  };
+
   node = React.createRef();
 
   render() {
@@ -221,7 +288,8 @@ export class AttachedImageWidget extends Component {
         messages.AttachedImageWidgetInputPlaceholder,
       );
 
-    const imgSrc = getFieldURL(this.props.value);
+    const fieldUrl = getFieldURL(this.props.value);
+    const imageSrc = getImageScaleParams(fieldUrl, 'preview') ?? '';
 
     return (
       <FormFieldWrapper
@@ -232,16 +300,9 @@ export class AttachedImageWidget extends Component {
         <div className="wrapper">
           <label>{this.props.title}</label>
         </div>
-        {imgSrc && (
+        {imageSrc && (
           <div className="preview">
-            <img
-              src={
-                isInternalURL(imgSrc)
-                  ? `${flattenToAppURL(imgSrc)}/@@images/image/preview`
-                  : imgSrc
-              }
-              alt="Preview"
-            />
+            <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
             <Button.Group>
               <Button
                 basic
@@ -249,9 +310,7 @@ export class AttachedImageWidget extends Component {
                 className="cancel"
                 onClick={(e) => {
                   e.stopPropagation();
-                  this.setState({ url: '' }, () => {
-                    this.onSubmitUrl();
-                  });
+                  this.resetSubmitUrl();
                 }}
               >
                 <Icon name={clearSVG} size="30px" />
@@ -259,7 +318,7 @@ export class AttachedImageWidget extends Component {
             </Button.Group>
           </div>
         )}
-        {!imgSrc && (
+        {!imageSrc && (
           <Dropzone
             noClick
             onDrop={this.onDrop}
@@ -292,10 +351,8 @@ export class AttachedImageWidget extends Component {
                             this.props.openObjectBrowser({
                               mode: 'image',
                               currentPath: this.props.pathname,
-                              onSelectItem: (url) => {
-                                this.setState({ url }, () => {
-                                  this.onSubmitUrl();
-                                });
+                              onSelectItem: (url, item) => {
+                                this.onChange(url, item);
                               },
                             });
                           }}
@@ -317,7 +374,13 @@ export class AttachedImageWidget extends Component {
                       <Input
                         onChange={this.onChangeUrl}
                         placeholder={placeholder}
-                        value={this.state.url}
+                        value={
+                          this.props.selectedItemAttrs
+                            ? isString(this.state.url)
+                              ? this.state.url
+                              : this.state.url?.['@id'] || ''
+                            : this.state.url
+                        }
                       />
                       <div style={{ flexGrow: 1 }} />
                       <Button.Group>
@@ -329,7 +392,7 @@ export class AttachedImageWidget extends Component {
                             className="cancel"
                             onClick={(e) => {
                               e.stopPropagation();
-                              this.setState({ url: '' });
+                              this.resetSubmitUrl();
                             }}
                           >
                             <Icon name={clearSVG} size="24px" />
