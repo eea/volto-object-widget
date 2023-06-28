@@ -5,9 +5,8 @@ import {
   Icon as VoltoIcon,
   FormFieldWrapper,
   DragDropList,
+  ObjectWidget,
 } from '@plone/volto/components';
-import { ObjectWidget } from '@plone/volto/components';
-
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import addSVG from '@plone/volto/icons/add.svg';
 import dragSVG from '@plone/volto/icons/drag.svg';
