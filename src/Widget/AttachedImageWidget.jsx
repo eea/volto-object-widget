@@ -37,22 +37,6 @@ const messages = defineMessages({
     defaultMessage: 'Browse the site, drop an image, or type an URL',
   },
 });
-
-export const getFieldURL = (data) => {
-  let url = data;
-  const _isObject = data && isObject(data) && !isArray(data);
-  if (_isObject && data['@type'] === 'URL') {
-    url = data['value'] ?? data['url'] ?? data['href'] ?? data;
-  } else if (_isObject) {
-    url = data['@id'] ?? data['url'] ?? data['href'] ?? data;
-  }
-  if (isArray(data)) {
-    url = data.map((item) => getFieldURL(item));
-  }
-  if (isString(url) && isInternalURL(url)) return flattenToAppURL(url);
-  return url;
-};
-
 export class AttachedImageWidget extends Component {
   /**
    * Property types.
@@ -98,7 +82,6 @@ export class AttachedImageWidget extends Component {
         let resultantItem = nextProps.content;
         const allowedItemKeys = [
           ...this.props.selectedItemAttrs,
-          '@id',
           'title',
           'image',
         ];
@@ -110,7 +93,7 @@ export class AttachedImageWidget extends Component {
           }, {});
         resultantItem = {
           ...resultantItem,
-          '@id': nextProps?.content?.['@id'],
+          value: nextProps?.content?.['@id'],
         };
         this.props.onChange(this.props.id, {
           ...(resultantItem || {}),
@@ -119,7 +102,7 @@ export class AttachedImageWidget extends Component {
       } else {
         this.props.onChange(this.props.id, {
           '@type': 'URL',
-          '@id': nextProps.content?.['@id'],
+          value: nextProps.content?.['@id'],
         });
       }
     }
@@ -190,7 +173,7 @@ export class AttachedImageWidget extends Component {
     if (this.props.selectedItemAttrs) {
       if (isString(this.state.url)) {
         this.props.onChange(this.props.id, {
-          '@id': this.state.url,
+          value: this.state.url,
           '@type': 'URL',
         });
       } else {
@@ -202,7 +185,7 @@ export class AttachedImageWidget extends Component {
     } else {
       this.props.onChange(this.props.id, {
         '@type': 'URL',
-        '@id': flattenToAppURL(this.state.url),
+        value: flattenToAppURL(this.state.url),
       });
     }
   };
@@ -213,12 +196,7 @@ export class AttachedImageWidget extends Component {
         url: '',
       },
       () => {
-        if (this.props.selectedItemAttrs)
-          this.props.onChange(this.props.id, this.state.url);
-        else
-          this.props.onChange(this.props.id, {
-            '@id': flattenToAppURL(this.state.url),
-          });
+        this.props.onChange(this.props.id, this.state.url);
       },
     );
   };
@@ -264,14 +242,14 @@ export class AttachedImageWidget extends Component {
   onChange = (url, item) => {
     let resultantItem = item;
     if (this.props.selectedItemAttrs) {
-      const allowedItemKeys = [...this.props.selectedItemAttrs, '@id', 'title'];
+      const allowedItemKeys = [...this.props.selectedItemAttrs, 'title'];
       resultantItem = Object.keys(item)
         .filter((key) => allowedItemKeys.includes(key))
         .reduce((obj, key) => {
           obj[key] = item[key];
           return obj;
         }, {});
-      resultantItem = { ...resultantItem, '@id': item['@id'] };
+      resultantItem = { ...resultantItem, value: item['@id'] };
 
       this.setState({ url: resultantItem });
     } else {
@@ -288,8 +266,7 @@ export class AttachedImageWidget extends Component {
         messages.AttachedImageWidgetInputPlaceholder,
       );
 
-    const fieldUrl = getFieldURL(this.props.value);
-    const imageSrc = getImageScaleParams(fieldUrl, 'preview') ?? '';
+    const imageSrc = getImageScaleParams(this.props.value, 'preview') ?? '';
 
     return (
       <FormFieldWrapper
@@ -378,7 +355,7 @@ export class AttachedImageWidget extends Component {
                           this.props.selectedItemAttrs
                             ? isString(this.state.url)
                               ? this.state.url
-                              : this.state.url?.['@id'] || ''
+                              : this.state.url?.value || ''
                             : this.state.url
                         }
                       />
