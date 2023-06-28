@@ -7,18 +7,12 @@ import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
 
 import { defineMessages, injectIntl } from 'react-intl';
-import isArray from 'lodash/isArray';
-import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
 import { Dimmer, Loader, Message, Button, Input } from 'semantic-ui-react';
 import { FormFieldWrapper, Icon } from '@plone/volto/components';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
 import { createContent } from '@plone/volto/actions';
-import {
-  flattenToAppURL,
-  getBaseUrl,
-  isInternalURL,
-} from '@plone/volto/helpers';
+import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';
