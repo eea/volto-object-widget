@@ -23,8 +23,8 @@ export function getImageScaleParams(image, size) {
 
   if (isString(image))
     return isInternalURL(image)
-      ? flattenToAppURL(`${image}/@@images/image/mini`)
-      : image;
+      ? { download: flattenToAppURL(`${image}/@@images/image/mini`) }
+      : { download: image };
   if (image) {
     if (isInternalURL(getFieldURL(image))) {
       if (image?.image_scales?.[image?.image_field]) {
