@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Plone\n"
-"POT-Creation-Date: 2023-06-28T10:48:22.678Z\n"
+"POT-Creation-Date: 2023-08-29T17:55:15.248Z\n"
 "Last-Translator: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
 "Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -13,4 +13,52 @@ msgstr ""
 "Preferred-Encodings: utf-8\n"
 "Domain: volto\n"
 
+#: Widget/ObjectListWidget
+# defaultMessage: Add {schemaTitle}
+msgid "Add {schemaTitle}"
+msgstr ""
 
+#: Widget/AttachedFileWidget
+# defaultMessage: Browse the site
+msgid "Browse the site"
+msgstr ""
+
+#: Widget/AttachedImageWidget
+# defaultMessage: Browse the site, drop an image, or type an URL
+msgid "Browse the site, drop an image, or type an URL"
+msgstr ""
+
+#: Widget/ObjectListWidget
+# defaultMessage: Cancel
+msgid "Cancel"
+msgstr ""
+
+#: Widget/ObjectListWidget
+# defaultMessage: Click the Add button below to add an item to this empty list.
+msgid "Click the Add button below to add an item to this empty list."
+msgstr ""
+
+#: Widget/ObjectListWidget
+# defaultMessage: Delete
+msgid "Delete"
+msgstr ""
+
+#: Widget/AttachedFileWidget
+# defaultMessage: Drop files here or click to upload
+msgid "Drop files here or click to upload"
+msgstr ""
+
+#: Widget/ObjectListWidget
+# defaultMessage: Edit
+msgid "Edit"
+msgstr ""
+
+#: Widget/ObjectListWidget
+# defaultMessage: Save
+msgid "Save"
+msgstr ""
+
+#: Widget/ObjectListWidget
+# defaultMessage: {count} x {type}
+msgid "{count} x {type}"
+msgstr ""
