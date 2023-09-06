@@ -14,6 +14,9 @@ jest.mock('@plone/volto/components', () => ({
 }));
 
 describe('ObjectByTypeWidget', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   const schemas = [
     { id: 'type1', schema: { title: 'Type 1' }, icon: 'icon1' },
     { id: 'type2', schema: { title: 'Type 2' }, icon: 'icon2' },

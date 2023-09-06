@@ -59,6 +59,9 @@ const store = mockStore({
 });
 
 describe('ObjectListInlineWidget', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it('renders without crashing', () => {
     const { container } = render(
       <Provider store={store}>

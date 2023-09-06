@@ -14,6 +14,9 @@ jest.mock('@plone/volto/components', () => ({
 }));
 
 describe('MappingWidget', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   const options = [
     { id: 'option1', title: 'Option 1' },
     { id: 'option2', title: 'Option 2' },
