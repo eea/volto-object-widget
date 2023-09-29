@@ -17,7 +17,7 @@ export {
   AttachedFileWidget,
 } from './Widget';
 
-export installDemo from './demo';
+export { default as installDemo } from './demo';
 
 const applyConfig = (config) => {
   if (config.widgets?.widget) {

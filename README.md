@@ -162,17 +162,26 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
 
 ## Getting started
 
-1. Create new volto project if you don't already have one:
+### Try volto-object-widget with Docker
 
+      git clone https://github.com/eea/volto-object-widget.git
+      cd volto-object-widget
+      make
+      make start
+
+Go to http://localhost:3000
+
+### Add volto-object-widget to your Volto project
+
+1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
+
+   ```Bash
+   docker compose up backend
    ```
-   $ npm install -g yo @plone/generator-volto
-   $ yo @plone/volto my-volto-project --addon @eeacms/volto-object-widget
 
-   $ cd my-volto-project
-   $ yarn add -W @eeacms/volto-object-widget
-   ```
+1. Start Volto frontend
 
-1. If you already have a volto project, just update `package.json`:
+* If you already have a volto project, just update `package.json`:
 
    ```JSON
    "addons": [
@@ -180,15 +189,23 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
    ],
 
    "dependencies": {
-       "@eeacms/volto-object-widget": "^2.0.0"
+       "@eeacms/volto-object-widget": "*"
    }
+   ```
+
+* If not, create one:
+
+   ```
+   npm install -g yo @plone/generator-volto
+   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-object-widget
+   cd my-volto-project
    ```
 
 1. Install new add-ons and restart Volto:
 
    ```
-   $ yarn
-   $ yarn start
+   yarn
+   yarn start
    ```
 
 1. Go to http://localhost:3000
