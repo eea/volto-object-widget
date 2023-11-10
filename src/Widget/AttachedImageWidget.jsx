@@ -271,7 +271,7 @@ export class AttachedImageWidget extends Component {
         <div className="wrapper">
           <label>{this.props.title}</label>
         </div>
-        {imageSrc && (
+        {imageSrc && imageSrc.download && (
           <div className="preview">
             <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
             <Button.Group>
@@ -289,7 +289,7 @@ export class AttachedImageWidget extends Component {
             </Button.Group>
           </div>
         )}
-        {!imageSrc && (
+        {!imageSrc?.download && (
           <Dropzone
             noClick
             onDrop={this.onDrop}
