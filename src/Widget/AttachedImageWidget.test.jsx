@@ -247,4 +247,43 @@ describe('AttachedImageWidget', () => {
     fireEvent.dragLeave(dropzone);
     fireEvent.drop(dropzone);
   });
+  it('should render the component based on selectedItemAttr prop when choosing an image from objectBrowser', async () => {
+    const selectedItemAttrs = ['image_field', 'image_scales', '@type'];
+    const { container } = render(
+      <Provider store={store}>
+        <AttachedImageWidget
+          {...props}
+          selectedItemAttrs={selectedItemAttrs}
+          value={null}
+        />
+      </Provider>,
+    );
+
+    let dropzone;
+    await waitFor(() => {
+      dropzone = container.querySelector('div[tabindex="0"]');
+      expect(dropzone).toBeInTheDocument();
+    });
+    expect(dropzone).toBeInTheDocument();
+
+    fireEvent.change(
+      container.querySelector('.toolbar-inner .ui.input input[type="text"]'),
+      { target: { value: 'test' } },
+    );
+    fireEvent.click(
+      container.querySelector(
+        '.toolbar-inner .ui.buttons button.ui.basic.icon.primary.button',
+      ),
+    );
+
+    fireEvent.change(
+      container.querySelector('.toolbar-inner .ui.input input[type="text"]'),
+      { target: { value: 'test' } },
+    );
+    fireEvent.click(
+      container.querySelector(
+        '.toolbar-inner .ui.buttons button.ui.basic.icon.secondary.button.cancel',
+      ),
+    );
+  });
 });
