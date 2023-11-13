@@ -31,9 +31,6 @@
     "lint-staged": "^14.0.1",
     "md5": "^2.3.0"
   },
-  "dependencies": {
-    "@eeacms/volto-resize-helper": "*"
-  },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [
       "make lint-fix",
