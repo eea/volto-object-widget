@@ -2,14 +2,16 @@ import { Input, Button, Grid, Modal, Segment } from 'semantic-ui-react';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Icon as VoltoIcon, FormFieldWrapper } from '@plone/volto/components';
+import {
+  Icon as VoltoIcon,
+  FormFieldWrapper,
+  ObjectWidget,
+} from '@plone/volto/components';
 
 import penSVG from '@plone/volto/icons/pen.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import addSVG from '@plone/volto/icons/add.svg';
-
-import { ObjectWidget } from '@plone/volto/components';
 
 import cx from 'classnames';
 

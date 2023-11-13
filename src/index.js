@@ -4,6 +4,8 @@ import {
   ObjectListInlineWidget,
   ObjectByTypeWidget,
   MappingWidget,
+  AttachedFileWidget,
+  ObjectTypesWidget,
 } from './Widget';
 
 export {
@@ -11,6 +13,8 @@ export {
   ObjectListInlineWidget,
   ObjectByTypeWidget,
   MappingWidget,
+  ObjectTypesWidget,
+  AttachedFileWidget,
 } from './Widget';
 
 export { default as installDemo } from './demo';
@@ -22,6 +26,8 @@ const applyConfig = (config) => {
     config.widgets.widget.object_by_type = ObjectByTypeWidget;
     config.widgets.widget.option_mapping = MappingWidget;
     config.widgets.widget.attachedimage = AttachedImageWidget;
+    config.widgets.widget.attachedfile = AttachedFileWidget;
+    config.widgets.widget.object_types_widget = ObjectTypesWidget;
   }
 
   return config;

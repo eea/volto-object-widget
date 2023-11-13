@@ -8,6 +8,15 @@
   }
 }
 
+.file-picker-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-toolbar {
+  width: 60% !important;
+}
+
 .field-just-changed {
   animation: field-just-changed-anim 0.5s;
 }
@@ -33,22 +42,3 @@
 
 /* TODO: stop using maybe-already-used class names and !important, use LESS
 .overrides files instead */
-
-/* button.with-middle-aligned-icon { */
-/*   vertical-align: bottom !important; */
-/* } */
-/*  */
-/* button.with-middle-aligned-icon > svg { */
-/*   vertical-align: bottom !important; */
-/* } */
-
-/* .field-object-counter { */
-/*   display: flex; */
-/*   align-items: center; */
-/*   align-self: center; */
-/*   color: #878f93; */
-/* } */
-/*  */
-/* .field-toolbar { */
-/*   text-align: center; */
-/* } */
