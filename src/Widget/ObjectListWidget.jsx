@@ -111,6 +111,7 @@ export const FlatObjectList = ({
                   basic
                   circular
                   size="mini"
+                  data-testid="delete-flat-list"
                   title={intl.formatMessage(messages.delete)}
                   aria-label={intl.formatMessage(messages.delete)}
                   onClick={() => {
@@ -373,6 +374,7 @@ export const ObjectListWidget = (props) => {
           <Button
             aria-label={intl.formatMessage(messages.delete)}
             title={intl.formatMessage(messages.delete)}
+            data-testid="red-cross-btn"
             className="item ui noborder button"
             onClick={() => {
               onChange(id, []);

@@ -150,6 +150,67 @@ test('renders an object list widget component and changes its value by clicking 
   expect(asFragment()).toMatchSnapshot();
 });
 
+test('renders an object list widget component and deletes one item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <>
+        <ObjectListWidget
+          id={`my-widget`}
+          schema={LinkSchema}
+          title="My Widget"
+          onChange={(id, v) => {
+            valueState = [];
+            rerender(jsx);
+          }}
+          error={[]}
+          value={valueState}
+          required={true}
+          description="My description"
+          onDelete={() => {
+            valueState = [];
+            rerender(jsx);
+          }}
+          onEdit={() => {}}
+        />
+        <button
+          onClick={(e) => {
+            valueState = [];
+            rerender(jsx);
+            e.preventDefault();
+          }}
+        >
+          delete
+        </button>
+      </>
+    </Provider>
+  );
+
+  const { getByText, asFragment, rerender, getByTestId } = render(jsx);
+
+  expect(asFragment()).toMatchSnapshot();
+
+  // click the button which changes data outside of modal
+  fireEvent.click(getByText('delete'));
+
+  // open the modal
+  fireEvent.click(getByTestId('red-cross-btn'));
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
 test('renders a flat object list component with an item', async () => {
   const store = mockStore({
     search: {},
@@ -185,6 +246,46 @@ test('renders a flat object list component with an item', async () => {
   fireEvent.click(getAllByText('External')[1]);
 
   // verify the second tab in the second item
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders a flat object list and deletes one item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { id: 1, external_link: 'https://ddg.gg' },
+    { id: 2, external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <FlatObjectList
+        id={`my-widget`}
+        schema={LinkSchema}
+        value={valueState}
+        onChange={(id, v) => {
+          valueState.shift();
+          rerender(jsx);
+        }}
+      />
+    </Provider>
+  );
+
+  const { asFragment, getAllByTestId, rerender } = render(jsx);
+
+  // verify the item
+  expect(asFragment()).toMatchSnapshot();
+
+  // delete first item
+  fireEvent.click(getAllByTestId('delete-flat-list')[0]);
+
+  // verify the list
   expect(asFragment()).toMatchSnapshot();
 });
 
