@@ -150,6 +150,130 @@ test('renders an object list widget component and changes its value by clicking 
   expect(asFragment()).toMatchSnapshot();
 });
 
+test('renders an object list widget component and save its changes by clicking a button', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <>
+        <ObjectListWidget
+          id={`my-widget`}
+          schema={LinkSchema}
+          title="My Widget"
+          onChange={(id, v) => {
+            valueState = v;
+            rerender(jsx);
+          }}
+          error={[]}
+          value={valueState}
+          required={true}
+          description="My description"
+          onDelete={() => {}}
+          onEdit={() => {}}
+        />
+        <button
+          onClick={(e) => {
+            valueState = [{ external_link: 'https://duckduckgo.com' }];
+            rerender(jsx);
+            e.preventDefault();
+          }}
+        >
+          Click me !
+        </button>
+      </>
+    </Provider>
+  );
+
+  const { getByText, asFragment, rerender, getByTestId } = render(jsx);
+
+  expect(asFragment()).toMatchSnapshot();
+
+  // click the button which changes data outside of modal
+  fireEvent.click(getByText('Click me !'));
+
+  // open the modal
+  fireEvent.click(getByTestId('big-pen-button'));
+
+  expect(asFragment()).toMatchSnapshot();
+  // click on the save
+  fireEvent.click(getByTestId('right-arrow-save'));
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders an object list widget component and save its changes by changing an input', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <>
+        <ObjectListWidget
+          id={`my-widget`}
+          schema={LinkSchema}
+          title="My Widget"
+          onChange={(id, v) => {
+            valueState = v;
+            rerender(jsx);
+          }}
+          error={[]}
+          value={valueState}
+          required={true}
+          description="My description"
+          onDelete={() => {}}
+          onEdit={() => {}}
+          placeholder="Enter Text"
+        />
+        <button
+          onClick={(e) => {
+            valueState = [{ external_link: 'https://duckduckgo.com' }];
+            rerender(jsx);
+            e.preventDefault();
+          }}
+        >
+          Click me !
+        </button>
+      </>
+    </Provider>
+  );
+
+  const { getByText, asFragment, getByPlaceholderText, rerender } = render(jsx);
+
+  expect(asFragment()).toMatchSnapshot();
+
+  // click the button which changes data outside of modal
+  fireEvent.click(getByText('Click me !'));
+
+  fireEvent.click(getByPlaceholderText('Enter Text'));
+
+  fireEvent.change(getByPlaceholderText('Enter Text'), {
+    target: { value: 'my title' },
+  });
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
 test('renders an object list widget component and deletes one item', async () => {
   const store = mockStore({
     search: {},

@@ -259,6 +259,7 @@ export const ModalObjectListForm = (props) => {
           circular
           primary
           floated="right"
+          data-testid="right-arrow-save"
           icon="arrow right"
           title={intl.formatMessage(messages.save)}
           aria-label={intl.formatMessage(messages.save)}
@@ -271,6 +272,7 @@ export const ModalObjectListForm = (props) => {
           basic
           circular
           secondary
+          data-testid="btn-cancel"
           icon="remove"
           title={intl.formatMessage(messages.cancel)}
           aria-label={intl.formatMessage(messages.cancel)}
