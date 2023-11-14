@@ -69,6 +69,7 @@ describe('AttachedImageWidget', () => {
 
     const imagePreview = getByAltText('Preview');
     expect(imagePreview).toBeInTheDocument();
+    expect(imagePreview).toHaveAttribute('src', 'image.png');
 
     const cancelButton = getByRole('button');
     fireEvent.click(cancelButton);
@@ -97,6 +98,17 @@ describe('AttachedImageWidget', () => {
     fireEvent.click(
       container.querySelector(
         '.toolbar-inner .ui.buttons button.ui.basic.icon.primary.button',
+      ),
+    );
+    // also take url from object browser
+    fireEvent.change(
+      container.querySelector('.toolbar-inner .ui.input input[type="text"]'),
+      { target: { value: { '@id': '/my-value', image_field: 'image' } } },
+    );
+
+    fireEvent.click(
+      container.querySelector(
+        '.toolbar-inner .ui.buttons button.ui.basic.icon.secondary.button.cancel',
       ),
     );
 
