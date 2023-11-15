@@ -209,6 +209,76 @@ describe('AttachedImageWidget', () => {
     );
   });
 
+  it('should handle file input and rerender based on selectedItemAttr', async () => {
+    const { rerender, container } = render(
+      <Provider store={store}>
+        <AttachedImageWidget
+          {...props}
+          request={{
+            loading: true,
+            loaded: true,
+          }}
+          selectedItemAttrs={['image_field', 'image_scales', '@type']}
+          value={null}
+        />
+      </Provider>,
+    );
+
+    let dropzone;
+    await waitFor(() => {
+      dropzone = container.querySelector('div[tabindex="0"]');
+      expect(dropzone).toBeInTheDocument();
+    });
+    expect(dropzone).toBeInTheDocument();
+
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    Object.defineProperty(
+      container.querySelector('label[role="button"] input[type="file"]'),
+      'files',
+      {
+        value: [file],
+      },
+    );
+    fireEvent.change(
+      container.querySelector('label[role="button"] input[type="file"]'),
+      { target: { value: '' } },
+    );
+
+    rerender(
+      <Provider store={store}>
+        <AttachedImageWidget
+          {...props}
+          request={{
+            loading: false,
+            loaded: true,
+          }}
+          value={null}
+          selectedItemAttrs={['image_field', 'image_scales', '@type']}
+          content={{
+            '@id': 'imageId',
+          }}
+        />
+      </Provider>,
+    );
+
+    rerender(
+      <Provider store={store}>
+        <AttachedImageWidget
+          {...props}
+          request={{
+            loading: false,
+            loaded: false,
+          }}
+          selectedItemAttrs={['image_field', 'image_scales', '@type']}
+          value={null}
+          content={{
+            '@id': 'imageId',
+          }}
+        />
+      </Provider>,
+    );
+  });
+
   it('should handle file input via label button ', async () => {
     const { container } = render(
       <Provider store={store}>

@@ -274,6 +274,280 @@ exports[`renders a flat object list and deletes one item 2`] = `
 </DocumentFragment>
 `;
 
+exports[`renders a flat object list component and change an item 1`] = `
+<DocumentFragment>
+  <div
+    class="objectlist-widget-content"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-0"
+              >
+                Internal link - No description
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            data-testid="delete-flat-list"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-1"
+              >
+                Internal link - No description
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            data-testid="delete-flat-list"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders a flat object list component and change an item 2`] = `
+<DocumentFragment>
+  <div
+    class="objectlist-widget-content"
+  >
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-0"
+              >
+                Internal link - No description
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            data-testid="delete-flat-list"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ui grid"
+    >
+      <div
+        class="eleven wide column"
+      >
+        <div
+          class="ui segment"
+        >
+          <div>
+            <div
+              class="ui attached tabular menu"
+            >
+              <a
+                class="active item"
+              >
+                Internal
+              </a>
+              <a
+                class="item"
+              >
+                External
+              </a>
+              <a
+                class="item"
+              >
+                Email
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab"
+            >
+              <div
+                class="mocked-default-widget"
+                id="mocked-field-internal_link-0-my-widget-1"
+              >
+                Internal link - No description
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="one wide column"
+      >
+        <div
+          class="ui buttons"
+        >
+          <button
+            aria-label="Delete"
+            class="ui mini basic circular button"
+            data-testid="delete-flat-list"
+            title="Delete"
+          >
+            <svg
+              class="icon"
+              style="height: 18px; width: auto; fill: currentColor;"
+              viewBox=""
+              xmlns=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`renders a flat object list component with an item 1`] = `
 <DocumentFragment>
   <div

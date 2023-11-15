@@ -373,6 +373,48 @@ test('renders a flat object list component with an item', async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+test('renders a flat object list component and change an item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <FlatObjectList
+        id={`my-widget`}
+        schema={LinkSchema}
+        value={valueState}
+        onChange={(id, v) => {
+          valueState.push({ [id]: v });
+          rerender(jsx);
+        }}
+      />
+    </Provider>
+  );
+
+  const { asFragment, getAllByText, rerender } = render(jsx);
+
+  // verify the first tab
+  expect(asFragment()).toMatchSnapshot();
+
+  valueState.push({ internal_link: '/my-link' });
+  rerender(jsx);
+
+  fireEvent.click(getAllByText('Internal')[0]);
+
+  // verify the second tab in the first item
+  expect(asFragment()).toMatchSnapshot();
+});
+
 test('renders a flat object list and deletes one item', async () => {
   const store = mockStore({
     search: {},
