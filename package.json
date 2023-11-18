@@ -17,6 +17,12 @@
     "type": "git",
     "url": "git@github.com:eea/volto-object-widget.git"
   },
+  "addons": [
+    "@eeacms/volto-widgets-view"
+  ],
+  "dependencies": {
+    "@eeacms/volto-widgets-view": "*"
+  },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
@@ -24,9 +30,6 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "md5": "^2.3.0"
-  },
-  "dependencies": {
-    "@eeacms/volto-resize-helper": "*"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [

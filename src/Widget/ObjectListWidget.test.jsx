@@ -128,9 +128,13 @@ test('renders an object list widget component and changes its value by clicking 
     </Provider>
   );
 
-  const { getByText, asFragment, rerender, getByTestId, getAllByText } = render(
-    jsx,
-  );
+  const {
+    getByText,
+    asFragment,
+    rerender,
+    getByTestId,
+    getAllByText = () => {},
+  } = render(jsx);
 
   expect(asFragment()).toMatchSnapshot();
 
@@ -142,6 +146,191 @@ test('renders an object list widget component and changes its value by clicking 
 
   // click on the first External tab
   fireEvent.click(getAllByText('External')[0]);
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders an object list widget component and save its changes by clicking a button', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <>
+        <ObjectListWidget
+          id={`my-widget`}
+          schema={LinkSchema}
+          title="My Widget"
+          onChange={(id, v) => {
+            valueState = v;
+            rerender(jsx);
+          }}
+          error={[]}
+          value={valueState}
+          required={true}
+          description="My description"
+          onDelete={() => {}}
+          onEdit={() => {}}
+        />
+        <button
+          onClick={(e) => {
+            valueState = [{ external_link: 'https://duckduckgo.com' }];
+            rerender(jsx);
+            e.preventDefault();
+          }}
+        >
+          Click me !
+        </button>
+      </>
+    </Provider>
+  );
+
+  const { getByText, asFragment, rerender, getByTestId } = render(jsx);
+
+  expect(asFragment()).toMatchSnapshot();
+
+  // click the button which changes data outside of modal
+  fireEvent.click(getByText('Click me !'));
+
+  // open the modal
+  fireEvent.click(getByTestId('big-pen-button'));
+
+  expect(asFragment()).toMatchSnapshot();
+  // click on the save
+  fireEvent.click(getByTestId('right-arrow-save'));
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders an object list widget component and save its changes by changing an input', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <>
+        <ObjectListWidget
+          id={`my-widget`}
+          schema={LinkSchema}
+          title="My Widget"
+          onChange={(id, v) => {
+            valueState = v;
+            rerender(jsx);
+          }}
+          error={[]}
+          value={valueState}
+          required={true}
+          description="My description"
+          onDelete={() => {}}
+          onEdit={() => {}}
+          placeholder="Enter Text"
+        />
+        <button
+          onClick={(e) => {
+            valueState = [{ external_link: 'https://duckduckgo.com' }];
+            rerender(jsx);
+            e.preventDefault();
+          }}
+        >
+          Click me !
+        </button>
+      </>
+    </Provider>
+  );
+
+  const { getByText, asFragment, getByPlaceholderText, rerender } = render(jsx);
+
+  expect(asFragment()).toMatchSnapshot();
+
+  // click the button which changes data outside of modal
+  fireEvent.click(getByText('Click me !'));
+
+  fireEvent.click(getByPlaceholderText('Enter Text'));
+
+  fireEvent.change(getByPlaceholderText('Enter Text'), {
+    target: { value: 'my title' },
+  });
+
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders an object list widget component and deletes one item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <>
+        <ObjectListWidget
+          id={`my-widget`}
+          schema={LinkSchema}
+          title="My Widget"
+          onChange={(id, v) => {
+            valueState = [];
+            rerender(jsx);
+          }}
+          error={[]}
+          value={valueState}
+          required={true}
+          description="My description"
+          onDelete={() => {
+            valueState = [];
+            rerender(jsx);
+          }}
+          onEdit={() => {}}
+        />
+        <button
+          onClick={(e) => {
+            valueState = [];
+            rerender(jsx);
+            e.preventDefault();
+          }}
+        >
+          delete
+        </button>
+      </>
+    </Provider>
+  );
+
+  const { getByText, asFragment, rerender, getByTestId } = render(jsx);
+
+  expect(asFragment()).toMatchSnapshot();
+
+  // click the button which changes data outside of modal
+  fireEvent.click(getByText('delete'));
+
+  // open the modal
+  fireEvent.click(getByTestId('red-cross-btn'));
 
   expect(asFragment()).toMatchSnapshot();
 });
@@ -181,6 +370,88 @@ test('renders a flat object list component with an item', async () => {
   fireEvent.click(getAllByText('External')[1]);
 
   // verify the second tab in the second item
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders a flat object list component and change an item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <FlatObjectList
+        id={`my-widget`}
+        schema={LinkSchema}
+        value={valueState}
+        onChange={(id, v) => {
+          valueState.push({ [id]: v });
+          rerender(jsx);
+        }}
+      />
+    </Provider>
+  );
+
+  const { asFragment, getAllByText, rerender } = render(jsx);
+
+  // verify the first tab
+  expect(asFragment()).toMatchSnapshot();
+
+  valueState.push({ internal_link: '/my-link' });
+  rerender(jsx);
+
+  fireEvent.click(getAllByText('Internal')[0]);
+
+  // verify the second tab in the first item
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders a flat object list and deletes one item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { id: 1, external_link: 'https://ddg.gg' },
+    { id: 2, external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <FlatObjectList
+        id={`my-widget`}
+        schema={LinkSchema}
+        value={valueState}
+        onChange={(id, v) => {
+          valueState.shift();
+          rerender(jsx);
+        }}
+      />
+    </Provider>
+  );
+
+  const { asFragment, getAllByTestId, rerender } = render(jsx);
+
+  // verify the item
+  expect(asFragment()).toMatchSnapshot();
+
+  // delete first item
+  fireEvent.click(getAllByTestId('delete-flat-list')[0]);
+
+  // verify the list
   expect(asFragment()).toMatchSnapshot();
 });
 
