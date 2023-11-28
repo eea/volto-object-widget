@@ -34,6 +34,13 @@ const messages = defineMessages({
   },
 });
 
+const formatURL = (url) => {
+  if (url === undefined) return '';
+  if (typeof url === 'string') return url;
+  if (Array.isArray(url)) return formatURL(url?.[0]);
+  if (typeof url === 'object') return formatURL(url?.['@id']);
+};
+
 export class AttachedImageWidget extends Component {
   /**
    * Property types.
@@ -210,11 +217,11 @@ export class AttachedImageWidget extends Component {
           <div className="preview">
             <img
               src={
-                isInternalURL(this.props.value)
+                isInternalURL(formatURL(this.props.value))
                   ? `${flattenToAppURL(
-                      this.props.value,
+                      formatURL(this.props.value),
                     )}/@@images/image/preview`
-                  : this.props.value
+                  : formatURL(this.props.value)
               }
               alt="Preview"
             />
