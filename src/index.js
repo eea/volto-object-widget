@@ -6,6 +6,8 @@ import {
   MappingWidget,
   AttachedFileWidget,
   ObjectTypesWidget,
+  UrlWidget,
+  InternalUrlWidget,
 } from './Widget';
 
 export {
@@ -28,6 +30,8 @@ const applyConfig = (config) => {
     config.widgets.widget.attachedimage = AttachedImageWidget;
     config.widgets.widget.attachedfile = AttachedFileWidget;
     config.widgets.widget.object_types_widget = ObjectTypesWidget;
+    config.widgets.widget.url = UrlWidget;
+    config.widgets.widget.internal_url = InternalUrlWidget;
   }
 
   return config;
