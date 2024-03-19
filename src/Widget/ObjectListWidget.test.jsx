@@ -128,9 +128,8 @@ test('renders an object list widget component and changes its value by clicking 
     </Provider>
   );
 
-  const { getByText, asFragment, rerender, getByTestId, getAllByText } = render(
-    jsx,
-  );
+  const { getByText, asFragment, rerender, getByTestId, getAllByText } =
+    render(jsx);
 
   expect(asFragment()).toMatchSnapshot();
 
