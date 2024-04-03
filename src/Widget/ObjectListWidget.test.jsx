@@ -1,8 +1,7 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
-import { render, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ObjectListWidget, {
   FlatObjectList,
@@ -58,7 +57,7 @@ test('renders an object list widget component', () => {
     },
   });
 
-  const component = renderer.create(
+  const { container } = render(
     <Provider store={store}>
       <ObjectListWidget
         id="my-widget"
@@ -79,8 +78,33 @@ test('renders an object list widget component', () => {
     </Provider>,
   );
 
-  const json = component.toJSON();
-  expect(json).toMatchSnapshot();
+  expect(screen.getByLabelText('My Widget')).toBeInTheDocument();
+
+  const inputField = container.querySelector('[name="my-widget"]');
+  expect(inputField).toBeInTheDocument();
+  expect(inputField).toHaveValue('2 x Link');
+  expect(inputField).toBeDisabled();
+
+  expect(
+    container.querySelector('button[aria-label="Edit"]'),
+  ).toBeInTheDocument();
+  expect(
+    container.querySelector('button[aria-label="Delete"]'),
+  ).toBeInTheDocument();
+
+  const bigPenButton = screen.getByTestId('big-pen-button');
+  expect(bigPenButton).toBeInTheDocument();
+  expect(bigPenButton).toHaveClass('ui button item ui noborder button');
+  expect(bigPenButton).toHaveAttribute('title', 'Edit');
+  expect(bigPenButton.querySelector('svg')).toHaveStyle({
+    fill: 'blue',
+    height: '18px',
+    width: 'auto',
+  });
+
+  // Assert the help text
+  expect(screen.getByText('My description')).toBeInTheDocument();
+  expect(screen.getByText('My description')).toHaveClass('help');
 });
 
 test('renders an object list widget component and changes its value by clicking a button', async () => {
@@ -128,10 +152,76 @@ test('renders an object list widget component and changes its value by clicking 
     </Provider>
   );
 
-  const { getByText, asFragment, rerender, getByTestId, getAllByText } =
+  const { container, getByText, rerender, getByTestId, getAllByText } =
     render(jsx);
 
-  expect(asFragment()).toMatchSnapshot();
+  // Assert the outer container
+  const outerContainer = container.querySelector(
+    '.inline.required.field.help.text.field-wrapper-my-widget',
+  );
+  expect(outerContainer).toBeInTheDocument();
+
+  // Assert the label
+  const label = screen.getByLabelText('My Widget');
+  expect(label).toBeInTheDocument();
+  expect(label).toHaveAttribute('id', 'field-my-widget');
+
+  // Assert the toolbar
+  const toolbar = container.querySelector('.toolbar');
+  expect(toolbar).toBeInTheDocument();
+  expect(toolbar).toHaveStyle({ 'z-index': '2' });
+
+  const editButton = toolbar.querySelector('button[aria-label="Edit"]');
+  expect(editButton).toBeInTheDocument();
+  expect(editButton).toHaveClass('item ui noborder button');
+  expect(editButton.querySelector('i')).toHaveClass(
+    'blue write square large icon',
+  );
+
+  const deleteButton = toolbar.querySelector('button[aria-label="Delete"]');
+  expect(deleteButton).toBeInTheDocument();
+  expect(deleteButton).toHaveClass('item ui noborder button');
+  expect(deleteButton.querySelector('i')).toHaveClass('red close large icon');
+
+  // Assert the input field
+  const inputField = container.querySelector('#field-my-widget');
+  expect(inputField).toBeInTheDocument();
+  expect(inputField).toHaveAttribute('name', 'my-widget');
+  expect(inputField).toHaveAttribute('type', 'text');
+  expect(inputField).toHaveValue('2 x Link');
+  expect(inputField).toBeDisabled();
+
+  const bigPenButton = screen.getByTestId('big-pen-button');
+  expect(bigPenButton).toBeInTheDocument();
+  expect(bigPenButton).toHaveClass('ui button item ui noborder button');
+  expect(bigPenButton).toHaveAttribute('title', 'Edit');
+  expect(bigPenButton.querySelector('svg')).toHaveStyle({
+    fill: 'blue',
+    height: '18px',
+    width: 'auto',
+  });
+
+  const deleteButton2 = container.querySelector('button[aria-label="Delete"]');
+  expect(deleteButton2).toBeInTheDocument();
+  expect(deleteButton2).toHaveClass('ui button item ui noborder button');
+
+  const deleteButtonSvg = container.querySelector(
+    'button[aria-label="Delete"] svg',
+  );
+  expect(deleteButtonSvg).toHaveStyle({
+    fill: 'red',
+    height: '18px',
+    width: 'auto',
+  });
+
+  // Assert the help text
+  const helpText = screen.getByText('My description');
+  expect(helpText).toBeInTheDocument();
+  expect(helpText).toHaveClass('help');
+
+  // Assert the additional button
+  const extraButton = screen.getByText('Click me !');
+  expect(extraButton).toBeInTheDocument();
 
   // click the button which changes data outside of modal
   fireEvent.click(getByText('Click me !'));
@@ -141,8 +231,6 @@ test('renders an object list widget component and changes its value by clicking 
 
   // click on the first External tab
   fireEvent.click(getAllByText('External')[0]);
-
-  expect(asFragment()).toMatchSnapshot();
 });
 
 test('renders a flat object list component with an item', async () => {
@@ -165,22 +253,123 @@ test('renders a flat object list component with an item', async () => {
     </Provider>
   );
 
-  const { asFragment, getAllByText } = render(jsx);
+  const { getAllByText, container } = render(jsx);
 
-  // verify the first tab
-  expect(asFragment()).toMatchSnapshot();
+  const outerContainer = container.querySelector('.objectlist-widget-content');
+  expect(outerContainer).toBeInTheDocument();
 
+  // Assert the first grid layout
+  const firstGrid = outerContainer.querySelector('.ui.grid:first-child');
+  expect(firstGrid).toBeInTheDocument();
+
+  const firstGridColumn = firstGrid.querySelector('.eleven.wide.column');
+  expect(firstGridColumn).toBeInTheDocument();
+
+  const firstSegment = firstGridColumn.querySelector('.ui.segment');
+  expect(firstSegment).toBeInTheDocument();
+
+  const firstObjectListItems = firstSegment.querySelectorAll(
+    '.mocked-default-widget',
+  );
+  expect(firstObjectListItems).toHaveLength(1);
+  expect(firstObjectListItems[0]).toHaveAttribute(
+    'id',
+    'mocked-field-internal_link-0-my-widget-0',
+  );
+  expect(firstObjectListItems[0]).toHaveTextContent(
+    'Internal link - No description',
+  );
+
+  // Assert the second grid layout
+  const secondGrid = outerContainer.querySelector('.ui.grid:nth-child(2)');
+  expect(secondGrid).toBeInTheDocument();
+
+  const secondGridColumn = secondGrid.querySelector('.eleven.wide.column');
+  expect(secondGridColumn).toBeInTheDocument();
+
+  const secondSegment = secondGridColumn.querySelector('.ui.segment');
+  expect(secondSegment).toBeInTheDocument();
+
+  const secondObjectListItems = secondSegment.querySelectorAll(
+    '.mocked-default-widget',
+  );
+  expect(secondObjectListItems).toHaveLength(1);
+  expect(secondObjectListItems[0]).toHaveAttribute(
+    'id',
+    'mocked-field-internal_link-0-my-widget-1',
+  );
+  expect(secondObjectListItems[0]).toHaveTextContent(
+    'Internal link - No description',
+  );
+
+  // Assert the delete buttons
+  const deleteButtons = container.querySelectorAll(
+    'button[aria-label="Delete"]',
+  );
+  expect(deleteButtons).toHaveLength(2);
+  deleteButtons.forEach((button) => {
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass('ui mini basic circular button');
+    expect(button).toHaveAttribute('title', 'Delete');
+    const deleteButtonSvg = button.querySelector('svg');
+    expect(deleteButtonSvg).toBeInTheDocument();
+    expect(deleteButtonSvg).toHaveStyle({
+      height: '18px',
+      width: 'auto',
+      fill: 'currentColor',
+    });
+  });
+
+  const segment = firstGridColumn.querySelector('.ui.segment');
+  expect(segment).toBeInTheDocument();
+
+  const tabMenu = segment.querySelector('.ui.attached.tabular.menu');
+  expect(tabMenu).toBeInTheDocument();
+  const tabMenuItems = tabMenu.querySelectorAll('.item');
+  expect(tabMenuItems).toHaveLength(3);
+  expect(tabMenuItems[0]).toHaveClass('active');
+  expect(tabMenuItems[0]).toHaveTextContent('Internal');
+  expect(tabMenuItems[1]).toHaveTextContent('External');
+  expect(tabMenuItems[2]).toHaveTextContent('Email');
+
+  const activeTab = segment.querySelector(
+    '.ui.bottom.attached.segment.active.tab',
+  );
+  expect(activeTab).toBeInTheDocument();
+  const activeTabContent = activeTab.querySelector('.mocked-default-widget');
+  expect(activeTabContent).toBeInTheDocument();
+  expect(activeTabContent).toHaveAttribute(
+    'id',
+    'mocked-field-internal_link-0-my-widget-0',
+  );
+  expect(activeTabContent).toHaveTextContent('Internal link - No description');
   // load second tab in first item
   fireEvent.click(getAllByText('External')[0]);
 
-  // verify the second tab in the first item
-  expect(asFragment()).toMatchSnapshot();
+  const activeTabContentAfterClick = activeTab.querySelector(
+    '.mocked-default-widget',
+  );
+  expect(activeTabContentAfterClick).toBeInTheDocument();
+  expect(activeTabContentAfterClick).toHaveAttribute(
+    'id',
+    'mocked-field-external_link-0-my-widget-0',
+  );
+
+  expect(activeTabContentAfterClick).toHaveTextContent(
+    'External URL (can be relative within this site or absolute if it starts with http:// or https://) - No description',
+  );
 
   // load second tab in second item
   fireEvent.click(getAllByText('External')[1]);
 
-  // verify the second tab in the second item
-  expect(asFragment()).toMatchSnapshot();
+  const activeTabContentAfterClick1 = container.querySelector(
+    '#mocked-field-external_link-0-my-widget-1',
+  );
+  expect(activeTabContentAfterClick1).toBeInTheDocument();
+
+  expect(activeTabContentAfterClick1).toHaveTextContent(
+    'External URL (can be relative within this site or absolute if it starts with http:// or https://) - No description',
+  );
 });
 
 test('renders a modal object list form component and tests it in various ways', () => {
@@ -219,7 +408,7 @@ test('renders a modal object list form component and tests it in various ways', 
     </Provider>
   );
 
-  const { asFragment, getByText, rerender, getByTestId } = render(jsx);
+  const { getByText, rerender, getByTestId } = render(jsx);
 
   // set value prop to something else than the value before from outside the modal
   valueState = [{ external_link: 'https://duckduckgo.com' }];
@@ -227,7 +416,6 @@ test('renders a modal object list form component and tests it in various ways', 
 
   // in the modal there should be just a single item with the link: https://duckduckgo.com
   // (actual result: empty snapshot because of https://github.com/Semantic-Org/Semantic-UI-React/issues/3959)
-  expect(asFragment()).toMatchSnapshot();
 
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -288,7 +476,7 @@ test('renders a modal object list form component and tests it in other various w
     </Provider>
   );
 
-  const { asFragment, getByTitle, getByText, rerender } = render(jsx);
+  const { getByTitle, getByText, rerender } = render(jsx);
 
   fireEvent.click(getByTitle('Cancel'));
 
@@ -305,5 +493,4 @@ test('renders a modal object list form component and tests it in other various w
   expect(valueState.length).toEqual(3);
 
   // actual result: empty snapshot because of https://github.com/Semantic-Org/Semantic-UI-React/issues/3959
-  expect(asFragment()).toMatchSnapshot();
 });
