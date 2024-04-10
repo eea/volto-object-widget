@@ -5,6 +5,7 @@ import DemoBlockEdit from './BlockEdit';
 
 const BLOCK = 'ObjectWidgetDemo';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (config) => {
   config.blocks.blocksConfig[BLOCK] = {
     id: BLOCK,
