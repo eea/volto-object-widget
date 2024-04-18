@@ -1,3 +1,5 @@
 import React from 'react';
 
-export default (props) => <div>{JSON.stringify(props.data)}</div>;
+const BlockView = (props) => <div>{JSON.stringify(props.data)}</div>;
+
+export default BlockView;
