@@ -5,7 +5,7 @@ import DemoBlockEdit from './BlockEdit';
 
 const BLOCK = 'ObjectWidgetDemo';
 
-export default (config) => {
+const applyConfig = (config) => {
   config.blocks.blocksConfig[BLOCK] = {
     id: BLOCK,
     title: 'ObjectWidget Demo',
@@ -24,3 +24,5 @@ export default (config) => {
 
   return config;
 };
+
+export default applyConfig;
