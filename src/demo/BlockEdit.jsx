@@ -4,8 +4,7 @@ import { SidebarPortal } from '@plone/volto/components';
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import CombinedSchema from './schema.js';
 
-const Edit = (props) => {
-  // const [data, setData] = React.useState({});
+const BlockEdit = (props) => {
   return (
     <div
       role="presentation"
@@ -35,4 +34,4 @@ const Edit = (props) => {
   );
 };
 
-export default Edit;
+export default BlockEdit;
