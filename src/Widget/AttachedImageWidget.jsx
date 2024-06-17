@@ -32,13 +32,6 @@ const messages = defineMessages({
   },
 });
 
-const formatURL = (url) => {
-  if (url === undefined) return '';
-  if (typeof url === 'string') return url;
-  if (Array.isArray(url)) return formatURL(url?.[0]);
-  if (typeof url === 'object') return formatURL(url?.['@id']);
-};
-
 export class AttachedImageWidget extends Component {
   /**
    * Property types.
@@ -97,7 +90,7 @@ export class AttachedImageWidget extends Component {
           ...resultantItem,
           value: nextProps?.content?.['@id'],
         };
-        console.log('enter');
+
         this.props.onChange(this.props.id, {
           ...(resultantItem || {}),
           '@type': 'URL',
@@ -263,7 +256,6 @@ export class AttachedImageWidget extends Component {
   node = React.createRef();
 
   render() {
-    console.log(this.props.selectedItemAttrs);
     const placeholder =
       this.props.placeholder ||
       this.props.intl.formatMessage(
