@@ -17,12 +17,6 @@
     "type": "git",
     "url": "git@github.com:eea/volto-object-widget.git"
   },
-  "addons": [
-    "@eeacms/volto-widgets-view"
-  ],
-  "dependencies": {
-    "@eeacms/volto-widgets-view": "*"
-  },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
