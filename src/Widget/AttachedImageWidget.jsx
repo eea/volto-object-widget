@@ -12,7 +12,11 @@ import { Dimmer, Loader, Message, Button, Input } from 'semantic-ui-react';
 import { FormFieldWrapper, Icon } from '@plone/volto/components';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
 import { createContent } from '@plone/volto/actions';
-import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers';
+import {
+  flattenHTMLToAppURL,
+  flattenToAppURL,
+  getBaseUrl,
+} from '@plone/volto/helpers';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';
@@ -235,7 +239,7 @@ export class AttachedImageWidget extends Component {
     this.setState({ dragging: false });
   };
 
-  onChange = (url, item) => {
+  onChange = (id, url, item) => {
     let resultantItem = item;
     if (this.props.selectedItemAttrs) {
       const allowedItemKeys = [...this.props.selectedItemAttrs, 'title'];
@@ -245,7 +249,7 @@ export class AttachedImageWidget extends Component {
           obj[key] = item[key];
           return obj;
         }, {});
-      resultantItem = { ...resultantItem, value: item['@id'] };
+      resultantItem = { ...resultantItem, value: url, '@type': 'URL' };
 
       this.setState({ url: resultantItem });
     } else {
@@ -324,8 +328,19 @@ export class AttachedImageWidget extends Component {
                             this.props.openObjectBrowser({
                               mode: 'image',
                               currentPath: this.props.pathname,
-                              onSelectItem: (url, item) => {
-                                this.onChange(url, item);
+                              onSelectItem: (
+                                url,
+                                { title, image_field, image_scales },
+                              ) => {
+                                this.onChange(
+                                  this.props.id,
+                                  flattenHTMLToAppURL(url),
+                                  {
+                                    title,
+                                    image_field,
+                                    image_scales,
+                                  },
+                                );
                               },
                             });
                           }}
