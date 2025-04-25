@@ -98,13 +98,17 @@ export class AttachedImageWidget extends Component {
           '@id': flattenToAppURL(nextProps?.content?.['@id']),
         };
 
-        this.props.onChange(this.props.id, [{
-          ...(resultantItem || {}),
-        }]);
+        this.props.onChange(this.props.id, [
+          {
+            ...(resultantItem || {}),
+          },
+        ]);
       } else {
-        this.props.onChange(this.props.id, [{
-          '@id': flattenToAppURL(nextProps.content?.['@id']),
-        }]);
+        this.props.onChange(this.props.id, [
+          {
+            '@id': flattenToAppURL(nextProps.content?.['@id']),
+          },
+        ]);
       }
     }
   }
@@ -173,18 +177,24 @@ export class AttachedImageWidget extends Component {
   onSubmitUrl = () => {
     if (this.props.selectedItemAttrs) {
       if (isString(this.state.url)) {
-        this.props.onChange(this.props.id, [{
-          '@id': this.state.url,
-        }]);
+        this.props.onChange(this.props.id, [
+          {
+            '@id': this.state.url,
+          },
+        ]);
       } else {
-        this.props.onChange(this.props.id, [{
-          ...(this.state.url || {}),
-        }]);
+        this.props.onChange(this.props.id, [
+          {
+            ...(this.state.url || {}),
+          },
+        ]);
       }
     } else {
-      this.props.onChange(this.props.id, [{
-        '@id': flattenToAppURL(this.state.url),
-      }]);
+      this.props.onChange(this.props.id, [
+        {
+          '@id': flattenToAppURL(this.state.url),
+        },
+      ]);
     }
   };
 

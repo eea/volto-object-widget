@@ -1,6 +1,10 @@
 import isString from 'lodash/isString';
 import isArray from 'lodash/isArray';
-import { getFieldURL, isInternalURL, flattenToAppURL } from '@plone/volto/helpers/Url/Url';
+import {
+  getFieldURL,
+  isInternalURL,
+  flattenToAppURL,
+} from '@plone/volto/helpers/Url/Url';
 
 export function getImageScaleParams(image, size) {
   const imageScale = size || 'preview'; //listings use preview scale
@@ -22,9 +26,7 @@ export function getImageScaleParams(image, size) {
           image.image_scales[image.image_field]?.[0].scales?.[imageScale] ||
           image.image_scales[image.image_field]?.[0];
 
-        const download = flattenToAppURL(
-          `${url}/${scale?.download}`,
-        );
+        const download = flattenToAppURL(`${url}/${scale?.download}`);
         const width = scale?.width;
         const height = scale?.height;
 
@@ -48,9 +50,7 @@ export function getImageScaleParams(image, size) {
         //fallback if we do not have scales
         return {
           download: flattenToAppURL(
-            `${url}/@@images/${
-              image.image_field || 'image'
-            }/${imageScale}`,
+            `${url}/@@images/${image.image_field || 'image'}/${imageScale}`,
           ),
         };
       }
