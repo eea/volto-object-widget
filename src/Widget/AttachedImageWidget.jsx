@@ -45,7 +45,10 @@ export class AttachedImageWidget extends Component {
   static propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
-    value: PropTypes.any,
+    value: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.object),
+      PropTypes.string,
+    ]),
     block: PropTypes.string.isRequired,
     request: PropTypes.shape({
       loading: PropTypes.bool,
@@ -92,18 +95,16 @@ export class AttachedImageWidget extends Component {
           }, {});
         resultantItem = {
           ...resultantItem,
-          value: nextProps?.content?.['@id'],
+          '@id': flattenToAppURL(nextProps?.content?.['@id']),
         };
 
-        this.props.onChange(this.props.id, {
+        this.props.onChange(this.props.id, [{
           ...(resultantItem || {}),
-          '@type': 'URL',
-        });
+        }]);
       } else {
-        this.props.onChange(this.props.id, {
-          '@type': 'URL',
-          value: nextProps.content?.['@id'],
-        });
+        this.props.onChange(this.props.id, [{
+          '@id': flattenToAppURL(nextProps.content?.['@id']),
+        }]);
       }
     }
   }
@@ -159,7 +160,7 @@ export class AttachedImageWidget extends Component {
    */
   onChangeUrl = ({ target }) => {
     this.setState({
-      url: target.value,
+      url: flattenToAppURL(target.value),
     });
   };
 
@@ -172,21 +173,18 @@ export class AttachedImageWidget extends Component {
   onSubmitUrl = () => {
     if (this.props.selectedItemAttrs) {
       if (isString(this.state.url)) {
-        this.props.onChange(this.props.id, {
-          value: this.state.url,
-          '@type': 'URL',
-        });
+        this.props.onChange(this.props.id, [{
+          '@id': this.state.url,
+        }]);
       } else {
-        this.props.onChange(this.props.id, {
+        this.props.onChange(this.props.id, [{
           ...(this.state.url || {}),
-          '@type': 'URL',
-        });
+        }]);
       }
     } else {
-      this.props.onChange(this.props.id, {
-        '@type': 'URL',
-        value: flattenToAppURL(this.state.url),
-      });
+      this.props.onChange(this.props.id, [{
+        '@id': flattenToAppURL(this.state.url),
+      }]);
     }
   };
 
@@ -239,7 +237,7 @@ export class AttachedImageWidget extends Component {
     this.setState({ dragging: false });
   };
 
-  onChange = (id, url, item) => {
+  onChange = (_id, url, item) => {
     let resultantItem = item;
     if (this.props.selectedItemAttrs) {
       const allowedItemKeys = [...this.props.selectedItemAttrs, 'title'];
@@ -249,11 +247,10 @@ export class AttachedImageWidget extends Component {
           obj[key] = item[key];
           return obj;
         }, {});
-      resultantItem = { ...resultantItem, value: url, '@type': 'URL' };
-
+      resultantItem = { ...resultantItem, '@id': flattenToAppURL(url) };
       this.setState({ url: resultantItem });
     } else {
-      this.setState({ url }); // bbb
+      this.setState({ url: flattenToAppURL(url) }); // bbb
     }
   };
 
@@ -265,7 +262,6 @@ export class AttachedImageWidget extends Component {
       this.props.intl.formatMessage(
         messages.AttachedImageWidgetInputPlaceholder,
       );
-
     const imageSrc = getImageScaleParams(this.props.value, 'preview') ?? '';
 
     return (
@@ -336,6 +332,7 @@ export class AttachedImageWidget extends Component {
                                   this.props.id,
                                   flattenHTMLToAppURL(url),
                                   {
+                                    '@id': flattenHTMLToAppURL(url),
                                     title,
                                     image_field,
                                     image_scales,
@@ -366,7 +363,7 @@ export class AttachedImageWidget extends Component {
                           this.props.selectedItemAttrs
                             ? isString(this.state.url)
                               ? this.state.url
-                              : this.state.url?.value || ''
+                              : this.state.url?.['@id'] || ''
                             : this.state.url
                         }
                       />

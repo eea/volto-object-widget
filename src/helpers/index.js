@@ -1,39 +1,29 @@
 import isString from 'lodash/isString';
-import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
-import { isInternalURL, flattenToAppURL } from '@plone/volto/helpers';
-
-export const getFieldURL = (data) => {
-  let url = data;
-  const _isObject = data && isObject(data) && !isArray(data);
-  if (_isObject && data['@type'] === 'URL') {
-    url = data['value'] ?? data['url'] ?? data['href'] ?? data;
-  } else if (_isObject) {
-    url = data['@id'] ?? data['url'] ?? data['href'] ?? data;
-  }
-  if (isArray(data)) {
-    url = data.map((item) => getFieldURL(item));
-  }
-  if (isString(url) && isInternalURL(url)) return flattenToAppURL(url);
-  return url;
-};
+import { getFieldURL, isInternalURL, flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 
 export function getImageScaleParams(image, size) {
   const imageScale = size || 'preview'; //listings use preview scale
 
+  if (isArray(image)) {
+    const result = image.map((item) => getImageScaleParams(item, size));
+    return result.length > 0 ? result[0] : undefined;
+  }
+
   if (isString(image))
     return isInternalURL(image)
-      ? { download: flattenToAppURL(`${image}/@@images/image/mini`) }
+      ? { download: flattenToAppURL(`${image}/@@images/image/${imageScale}`) }
       : { download: image };
+  const url = getFieldURL(image);
   if (image) {
-    if (isInternalURL(getFieldURL(image))) {
+    if (url && isInternalURL(url)) {
       if (image?.image_scales?.[image?.image_field]) {
         const scale =
           image.image_scales[image.image_field]?.[0].scales?.[imageScale] ||
           image.image_scales[image.image_field]?.[0];
 
         const download = flattenToAppURL(
-          `${getFieldURL(image)}/${scale?.download}`,
+          `${url}/${scale?.download}`,
         );
         const width = scale?.width;
         const height = scale?.height;
@@ -54,18 +44,18 @@ export function getImageScaleParams(image, size) {
           width,
           height,
         };
-      } //fallback if we do not have scales
-      else {
+      } else {
+        //fallback if we do not have scales
         return {
           download: flattenToAppURL(
-            `${getFieldURL(image)}/@@images/${
+            `${url}/@@images/${
               image.image_field || 'image'
             }/${imageScale}`,
           ),
         };
       }
     } else {
-      return { download: getFieldURL(image) };
+      return { download: url };
     }
   }
 }
