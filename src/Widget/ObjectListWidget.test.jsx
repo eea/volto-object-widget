@@ -8,6 +8,11 @@ import ObjectListWidget, {
   ModalObjectListForm,
 } from './ObjectListWidget';
 
+// Mock uuid to avoid node:crypto import issues
+jest.mock('uuid', () => ({
+  v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
+}));
+
 const mockStore = configureStore();
 
 // TODO: what about localized schemas?
