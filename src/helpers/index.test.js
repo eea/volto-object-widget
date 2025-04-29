@@ -1,6 +1,4 @@
-import {
-  getImageScaleParams
-} from '@eeacms/volto-object-widget/helpers';
+import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';
 import { flattenToAppURL, getFieldURL } from '@plone/volto/helpers/Url/Url';
 
 jest.mock('@plone/volto/helpers', () => ({

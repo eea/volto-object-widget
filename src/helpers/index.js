@@ -1,4 +1,8 @@
-import { getFieldURL, isInternalURL, flattenToAppURL } from '@plone/volto/helpers/Url/Url';
+import {
+  getFieldURL,
+  isInternalURL,
+  flattenToAppURL,
+} from '@plone/volto/helpers/Url/Url';
 
 export function getImageScaleParams(image, size) {
   if (!image) return;
