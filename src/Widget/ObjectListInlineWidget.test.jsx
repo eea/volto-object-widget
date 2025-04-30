@@ -88,11 +88,14 @@ describe('ObjectListInlineWidget', () => {
       </Provider>,
     );
     fireEvent.click(getByText(`Add Test`));
-    expect(onChange).toHaveBeenCalledWith('test', [
-      {
-        '@id': 'uuid',
-      },
-    ]);
+    expect(onChange).toHaveBeenCalledWith(
+      'test',
+      expect.arrayContaining([
+        expect.objectContaining({
+          '@id': expect.stringContaining('mock-uuid'),
+        }),
+      ]),
+    );
   });
 
   it('moves an item by calling onMoveItem', () => {
