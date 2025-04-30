@@ -46,7 +46,7 @@ jest.mock('@plone/volto/components', () => ({
 }));
 
 jest.mock('uuid', () => ({
-  v4: jest.fn(() => 'uuid'),
+  v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
 }));
 
 const mockStore = configureStore([]);
