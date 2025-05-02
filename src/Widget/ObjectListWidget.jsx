@@ -111,6 +111,7 @@ export const FlatObjectList = ({
                   basic
                   circular
                   size="mini"
+                  data-testid="delete-flat-list"
                   title={intl.formatMessage(messages.delete)}
                   aria-label={intl.formatMessage(messages.delete)}
                   onClick={() => {
@@ -258,6 +259,7 @@ export const ModalObjectListForm = (props) => {
           circular
           primary
           floated="right"
+          data-testid="right-arrow-save"
           icon="arrow right"
           title={intl.formatMessage(messages.save)}
           aria-label={intl.formatMessage(messages.save)}
@@ -270,6 +272,7 @@ export const ModalObjectListForm = (props) => {
           basic
           circular
           secondary
+          data-testid="btn-cancel"
           icon="remove"
           title={intl.formatMessage(messages.cancel)}
           aria-label={intl.formatMessage(messages.cancel)}
@@ -373,6 +376,7 @@ export const ObjectListWidget = (props) => {
           <Button
             aria-label={intl.formatMessage(messages.delete)}
             title={intl.formatMessage(messages.delete)}
+            data-testid="red-cross-btn"
             className="item ui noborder button"
             onClick={() => {
               onChange(id, []);
