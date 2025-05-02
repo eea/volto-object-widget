@@ -46,7 +46,7 @@ jest.mock('@plone/volto/components', () => ({
 }));
 
 jest.mock('uuid', () => ({
-  v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
+  v4: jest.fn(() => 'uuid'),
 }));
 
 const mockStore = configureStore([]);
@@ -88,14 +88,11 @@ describe('ObjectListInlineWidget', () => {
       </Provider>,
     );
     fireEvent.click(getByText(`Add Test`));
-    expect(onChange).toHaveBeenCalledWith(
-      'test',
-      expect.arrayContaining([
-        expect.objectContaining({
-          '@id': expect.stringContaining('mock-uuid'),
-        }),
-      ]),
-    );
+    expect(onChange).toHaveBeenCalledWith('test', [
+      {
+        '@id': 'uuid',
+      },
+    ]);
   });
 
   it('moves an item by calling onMoveItem', () => {
