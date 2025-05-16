@@ -15,6 +15,7 @@ import { createContent } from '@plone/volto/actions';
 import {
   flattenHTMLToAppURL,
   flattenToAppURL,
+  isInternalURL,
   getBaseUrl,
 } from '@plone/volto/helpers';
 
@@ -82,20 +83,18 @@ export class AttachedImageWidget extends Component {
       });
       if (this.props.selectedItemAttrs) {
         let resultantItem = nextProps.content;
-        const allowedItemKeys = [
-          ...this.props.selectedItemAttrs,
-          'title',
-          'image',
-        ];
+        const allowedItemKeys = [...this.props.selectedItemAttrs, 'title'];
         resultantItem = Object.keys(nextProps?.content)
           .filter((key) => allowedItemKeys.includes(key))
           .reduce((obj, key) => {
             obj[key] = nextProps?.content?.[key];
             return obj;
           }, {});
+
         resultantItem = {
           ...resultantItem,
           '@id': flattenToAppURL(nextProps?.content?.['@id']),
+          image_field: 'image',
         };
 
         this.props.onChange(this.props.id, [
@@ -107,6 +106,8 @@ export class AttachedImageWidget extends Component {
         this.props.onChange(this.props.id, [
           {
             '@id': flattenToAppURL(nextProps.content?.['@id']),
+            image_field: 'image',
+            title: nextProps.content?.['title'],
           },
         ]);
       }
@@ -175,24 +176,17 @@ export class AttachedImageWidget extends Component {
    * @returns {undefined}
    */
   onSubmitUrl = () => {
-    if (this.props.selectedItemAttrs) {
-      if (isString(this.state.url)) {
-        this.props.onChange(this.props.id, [
-          {
-            '@id': this.state.url,
-          },
-        ]);
-      } else {
-        this.props.onChange(this.props.id, [
-          {
-            ...(this.state.url || {}),
-          },
-        ]);
-      }
-    } else {
+    if (isString(this.state.url)) {
       this.props.onChange(this.props.id, [
         {
           '@id': flattenToAppURL(this.state.url),
+          ...(isInternalURL(this.state.url) ? { image_field: 'image' } : {}),
+        },
+      ]);
+    } else {
+      this.props.onChange(this.props.id, [
+        {
+          ...(this.state.url || {}),
         },
       ]);
     }
@@ -260,7 +254,7 @@ export class AttachedImageWidget extends Component {
       resultantItem = { ...resultantItem, '@id': flattenToAppURL(url) };
       this.setState({ url: resultantItem });
     } else {
-      this.setState({ url: flattenToAppURL(url) }); // bbb
+      this.setState({ url: resultantItem || flattenToAppURL(url) }); // bbb
     }
   };
 
@@ -370,11 +364,9 @@ export class AttachedImageWidget extends Component {
                         onChange={this.onChangeUrl}
                         placeholder={placeholder}
                         value={
-                          this.props.selectedItemAttrs
-                            ? isString(this.state.url)
-                              ? this.state.url
-                              : this.state.url?.['@id'] || ''
-                            : this.state.url
+                          isString(this.state.url)
+                            ? this.state.url
+                            : this.state.url?.['@id'] || ''
                         }
                       />
                       <div style={{ flexGrow: 1 }} />
