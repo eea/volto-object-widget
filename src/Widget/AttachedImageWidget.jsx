@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash';
 import loadable from '@loadable/component';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
@@ -37,378 +37,350 @@ const messages = defineMessages({
   },
 });
 
-export class AttachedImageWidget extends Component {
-  /**
-   * Property types.
-   * @property {Object} propTypes Property types.
-   * @static
-   */
-  static propTypes = {
-    id: PropTypes.string,
-    title: PropTypes.string,
-    value: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.object),
-      PropTypes.string,
-    ]),
-    block: PropTypes.string.isRequired,
-    request: PropTypes.shape({
-      loading: PropTypes.bool,
-      loaded: PropTypes.bool,
-    }).isRequired,
-    pathname: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    openObjectBrowser: PropTypes.func.isRequired,
-  };
+// Define the component without memo for named export (for testing)
+export const AttachedImageWidget = (props) => {
+  const {
+    id,
+    title,
+    value,
+    block,
+    request,
+    pathname,
+    onChange,
+    openObjectBrowser,
+    selectedItemAttrs,
+    content,
+    createContent,
+    placeholder,
+    intl,
+  } = props;
+  const [uploading, setUploading] = useState(false);
+  const [url, setUrl] = useState('');
+  const [dragging, setDragging] = useState(false);
 
-  state = {
-    uploading: false,
-    url: '',
-    dragging: false,
-  };
+  // Handle content upload completion
+  useEffect(() => {
+    if (request.loading && !uploading) return;
 
-  /**
-   * Component will receive props
-   * @method componentWillReceiveProps
-   * @param {Object} nextProps Next properties
-   * @returns {undefined}
-   */
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (
-      this.props.request.loading &&
-      nextProps.request.loaded &&
-      this.state.uploading
-    ) {
-      this.setState({
-        uploading: false,
-      });
-      if (this.props.selectedItemAttrs) {
-        let resultantItem = nextProps.content;
-        const allowedItemKeys = [...this.props.selectedItemAttrs, 'title'];
-        resultantItem = Object.keys(nextProps?.content)
+    if (!request.loading && request.loaded && uploading) {
+      setUploading(false);
+
+      if (selectedItemAttrs && content) {
+        const allowedItemKeys = [...selectedItemAttrs, 'title'];
+        const resultantItem = Object.keys(content)
           .filter((key) => allowedItemKeys.includes(key))
           .reduce((obj, key) => {
-            obj[key] = nextProps?.content?.[key];
+            obj[key] = content[key];
             return obj;
           }, {});
 
-        resultantItem = {
+        const finalItem = {
           ...resultantItem,
-          '@id': flattenToAppURL(nextProps?.content?.['@id']),
+          '@id': flattenToAppURL(content['@id']),
           image_field: 'image',
         };
 
-        this.props.onChange(this.props.id, [
+        onChange(id, [finalItem]);
+      } else if (content) {
+        onChange(id, [
           {
-            ...(resultantItem || {}),
-          },
-        ]);
-      } else {
-        this.props.onChange(this.props.id, [
-          {
-            '@id': flattenToAppURL(nextProps.content?.['@id']),
+            '@id': flattenToAppURL(content['@id']),
             image_field: 'image',
-            title: nextProps.content?.['title'],
+            title: content.title,
           },
         ]);
       }
     }
-  }
+  }, [
+    request.loading,
+    request.loaded,
+    uploading,
+    selectedItemAttrs,
+    content,
+    onChange,
+    id,
+  ]);
 
-  /**
-   * @param {*} nextProps
-   * @returns {boolean}
-   * @memberof Edit
-   */
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      !isEqual(this.props.value, nextProps.value) ||
-      !isEqual(this.state, nextState)
-    );
-  }
+  const onUploadImage = useCallback(
+    (e) => {
+      e.stopPropagation();
+      const file = e.target.files[0];
+      setUploading(true);
 
-  /**
-   * Upload image handler (not used), but useful in case that we want a button
-   * not powered by react-dropzone
-   * @method onUploadImage
-   * @returns {undefined}
-   */
-  onUploadImage = (e) => {
-    e.stopPropagation();
-    const file = e.target.files[0];
-    this.setState({
-      uploading: true,
-    });
-    readAsDataURL(file).then((data) => {
-      const fields = data.match(/^data:(.*);(.*),(.*)$/);
-      this.props.createContent(
-        getBaseUrl(this.props.pathname),
-        {
-          '@type': 'Image',
-          title: file.name,
-          image: {
-            data: fields[3],
-            encoding: fields[2],
-            'content-type': fields[1],
-            filename: file.name,
+      readAsDataURL(file).then((data) => {
+        const fields = data.match(/^data:(.*);(.*),(.*)$/);
+        createContent(
+          getBaseUrl(pathname),
+          {
+            '@type': 'Image',
+            title: file.name,
+            image: {
+              data: fields[3],
+              encoding: fields[2],
+              'content-type': fields[1],
+              filename: file.name,
+            },
           },
-        },
-        this.props.block,
-      );
-    });
-  };
+          block,
+        );
+      });
+    },
+    [createContent, pathname, block],
+  );
 
-  /**
-   * Change url handler
-   * @method onChangeUrl
-   * @param {Object} target Target object
-   * @returns {undefined}
-   */
-  onChangeUrl = ({ target }) => {
-    this.setState({
-      url: flattenToAppURL(target.value),
-    });
-  };
+  const onChangeUrl = useCallback(({ target }) => {
+    setUrl(flattenToAppURL(target.value));
+  }, []);
 
-  /**
-   * Submit url handler
-   * @method onSubmitUrl
-   * @param {object} e Event
-   * @returns {undefined}
-   */
-  onSubmitUrl = () => {
-    if (isString(this.state.url)) {
-      this.props.onChange(this.props.id, [
+  const onSubmitUrl = useCallback(() => {
+    if (isString(url)) {
+      onChange(id, [
         {
-          '@id': flattenToAppURL(this.state.url),
-          ...(isInternalURL(this.state.url) ? { image_field: 'image' } : {}),
+          '@id': flattenToAppURL(url),
+          ...(isInternalURL(url) ? { image_field: 'image' } : {}),
         },
       ]);
     } else {
-      this.props.onChange(this.props.id, [
+      onChange(id, [
         {
-          ...(this.state.url || {}),
+          ...(url || {}),
         },
       ]);
     }
-  };
+  }, [url, onChange, id]);
 
-  resetSubmitUrl = () => {
-    this.setState(
-      {
-        url: '',
-      },
-      () => {
-        this.props.onChange(this.props.id, this.state.url);
-      },
-    );
-  };
+  const resetSubmitUrl = useCallback(() => {
+    setUrl('');
+    onChange(id, '');
+  }, [onChange, id]);
 
-  /**
-   * Drop handler
-   * @method onDrop
-   * @param {array} files File objects
-   * @returns {undefined}
-   */
-  onDrop = (file) => {
-    this.setState({
-      uploading: true,
-    });
+  const onDrop = useCallback(
+    (file) => {
+      setUploading(true);
 
-    readAsDataURL(file[0]).then((data) => {
-      const fields = data.match(/^data:(.*);(.*),(.*)$/);
-      this.props.createContent(
-        getBaseUrl(this.props.pathname),
-        {
-          '@type': 'Image',
-          title: file[0].name,
-          image: {
-            data: fields[3],
-            encoding: fields[2],
-            'content-type': fields[1],
-            filename: file[0].name,
+      readAsDataURL(file[0]).then((data) => {
+        const fields = data.match(/^data:(.*);(.*),(.*)$/);
+        createContent(
+          getBaseUrl(pathname),
+          {
+            '@type': 'Image',
+            title: file[0].name,
+            image: {
+              data: fields[3],
+              encoding: fields[2],
+              'content-type': fields[1],
+              filename: file[0].name,
+            },
           },
-        },
-        this.props.block,
-      );
-    });
-  };
+          block,
+        );
+      });
+    },
+    [createContent, pathname, block],
+  );
 
-  onDragEnter = () => {
-    this.setState({ dragging: true });
-  };
+  const onDragEnter = useCallback(() => {
+    setDragging(true);
+  }, []);
 
-  onDragLeave = () => {
-    this.setState({ dragging: false });
-  };
+  const onDragLeave = useCallback(() => {
+    setDragging(false);
+  }, []);
 
-  onChange = (_id, url, item) => {
-    let resultantItem = item;
-    if (this.props.selectedItemAttrs) {
-      const allowedItemKeys = [...this.props.selectedItemAttrs, 'title'];
-      resultantItem = Object.keys(item)
-        .filter((key) => allowedItemKeys.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = item[key];
-          return obj;
-        }, {});
-      resultantItem = { ...resultantItem, '@id': flattenToAppURL(url) };
-      this.setState({ url: resultantItem });
-    } else {
-      this.setState({ url: resultantItem || flattenToAppURL(url) }); // bbb
-    }
-  };
+  const onItemChange = useCallback(
+    (_id, itemUrl, item) => {
+      let resultantItem = item;
+      if (selectedItemAttrs) {
+        const allowedItemKeys = [...selectedItemAttrs, 'title'];
+        resultantItem = Object.keys(item)
+          .filter((key) => allowedItemKeys.includes(key))
+          .reduce((obj, key) => {
+            obj[key] = item[key];
+            return obj;
+          }, {});
+        resultantItem = { ...resultantItem, '@id': flattenToAppURL(itemUrl) };
+        setUrl(resultantItem);
+      } else {
+        setUrl(resultantItem || flattenToAppURL(itemUrl));
+      }
+    },
+    [selectedItemAttrs],
+  );
 
-  node = React.createRef();
+  const currentPlaceholder = useMemo(
+    () =>
+      placeholder ||
+      intl.formatMessage(messages.AttachedImageWidgetInputPlaceholder),
+    [placeholder, intl],
+  );
 
-  render() {
-    const placeholder =
-      this.props.placeholder ||
-      this.props.intl.formatMessage(
-        messages.AttachedImageWidgetInputPlaceholder,
-      );
-    const imageSrc = getImageScaleParams(this.props.value, 'preview') ?? '';
+  const imageSrc = useMemo(
+    () => getImageScaleParams(value, 'preview') ?? '',
+    [value],
+  );
 
-    return (
-      <FormFieldWrapper
-        columns={1}
-        className="field-attached-image"
-        {...this.props}
-      >
-        <div className="wrapper">
-          <label>{this.props.title}</label>
+  return (
+    <FormFieldWrapper columns={1} className="field-attached-image" {...props}>
+      <div className="wrapper">
+        <label>{title}</label>
+      </div>
+      {imageSrc && imageSrc.download && (
+        <div className="preview">
+          <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
+          <Button.Group>
+            <Button
+              basic
+              icon
+              className="cancel"
+              onClick={(e) => {
+                e.stopPropagation();
+                resetSubmitUrl();
+              }}
+            >
+              <Icon name={clearSVG} size="30px" />
+            </Button>
+          </Button.Group>
         </div>
-        {imageSrc && imageSrc.download && (
-          <div className="preview">
-            <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
-            <Button.Group>
-              <Button
-                basic
-                icon
-                className="cancel"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  this.resetSubmitUrl();
-                }}
-              >
-                <Icon name={clearSVG} size="30px" />
-              </Button>
-            </Button.Group>
-          </div>
-        )}
-        {!imageSrc?.download && (
-          <Dropzone
-            noClick
-            onDrop={this.onDrop}
-            onDragEnter={this.onDragEnter}
-            onDragLeave={this.onDragLeave}
-            className="dropzone"
-          >
-            {({ getRootProps, getInputProps }) => (
-              <div {...getRootProps()}>
-                <Message>
-                  {this.state.dragging && <Dimmer active></Dimmer>}
-                  {this.state.uploading && (
-                    <Dimmer active>
-                      <Loader indeterminate>Uploading image</Loader>
-                    </Dimmer>
-                  )}
-                  <div
-                    className="no-image-wrapper"
-                    style={{ textAlign: 'center' }}
-                  >
-                    <img src={imageBlockSVG} alt="" />
-                    <div className="toolbar-inner">
-                      <Button.Group>
+      )}
+      {!imageSrc?.download && (
+        <Dropzone
+          noClick
+          onDrop={onDrop}
+          onDragEnter={onDragEnter}
+          onDragLeave={onDragLeave}
+          className="dropzone"
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div {...getRootProps()}>
+              <Message>
+                {dragging && <Dimmer active></Dimmer>}
+                {uploading && (
+                  <Dimmer active>
+                    <Loader indeterminate>Uploading image</Loader>
+                  </Dimmer>
+                )}
+                <div
+                  className="no-image-wrapper"
+                  style={{ textAlign: 'center' }}
+                >
+                  <img src={imageBlockSVG} alt="" />
+                  <div className="toolbar-inner">
+                    <Button.Group>
+                      <Button
+                        basic
+                        icon
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          openObjectBrowser({
+                            mode: 'image',
+                            currentPath: pathname,
+                            onSelectItem: (
+                              itemUrl,
+                              { title: itemTitle, image_field, image_scales },
+                            ) => {
+                              onItemChange(id, flattenHTMLToAppURL(itemUrl), {
+                                '@id': flattenHTMLToAppURL(itemUrl),
+                                title: itemTitle,
+                                image_field,
+                                image_scales,
+                              });
+                            },
+                          });
+                        }}
+                      >
+                        <Icon name={navTreeSVG} size="24px" />
+                      </Button>
+                      <Button as="label" basic icon>
+                        <Icon name={uploadSVG} size="24px" />
+                        <input
+                          {...getInputProps({
+                            type: 'file',
+                            onChange: onUploadImage,
+                            style: { display: 'none' },
+                          })}
+                        />
+                      </Button>
+                    </Button.Group>
+                    <div style={{ flexGrow: 1 }} />
+                    <Input
+                      onChange={onChangeUrl}
+                      placeholder={currentPlaceholder}
+                      value={isString(url) ? url : url?.['@id'] || ''}
+                    />
+                    <div style={{ flexGrow: 1 }} />
+                    <Button.Group>
+                      {url && (
                         <Button
                           basic
                           icon
+                          secondary
+                          className="cancel"
                           onClick={(e) => {
                             e.stopPropagation();
-                            e.preventDefault();
-                            this.props.openObjectBrowser({
-                              mode: 'image',
-                              currentPath: this.props.pathname,
-                              onSelectItem: (
-                                url,
-                                { title, image_field, image_scales },
-                              ) => {
-                                this.onChange(
-                                  this.props.id,
-                                  flattenHTMLToAppURL(url),
-                                  {
-                                    '@id': flattenHTMLToAppURL(url),
-                                    title,
-                                    image_field,
-                                    image_scales,
-                                  },
-                                );
-                              },
-                            });
+                            resetSubmitUrl();
                           }}
                         >
-                          <Icon name={navTreeSVG} size="24px" />
+                          <Icon name={clearSVG} size="24px" />
                         </Button>
-                        <Button as="label" basic icon>
-                          <Icon name={uploadSVG} size="24px" />
-                          <input
-                            {...getInputProps({
-                              type: 'file',
-                              onChange: this.onUploadImage,
-                              style: { display: 'none' },
-                            })}
-                          />
-                        </Button>
-                      </Button.Group>
-                      <div style={{ flexGrow: 1 }} />
-                      <Input
-                        onChange={this.onChangeUrl}
-                        placeholder={placeholder}
-                        value={
-                          isString(this.state.url)
-                            ? this.state.url
-                            : this.state.url?.['@id'] || ''
-                        }
-                      />
-                      <div style={{ flexGrow: 1 }} />
-                      <Button.Group>
-                        {this.state.url && (
-                          <Button
-                            basic
-                            icon
-                            secondary
-                            className="cancel"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              this.resetSubmitUrl();
-                            }}
-                          >
-                            <Icon name={clearSVG} size="24px" />
-                          </Button>
-                        )}
-                        <Button
-                          basic
-                          icon
-                          primary
-                          disabled={!this.state.url}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            this.onSubmitUrl();
-                          }}
-                        >
-                          <Icon name={aheadSVG} size="24px" />
-                        </Button>
-                      </Button.Group>
-                    </div>
+                      )}
+                      <Button
+                        basic
+                        icon
+                        primary
+                        disabled={!url}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSubmitUrl();
+                        }}
+                      >
+                        <Icon name={aheadSVG} size="24px" />
+                      </Button>
+                    </Button.Group>
                   </div>
-                </Message>
-              </div>
-            )}
-          </Dropzone>
-        )}
-      </FormFieldWrapper>
+                </div>
+              </Message>
+            </div>
+          )}
+        </Dropzone>
+      )}
+    </FormFieldWrapper>
+  );
+};
+
+// PropTypes for the component
+AttachedImageWidget.propTypes = {
+  id: PropTypes.string,
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.object),
+    PropTypes.string,
+  ]),
+  block: PropTypes.string.isRequired,
+  request: PropTypes.shape({
+    loading: PropTypes.bool,
+    loaded: PropTypes.bool,
+  }).isRequired,
+  pathname: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  openObjectBrowser: PropTypes.func.isRequired,
+  selectedItemAttrs: PropTypes.array,
+  content: PropTypes.object,
+  createContent: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  intl: PropTypes.object.isRequired,
+};
+
+// Create a memoized version of the component for the default export
+const MemoizedAttachedImageWidget = React.memo(
+  AttachedImageWidget,
+  (prevProps, nextProps) => {
+    return (
+      isEqual(prevProps.value, nextProps.value) &&
+      isEqual(prevProps.request, nextProps.request)
     );
-  }
-}
+  },
+);
 
 export default compose(
   injectIntl,
@@ -423,4 +395,4 @@ export default compose(
       createContent,
     },
   ),
-)(AttachedImageWidget);
+)(MemoizedAttachedImageWidget);
