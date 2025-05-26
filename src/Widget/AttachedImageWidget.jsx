@@ -8,10 +8,18 @@ import { readAsDataURL } from 'promise-file-reader';
 
 import { defineMessages, injectIntl } from 'react-intl';
 import isString from 'lodash/isString';
-import { Dimmer, Loader, Message, Button, Input } from 'semantic-ui-react';
+import {
+  Dimmer,
+  Loader,
+  Message,
+  Button,
+  Input,
+  Modal,
+  Header,
+} from 'semantic-ui-react';
 import { FormFieldWrapper, Icon } from '@plone/volto/components';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
-import { createContent } from '@plone/volto/actions';
+import { createContent, searchContent } from '@plone/volto/actions';
 import {
   flattenHTMLToAppURL,
   flattenToAppURL,
@@ -35,6 +43,38 @@ const messages = defineMessages({
     id: 'Browse the site, drop an image, or type an URL',
     defaultMessage: 'Browse the site, drop an image, or type an URL',
   },
+  imageExistsWarning: {
+    id: 'image already exists',
+    defaultMessage: 'An image with this name already exists in this location.',
+  },
+  imageExistsQuestion: {
+    id: 'What would you like to do?',
+    defaultMessage: 'What would you like to do?',
+  },
+  replaceExisting: {
+    id: 'Replace existing image',
+    defaultMessage: 'Replace existing image',
+  },
+  useExisting: {
+    id: 'Use existing image',
+    defaultMessage: 'Use existing image',
+  },
+  existingImage: {
+    id: 'Existing image:',
+    defaultMessage: 'Existing image:',
+  },
+  uploadingImage: {
+    id: 'Uploading image...',
+    defaultMessage: 'Uploading image...',
+  },
+  location: {
+    id: 'Location:',
+    defaultMessage: 'Location:',
+  },
+  cancel: {
+    id: 'Cancel',
+    defaultMessage: 'Cancel',
+  },
 });
 
 // Define the component without memo for named export (for testing)
@@ -51,12 +91,18 @@ export const AttachedImageWidget = (props) => {
     selectedItemAttrs,
     content,
     createContent,
+    searchContent,
+    searchResults,
     placeholder,
     intl,
   } = props;
   const [uploading, setUploading] = useState(false);
   const [url, setUrl] = useState('');
   const [dragging, setDragging] = useState(false);
+  const [showExistsWarning, setShowExistsWarning] = useState(false);
+  const [existingImage, setExistingImage] = useState(null);
+  const [pendingImageData, setPendingImageData] = useState(null);
+  const [checkingExists, setCheckingExists] = useState(false);
 
   // Handle content upload completion
   useEffect(() => {
@@ -101,31 +147,146 @@ export const AttachedImageWidget = (props) => {
     id,
   ]);
 
+  // Check if a image with the same name exists in the current folder
+  const checkImageExists = useCallback(
+    (filename) => {
+      const baseUrl = getBaseUrl(pathname);
+      const searchKey = `image-exists-check-${block}`;
+
+      // Search for images with the exact filename in the current folder
+      searchContent(
+        baseUrl,
+        {
+          portal_type: 'Image',
+          'path.depth': 1, // Only direct children
+          id: `${filename}`, // Exact match with quotes
+        },
+        searchKey,
+      );
+
+      setCheckingExists(true);
+    },
+    [searchContent, pathname, block],
+  );
+
+  // Function to proceed with upload after checks
+  const proceedWithUpload = useCallback(
+    (imageData) => {
+      if (!imageData) return;
+
+      // Set uploading state to true so the upload completion logic works
+      setUploading(true);
+
+      createContent(
+        getBaseUrl(pathname),
+        {
+          '@type': 'Image',
+          title: imageData.filename,
+          image: {
+            data: imageData.data,
+            encoding: imageData.encoding,
+            'content-type': imageData.contentType,
+            filename: imageData.filename,
+          },
+        },
+        block,
+      );
+
+      // Clear pending image data
+      setPendingImageData(null);
+    },
+    [createContent, pathname, block],
+  );
+
+  // Handle search results for image existence check
+  useEffect(() => {
+    const searchKey = `image-exists-check-${block}`;
+    const searchResult = searchResults?.[searchKey];
+
+    if (
+      searchResult?.loaded &&
+      !searchResult.loading &&
+      checkingExists &&
+      pendingImageData
+    ) {
+      setCheckingExists(false);
+
+      const items = searchResult.items || [];
+
+      // Look for exact filename match
+      const existingImage = items.find((item) => {
+        // Check if the filename matches exactly
+        const itemFilename = item.image?.filename || item.title;
+        return itemFilename === pendingImageData.filename;
+      });
+
+      if (existingImage) {
+        // image exists, show warning dialog
+        setExistingImage(existingImage);
+        setShowExistsWarning(true);
+        setUploading(false);
+      } else {
+        // image doesn't exist, proceed with upload
+        proceedWithUpload(pendingImageData);
+      }
+    }
+  }, [
+    searchResults,
+    block,
+    checkingExists,
+    pendingImageData,
+    proceedWithUpload,
+  ]);
+
+  // Function to use existing image
+  const useExistingImage = useCallback(() => {
+    if (existingImage) {
+      onChange(id, [
+        {
+          '@id': flattenToAppURL(existingImage['@id']),
+          image_field: 'image',
+          title: existingImage.title,
+        },
+      ]);
+
+      // Reset state
+      setShowExistsWarning(false);
+      setExistingImage(null);
+      setPendingImageData(null);
+      setUploading(false);
+    }
+  }, [existingImage, onChange, id]);
+
+  // Function to cancel the upload
+  const cancelUpload = useCallback(() => {
+    setShowExistsWarning(false);
+    setExistingImage(null);
+    setPendingImageData(null);
+    setUploading(false);
+  }, []);
+
   const onUploadImage = useCallback(
     (e) => {
       e.stopPropagation();
-      const file = e.target.files[0];
+      const image = e.target.files[0];
       setUploading(true);
 
-      readAsDataURL(file).then((data) => {
+      readAsDataURL(image).then((data) => {
         const fields = data.match(/^data:(.*);(.*),(.*)$/);
-        createContent(
-          getBaseUrl(pathname),
-          {
-            '@type': 'Image',
-            title: file.name,
-            image: {
-              data: fields[3],
-              encoding: fields[2],
-              'content-type': fields[1],
-              filename: file.name,
-            },
-          },
-          block,
-        );
+
+        // Store image data for potential later use
+        setPendingImageData({
+          filename: image.name,
+          data: fields[3],
+          encoding: fields[2],
+          contentType: fields[1],
+        });
+
+        // Check if image exists
+        checkImageExists(image.name);
       });
     },
-    [createContent, pathname, block],
+    [checkImageExists],
   );
 
   const onChangeUrl = useCallback(({ target }) => {
@@ -155,28 +316,26 @@ export const AttachedImageWidget = (props) => {
   }, [onChange, id]);
 
   const onDrop = useCallback(
-    (file) => {
+    (image) => {
       setUploading(true);
+      setDragging(false);
 
-      readAsDataURL(file[0]).then((data) => {
+      readAsDataURL(image[0]).then((data) => {
         const fields = data.match(/^data:(.*);(.*),(.*)$/);
-        createContent(
-          getBaseUrl(pathname),
-          {
-            '@type': 'Image',
-            title: file[0].name,
-            image: {
-              data: fields[3],
-              encoding: fields[2],
-              'content-type': fields[1],
-              filename: file[0].name,
-            },
-          },
-          block,
-        );
+
+        // Store image data for potential later use
+        setPendingImageData({
+          filename: image[0].name,
+          data: fields[3],
+          encoding: fields[2],
+          contentType: fields[1],
+        });
+
+        // Check if image exists
+        checkImageExists(image[0].name);
       });
     },
-    [createContent, pathname, block],
+    [checkImageExists],
   );
 
   const onDragEnter = useCallback(() => {
@@ -224,6 +383,52 @@ export const AttachedImageWidget = (props) => {
       <div className="wrapper">
         <label>{title}</label>
       </div>
+
+      {/* image exists warning modal */}
+      <Modal open={showExistsWarning} size="small">
+        <Header content={intl.formatMessage(messages.imageExistsWarning)} />
+        <Modal.Content>
+          <p>{intl.formatMessage(messages.imageExistsQuestion)}</p>
+          {existingImage && (
+            <>
+              <p>
+                <strong>{intl.formatMessage(messages.existingImage)}</strong>{' '}
+                {existingImage.title}
+              </p>
+
+              <p>
+                <strong>{intl.formatMessage(messages.location)}</strong>{' '}
+                {flattenToAppURL(existingImage['@id'])}
+              </p>
+              <img
+                src={`${flattenToAppURL(
+                  existingImage['@id'],
+                )}/@@images/image/thumb`}
+                alt=""
+              />
+            </>
+          )}
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            primary
+            onClick={() => {
+              setShowExistsWarning(false);
+              setExistingImage(null);
+              proceedWithUpload(pendingImageData);
+            }}
+          >
+            {intl.formatMessage(messages.replaceExisting)}
+          </Button>
+          <Button secondary onClick={useExistingImage}>
+            {intl.formatMessage(messages.useExisting)}
+          </Button>
+          <Button onClick={cancelUpload}>
+            {intl.formatMessage(messages.cancel)}
+          </Button>
+        </Modal.Actions>
+      </Modal>
+
       {imageSrc && imageSrc.download && (
         <div className="preview">
           <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
@@ -256,7 +461,9 @@ export const AttachedImageWidget = (props) => {
                 {dragging && <Dimmer active></Dimmer>}
                 {uploading && (
                   <Dimmer active>
-                    <Loader indeterminate>Uploading image</Loader>
+                    <Loader indeterminate>
+                      {intl.formatMessage(messages.uploadingImage)}
+                    </Loader>
                   </Dimmer>
                 )}
                 <div
@@ -367,6 +574,8 @@ AttachedImageWidget.propTypes = {
   selectedItemAttrs: PropTypes.array,
   content: PropTypes.object,
   createContent: PropTypes.func.isRequired,
+  searchContent: PropTypes.func.isRequired,
+  searchResults: PropTypes.object,
   placeholder: PropTypes.string,
   intl: PropTypes.object.isRequired,
 };
@@ -377,7 +586,8 @@ const MemoizedAttachedImageWidget = React.memo(
   (prevProps, nextProps) => {
     return (
       isEqual(prevProps.value, nextProps.value) &&
-      isEqual(prevProps.request, nextProps.request)
+      isEqual(prevProps.request, nextProps.request) &&
+      isEqual(prevProps.searchResults, nextProps.searchResults)
     );
   },
 );
@@ -390,9 +600,11 @@ export default compose(
       pathname: state.router.location.pathname,
       request: state.content.subrequests[props.block] || {},
       content: state.content.subrequests[props.block]?.data,
+      searchResults: state.search.subrequests || {},
     }),
     {
       createContent,
+      searchContent,
     },
   ),
 )(MemoizedAttachedImageWidget);
