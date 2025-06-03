@@ -153,7 +153,7 @@ test-ci:
 start-ci:
 	cp .coverage.babel.config.js /app/babel.config.js
 	cd ../..
-	yarn start
+	RAZZLE_CI=true yarn start
 
 .PHONY: check-ci
 check-ci:
@@ -162,4 +162,4 @@ check-ci:
 .PHONY: cypress-ci
 cypress-ci:
 	$(NODE_MODULES)/.bin/wait-on -t 240000  http://localhost:3000
-	CYPRESS_API_PATH="${RAZZLE_DEV_PROXY_API_PATH}" NODE_ENV=development RAZZLE_CI=true  $(NODE_MODULES)/cypress/bin/cypress run --browser chromium
+	CYPRESS_API_PATH="${RAZZLE_DEV_PROXY_API_PATH}" NODE_ENV=development RAZZLE_CI=true  $(NODE_MODULES)/cypress/bin/cypress run --browser electron
