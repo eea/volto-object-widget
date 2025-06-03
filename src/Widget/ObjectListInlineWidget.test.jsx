@@ -8,10 +8,11 @@ import '@testing-library/jest-dom/extend-expect';
 jest.mock('@plone/volto/components', () => ({
   FormFieldWrapper: ({ children }) => <div>{children}</div>,
   DragDropList: ({ childList, onMoveItem, children }) => {
+    // Create mock drag info without jest functions to avoid DOM warnings
     const draginfo = {
-      innerRef: jest.fn(),
-      draggableProps: jest.fn(),
-      dragHandleProps: jest.fn(),
+      innerRef: () => {},
+      draggableProps: {},
+      dragHandleProps: {},
     };
     return (
       <div>

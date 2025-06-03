@@ -20,15 +20,19 @@ const ItemImage = ({ image, imageSize, verticalAlign }) => {
   );
 };
 
-const BlockView = (props) => (
-  <div>
-    <p>{JSON.stringify(props.data)} </p>
-    <ItemImage
-      image={props.data.image}
-      imageSize={props.data.imageSize || 'large'}
-      verticalAlign={props.data.verticalAlign || 'middle'}
-    />
-  </div>
-);
+const BlockView = (props) => {
+  const data = props.data || {};
+
+  return (
+    <div>
+      <p>{JSON.stringify(data)} </p>
+      <ItemImage
+        image={data.image}
+        imageSize={data.imageSize || 'large'}
+        verticalAlign={data.verticalAlign || 'middle'}
+      />
+    </div>
+  );
+};
 
 export default BlockView;
