@@ -111,31 +111,34 @@ export const AttachedImageWidget = (props) => {
     if (!request.loading && request.loaded && uploading) {
       setUploading(false);
 
-      if (selectedItemAttrs && content) {
-        const allowedItemKeys = [...selectedItemAttrs, 'title'];
-        const resultantItem = Object.keys(content)
-          .filter((key) => allowedItemKeys.includes(key))
-          .reduce((obj, key) => {
-            obj[key] = content[key];
-            return obj;
-          }, {});
+      // Defer onChange calls to avoid concurrent state updates
+      setTimeout(() => {
+        if (selectedItemAttrs && content) {
+          const allowedItemKeys = [...selectedItemAttrs, 'title'];
+          const resultantItem = Object.keys(content)
+            .filter((key) => allowedItemKeys.includes(key))
+            .reduce((obj, key) => {
+              obj[key] = content[key];
+              return obj;
+            }, {});
 
-        const finalItem = {
-          ...resultantItem,
-          '@id': flattenToAppURL(content['@id']),
-          image_field: 'image',
-        };
-
-        onChange(id, [finalItem]);
-      } else if (content) {
-        onChange(id, [
-          {
+          const finalItem = {
+            ...resultantItem,
             '@id': flattenToAppURL(content['@id']),
             image_field: 'image',
-            title: content.title,
-          },
-        ]);
-      }
+          };
+
+          onChange(id, [finalItem]);
+        } else if (content) {
+          onChange(id, [
+            {
+              '@id': flattenToAppURL(content['@id']),
+              image_field: 'image',
+              title: content.title,
+            },
+          ]);
+        }
+      }, 0);
     }
   }, [
     request.loading,
@@ -153,16 +156,19 @@ export const AttachedImageWidget = (props) => {
       const baseUrl = getBaseUrl(pathname);
       const searchKey = `image-exists-check-${block}`;
 
-      // Search for images with the exact filename in the current folder
-      searchContent(
-        baseUrl,
-        {
-          portal_type: 'Image',
-          'path.depth': 1, // Only direct children
-          id: `${filename}`, // Exact match with quotes
-        },
-        searchKey,
-      );
+      // Defer the search to avoid setState during render
+      setTimeout(() => {
+        // Search for images with the exact filename in the current folder
+        searchContent(
+          baseUrl,
+          {
+            portal_type: 'Image',
+            'path.depth': 1, // Only direct children
+            id: `${filename}`, // Exact match with quotes
+          },
+          searchKey,
+        );
+      }, 0);
 
       setCheckingExists(true);
     },
@@ -177,20 +183,23 @@ export const AttachedImageWidget = (props) => {
       // Set uploading state to true so the upload completion logic works
       setUploading(true);
 
-      createContent(
-        getBaseUrl(pathname),
-        {
-          '@type': 'Image',
-          title: imageData.filename,
-          image: {
-            data: imageData.data,
-            encoding: imageData.encoding,
-            'content-type': imageData.contentType,
-            filename: imageData.filename,
+      // Defer the createContent call to avoid setState during render
+      setTimeout(() => {
+        createContent(
+          getBaseUrl(pathname),
+          {
+            '@type': 'Image',
+            title: imageData.filename,
+            image: {
+              data: imageData.data,
+              encoding: imageData.encoding,
+              'content-type': imageData.contentType,
+              filename: imageData.filename,
+            },
           },
-        },
-        block,
-      );
+          block,
+        );
+      }, 0);
 
       // Clear pending image data
       setPendingImageData(null);
@@ -227,7 +236,10 @@ export const AttachedImageWidget = (props) => {
         setUploading(false);
       } else {
         // image doesn't exist, proceed with upload
-        proceedWithUpload(pendingImageData);
+        // Defer the call to avoid concurrent state updates
+        setTimeout(() => {
+          proceedWithUpload(pendingImageData);
+        }, 0);
       }
     }
   }, [
@@ -415,7 +427,10 @@ export const AttachedImageWidget = (props) => {
             onClick={() => {
               setShowExistsWarning(false);
               setExistingImage(null);
-              proceedWithUpload(pendingImageData);
+              // Defer to avoid potential concurrent state updates
+              setTimeout(() => {
+                proceedWithUpload(pendingImageData);
+              }, 0);
             }}
           >
             {intl.formatMessage(messages.replaceExisting)}
