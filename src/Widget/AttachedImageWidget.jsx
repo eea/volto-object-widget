@@ -1,6 +1,5 @@
 import { isEqual } from 'lodash';
 import loadable from '@loadable/component';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -111,34 +110,35 @@ export const AttachedImageWidget = (props) => {
     if (!request.loading && request.loaded && uploading) {
       setUploading(false);
 
-      // Defer onChange calls to avoid concurrent state updates
-      setTimeout(() => {
-        if (selectedItemAttrs && content) {
-          const allowedItemKeys = [...selectedItemAttrs, 'title'];
-          const resultantItem = Object.keys(content)
-            .filter((key) => allowedItemKeys.includes(key))
-            .reduce((obj, key) => {
-              obj[key] = content[key];
-              return obj;
-            }, {});
+      if (selectedItemAttrs && content) {
+        if (!content['@id']) {
+          return onChange(id, null);
+        }
+        const allowedItemKeys = [...selectedItemAttrs, 'title'];
+        const resultantItem = Object.keys(content)
+          .filter((key) => allowedItemKeys.includes(key))
+          .reduce((obj, key) => {
+            obj[key] = content[key];
+            return obj;
+          }, {});
 
-          const finalItem = {
-            ...resultantItem,
+        const finalItem = {
+          ...resultantItem,
+          '@id': flattenToAppURL(content['@id']),
+          image_field: 'image',
+        };
+
+        onChange(id, [finalItem]);
+      } else if (content) {
+        const uploadResult = [
+          {
             '@id': flattenToAppURL(content['@id']),
             image_field: 'image',
-          };
-
-          onChange(id, [finalItem]);
-        } else if (content) {
-          onChange(id, [
-            {
-              '@id': flattenToAppURL(content['@id']),
-              image_field: 'image',
-              title: content.title,
-            },
-          ]);
-        }
-      }, 0);
+            title: content.title,
+          },
+        ];
+        onChange(id, uploadResult);
+      }
     }
   }, [
     request.loading,
@@ -154,21 +154,19 @@ export const AttachedImageWidget = (props) => {
   const checkImageExists = useCallback(
     (filename) => {
       const baseUrl = getBaseUrl(pathname);
+
       const searchKey = `image-exists-check-${block}`;
 
-      // Defer the search to avoid setState during render
-      setTimeout(() => {
-        // Search for images with the exact filename in the current folder
-        searchContent(
-          baseUrl,
-          {
-            portal_type: 'Image',
-            'path.depth': 1, // Only direct children
-            id: `${filename}`, // Exact match with quotes
-          },
-          searchKey,
-        );
-      }, 0);
+      // Search for images with the exact filename in the current folder
+      searchContent(
+        baseUrl,
+        {
+          portal_type: 'Image',
+          'path.depth': 1, // Only direct children
+          id: `${filename}`, // Exact match with quotes
+        },
+        searchKey,
+      );
 
       setCheckingExists(true);
     },
@@ -183,23 +181,18 @@ export const AttachedImageWidget = (props) => {
       // Set uploading state to true so the upload completion logic works
       setUploading(true);
 
-      // Defer the createContent call to avoid setState during render
-      setTimeout(() => {
-        createContent(
-          getBaseUrl(pathname),
-          {
-            '@type': 'Image',
-            title: imageData.filename,
-            image: {
-              data: imageData.data,
-              encoding: imageData.encoding,
-              'content-type': imageData.contentType,
-              filename: imageData.filename,
-            },
-          },
-          block,
-        );
-      }, 0);
+      const contentData = {
+        '@type': 'Image',
+        title: imageData.filename,
+        image: {
+          data: imageData.data,
+          encoding: imageData.encoding,
+          'content-type': imageData.contentType,
+          filename: imageData.filename,
+        },
+      };
+
+      createContent(getBaseUrl(pathname), contentData, block);
 
       // Clear pending image data
       setPendingImageData(null);
@@ -236,10 +229,7 @@ export const AttachedImageWidget = (props) => {
         setUploading(false);
       } else {
         // image doesn't exist, proceed with upload
-        // Defer the call to avoid concurrent state updates
-        setTimeout(() => {
-          proceedWithUpload(pendingImageData);
-        }, 0);
+        proceedWithUpload(pendingImageData);
       }
     }
   }, [
@@ -253,13 +243,14 @@ export const AttachedImageWidget = (props) => {
   // Function to use existing image
   const useExistingImage = useCallback(() => {
     if (existingImage) {
-      onChange(id, [
+      const existingImageResult = [
         {
           '@id': flattenToAppURL(existingImage['@id']),
           image_field: 'image',
           title: existingImage.title,
         },
-      ]);
+      ];
+      onChange(id, existingImageResult);
 
       // Reset state
       setShowExistsWarning(false);
@@ -307,24 +298,26 @@ export const AttachedImageWidget = (props) => {
 
   const onSubmitUrl = useCallback(() => {
     if (isString(url)) {
-      onChange(id, [
+      const urlResult = [
         {
           '@id': flattenToAppURL(url),
           ...(isInternalURL(url) ? { image_field: 'image' } : {}),
         },
-      ]);
+      ];
+      onChange(id, urlResult);
     } else {
-      onChange(id, [
+      const objectResult = [
         {
           ...(url || {}),
         },
-      ]);
+      ];
+      onChange(id, objectResult);
     }
   }, [url, onChange, id]);
 
   const resetSubmitUrl = useCallback(() => {
     setUrl('');
-    onChange(id, '');
+    onChange(id, null);
   }, [onChange, id]);
 
   const onDrop = useCallback(
@@ -372,7 +365,8 @@ export const AttachedImageWidget = (props) => {
         resultantItem = { ...resultantItem, '@id': flattenToAppURL(itemUrl) };
         setUrl(resultantItem);
       } else {
-        setUrl(resultantItem || flattenToAppURL(itemUrl));
+        const finalUrl = resultantItem || flattenToAppURL(itemUrl);
+        setUrl(finalUrl);
       }
     },
     [selectedItemAttrs],
@@ -427,10 +421,7 @@ export const AttachedImageWidget = (props) => {
             onClick={() => {
               setShowExistsWarning(false);
               setExistingImage(null);
-              // Defer to avoid potential concurrent state updates
-              setTimeout(() => {
-                proceedWithUpload(pendingImageData);
-              }, 0);
+              proceedWithUpload(pendingImageData);
             }}
           >
             {intl.formatMessage(messages.replaceExisting)}
@@ -570,31 +561,6 @@ export const AttachedImageWidget = (props) => {
   );
 };
 
-// PropTypes for the component
-AttachedImageWidget.propTypes = {
-  id: PropTypes.string,
-  title: PropTypes.string,
-  value: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.object),
-    PropTypes.string,
-  ]),
-  block: PropTypes.string.isRequired,
-  request: PropTypes.shape({
-    loading: PropTypes.bool,
-    loaded: PropTypes.bool,
-  }).isRequired,
-  pathname: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  openObjectBrowser: PropTypes.func.isRequired,
-  selectedItemAttrs: PropTypes.array,
-  content: PropTypes.object,
-  createContent: PropTypes.func.isRequired,
-  searchContent: PropTypes.func.isRequired,
-  searchResults: PropTypes.object,
-  placeholder: PropTypes.string,
-  intl: PropTypes.object.isRequired,
-};
-
 // Create a memoized version of the component for the default export
 const MemoizedAttachedImageWidget = React.memo(
   AttachedImageWidget,
@@ -602,7 +568,10 @@ const MemoizedAttachedImageWidget = React.memo(
     return (
       isEqual(prevProps.value, nextProps.value) &&
       isEqual(prevProps.request, nextProps.request) &&
-      isEqual(prevProps.searchResults, nextProps.searchResults)
+      isEqual(prevProps.searchResults, nextProps.searchResults) &&
+      prevProps.onChange === nextProps.onChange &&
+      prevProps.id === nextProps.id &&
+      prevProps.block === nextProps.block
     );
   },
 );
