@@ -34,6 +34,12 @@ export const slateBeforeEach = (contentType = 'Document') => {
     contentTitle: 'My Page',
     path: 'cypress',
   });
+  cy.createContent({
+    contentType: 'Image',
+    contentId: 'my-Image',
+    contentTitle: 'My Image',
+    path: 'cypress/my-page',
+  });
   cy.visit('/cypress/my-page');
   cy.waitForResourceToLoad('my-page');
   cy.navigate('/cypress/my-page/edit');

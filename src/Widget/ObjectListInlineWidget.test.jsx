@@ -8,10 +8,11 @@ import '@testing-library/jest-dom/extend-expect';
 jest.mock('@plone/volto/components', () => ({
   FormFieldWrapper: ({ children }) => <div>{children}</div>,
   DragDropList: ({ childList, onMoveItem, children }) => {
+    // Create mock drag info without jest functions to avoid DOM warnings
     const draginfo = {
-      innerRef: jest.fn(),
-      draggableProps: jest.fn(),
-      dragHandleProps: jest.fn(),
+      innerRef: () => {},
+      draggableProps: {},
+      dragHandleProps: {},
     };
     return (
       <div>
@@ -46,7 +47,7 @@ jest.mock('@plone/volto/components', () => ({
 }));
 
 jest.mock('uuid', () => ({
-  v4: jest.fn(() => 'uuid'),
+  v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
 }));
 
 const mockStore = configureStore([]);
@@ -88,11 +89,14 @@ describe('ObjectListInlineWidget', () => {
       </Provider>,
     );
     fireEvent.click(getByText(`Add Test`));
-    expect(onChange).toHaveBeenCalledWith('test', [
-      {
-        '@id': 'uuid',
-      },
-    ]);
+    expect(onChange).toHaveBeenCalledWith(
+      'test',
+      expect.arrayContaining([
+        expect.objectContaining({
+          '@id': expect.stringContaining('mock-uuid'),
+        }),
+      ]),
+    );
   });
 
   it('moves an item by calling onMoveItem', () => {

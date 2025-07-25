@@ -9,6 +9,7 @@ import {
   UrlWidget,
   InternalUrlWidget,
 } from './Widget';
+import { default as installDemo } from './demo';
 
 export {
   ObjectListWidget,
@@ -18,8 +19,6 @@ export {
   ObjectTypesWidget,
   AttachedFileWidget,
 } from './Widget';
-
-export { default as installDemo } from './demo';
 
 const applyConfig = (config) => {
   if (config.widgets?.widget) {
@@ -34,7 +33,18 @@ const applyConfig = (config) => {
     config.widgets.widget.internal_url = InternalUrlWidget;
   }
 
+  if (process.env.RAZZLE_CI) {
+    return installDemo(config);
+  }
+
   return config;
 };
+
+// due to bug with plone/scripts before 18 we can't load addon profiles
+// when we switch to volto 18 we can remove the condition above and
+// uncomment the line below to install the demo block in cypress testing
+// export const cypressTesting = (config) => {
+//   return installDemo(config);
+// };
 
 export default applyConfig;

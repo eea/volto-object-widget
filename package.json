@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-object-widget",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "volto-object-widget: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -19,15 +19,14 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
-    "@plone/scripts": "*",
+    "@plone/scripts": "^3.6.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "cypress": "13.1.0",
+    "cypress-file-upload": "^5.0.8",
     "dotenv": "^16.3.2",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "md5": "^2.3.0"
-  },
-  "dependencies": {
-    "@eeacms/volto-resize-helper": "*"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [

@@ -1,64 +1,100 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Plone\n"
-"POT-Creation-Date: 2023-08-29T17:55:15.248Z\n"
+"POT-Creation-Date: 2025-06-09T20:07:46.252Z\n"
 "Last-Translator: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
 "Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
-"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8\n"
 "Domain: volto\n"
 
+#. Default: "Add {schemaTitle}"
 #: Widget/ObjectListWidget
-# defaultMessage: Add {schemaTitle}
 msgid "Add {schemaTitle}"
 msgstr ""
 
+#. Default: "Browse the site"
 #: Widget/AttachedFileWidget
-# defaultMessage: Browse the site
 msgid "Browse the site"
 msgstr ""
 
+#. Default: "Browse the site, drop an image, or type an URL"
 #: Widget/AttachedImageWidget
-# defaultMessage: Browse the site, drop an image, or type an URL
 msgid "Browse the site, drop an image, or type an URL"
 msgstr ""
 
+#. Default: "Cancel"
+#: Widget/AttachedImageWidget
 #: Widget/ObjectListWidget
-# defaultMessage: Cancel
 msgid "Cancel"
 msgstr ""
 
+#. Default: "Click the Add button below to add an item to this empty list."
 #: Widget/ObjectListWidget
-# defaultMessage: Click the Add button below to add an item to this empty list.
 msgid "Click the Add button below to add an item to this empty list."
 msgstr ""
 
+#. Default: "Delete"
 #: Widget/ObjectListWidget
-# defaultMessage: Delete
 msgid "Delete"
 msgstr ""
 
+#. Default: "Drop files here or click to upload"
 #: Widget/AttachedFileWidget
-# defaultMessage: Drop files here or click to upload
 msgid "Drop files here or click to upload"
 msgstr ""
 
+#. Default: "Edit"
 #: Widget/ObjectListWidget
-# defaultMessage: Edit
 msgid "Edit"
 msgstr ""
 
+#. Default: "Existing image:"
+#: Widget/AttachedImageWidget
+msgid "Existing image:"
+msgstr ""
+
+#. Default: "Location:"
+#: Widget/AttachedImageWidget
+msgid "Location:"
+msgstr ""
+
+#. Default: "Replace existing image"
+#: Widget/AttachedImageWidget
+msgid "Replace existing image"
+msgstr ""
+
+#. Default: "Save"
 #: Widget/ObjectListWidget
-# defaultMessage: Save
 msgid "Save"
 msgstr ""
 
+#. Default: "Uploading image..."
+#: Widget/AttachedImageWidget
+msgid "Uploading image..."
+msgstr ""
+
+#. Default: "Use existing image"
+#: Widget/AttachedImageWidget
+msgid "Use existing image"
+msgstr ""
+
+#. Default: "What would you like to do?"
+#: Widget/AttachedImageWidget
+msgid "What would you like to do?"
+msgstr ""
+
+#. Default: "An image with this name already exists in this location."
+#: Widget/AttachedImageWidget
+msgid "image already exists"
+msgstr ""
+
+#. Default: "{count} x {type}"
 #: Widget/ObjectListWidget
-# defaultMessage: {count} x {type}
 msgid "{count} x {type}"
 msgstr ""

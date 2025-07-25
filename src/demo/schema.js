@@ -71,7 +71,7 @@ export const CombinedSchema = {
     {
       id: 'settings',
       title: 'Settings',
-      fields: ['position', 'css_class'],
+      fields: ['image', 'position', 'css_class'],
     },
     {
       id: 'link',
@@ -108,6 +108,10 @@ export const CombinedSchema = {
       title: 'Tabs',
       schema: Tab,
       description: 'This is a verification.',
+    },
+    image: {
+      widget: 'attachedimage',
+      title: 'Attached image',
     },
     position: {
       title: 'Position',
