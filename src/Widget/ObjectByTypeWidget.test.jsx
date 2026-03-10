@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ObjectByTypeWidget from './ObjectByTypeWidget';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 jest.mock('@plone/volto/components', () => ({
   Icon: ({ name }) => <div data-testid={`icon-${name}`}>Icon</div>,

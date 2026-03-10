@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import AttachedFileWidget from './AttachedFileWidget';
 import { Provider } from 'react-intl-redux';
 import configureStore from 'redux-mock-store';
