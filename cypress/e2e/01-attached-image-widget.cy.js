@@ -5,12 +5,12 @@ describe('AttachedImageWidget - Comprehensive Tests', () => {
   afterEach(slateAfterEach);
 
   const setupObjectWidgetDemo = () => {
+    const titleSelector = '.block.inner.title [contenteditable="true"]';
+
     // Setup page
-    cy.get('[contenteditable=true]').first().clear();
-    cy.get('[contenteditable=true]')
-      .first()
-      .type('AttachedImageWidget Comprehensive Test');
-    cy.get('[contenteditable=true]').first().type('{enter}');
+    cy.get(titleSelector).clear();
+    cy.get(titleSelector).type('AttachedImageWidget Comprehensive Test');
+    cy.get(titleSelector).type('{enter}');
 
     // Add ObjectWidgetDemo block
     cy.get('.ui.basic.icon.button.block-add-button').first().click();
