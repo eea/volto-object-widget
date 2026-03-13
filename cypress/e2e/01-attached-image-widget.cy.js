@@ -14,9 +14,12 @@ describe('AttachedImageWidget - Comprehensive Tests', () => {
 
     // Add ObjectWidgetDemo block
     cy.get('.ui.basic.icon.button.block-add-button').first().click();
-    cy.get('.content.active .button.ObjectWidgetDemo')
+    cy.get(".blocks-chooser .ui.form .field.searchbox input[type='text']").type(
+      'ObjectWidget',
+    );
+    cy.get('.button.ObjectWidgetDemo')
       .contains('ObjectWidget Demo')
-      .click();
+      .click({ force: true });
 
     // Wait for the block to be created
     cy.get('.block.ObjectWidgetDemo').should('be.visible');
