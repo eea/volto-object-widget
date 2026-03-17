@@ -5,6 +5,10 @@ import AttachedFileWidget from './AttachedFileWidget';
 import { Provider } from 'react-intl-redux';
 import configureStore from 'redux-mock-store';
 
+jest.mock('@plone/volto/components/manage/Sidebar/ObjectBrowser', () => {
+  return (Component) => Component;
+});
+
 jest.mock('promise-file-reader', () => ({
   readAsDataURL: jest.fn(() =>
     Promise.resolve('data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=='),
@@ -67,15 +71,12 @@ describe('AttachedFileWidget', () => {
     expect(dropzone).toBeInTheDocument();
 
     const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-    Object.defineProperty(dropzone, 'files', {
-      value: [file],
-    });
-    fireEvent.drop(dropzone);
+    fireEvent.change(dropzone, { target: { files: [file] } });
 
     await waitFor(() => expect(mockOnChange).toHaveBeenCalled());
   });
 
-  it('calls onChange when delete button is clicked', () => {
+  it('calls onChange when delete button is clicked', async () => {
     render(
       <Provider store={store}>
         <AttachedFileWidget
@@ -88,7 +89,7 @@ describe('AttachedFileWidget', () => {
       </Provider>,
     );
 
-    const deleteButton = screen.getByLabelText('delete file');
+    const deleteButton = await screen.findByLabelText('delete file');
     fireEvent.click(deleteButton);
 
     expect(mockOnChange).toHaveBeenCalledWith('testId', null);
