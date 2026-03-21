@@ -1,6 +1,12 @@
 import { isEqual } from 'lodash';
 import loadable from '@loadable/component';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
@@ -102,43 +108,54 @@ export const AttachedImageWidget = (props) => {
   const [existingImage, setExistingImage] = useState(null);
   const [pendingImageData, setPendingImageData] = useState(null);
   const [checkingExists, setCheckingExists] = useState(false);
+  const uploadRequestWasLoading = useRef(false);
+  const searchRequestWasLoading = useRef(false);
 
   // Handle content upload completion
   useEffect(() => {
-    if (request.loading && !uploading) return;
+    const isRequestLoading = Boolean(request.loading);
+    const wasRequestLoading = uploadRequestWasLoading.current;
+    uploadRequestWasLoading.current = isRequestLoading;
 
-    if (!request.loading && request.loaded && uploading) {
-      setUploading(false);
+    if (
+      !wasRequestLoading ||
+      isRequestLoading ||
+      !request.loaded ||
+      !uploading
+    ) {
+      return;
+    }
 
-      if (selectedItemAttrs && content) {
-        if (!content['@id']) {
-          return onChange(id, null);
-        }
-        const allowedItemKeys = [...selectedItemAttrs, 'title'];
-        const resultantItem = Object.keys(content)
-          .filter((key) => allowedItemKeys.includes(key))
-          .reduce((obj, key) => {
-            obj[key] = content[key];
-            return obj;
-          }, {});
+    setUploading(false);
 
-        const finalItem = {
-          ...resultantItem,
+    if (selectedItemAttrs && content) {
+      if (!content['@id']) {
+        return onChange(id, null);
+      }
+      const allowedItemKeys = [...selectedItemAttrs, 'title'];
+      const resultantItem = Object.keys(content)
+        .filter((key) => allowedItemKeys.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = content[key];
+          return obj;
+        }, {});
+
+      const finalItem = {
+        ...resultantItem,
+        '@id': flattenToAppURL(content['@id']),
+        image_field: 'image',
+      };
+
+      onChange(id, [finalItem]);
+    } else if (content) {
+      const uploadResult = [
+        {
           '@id': flattenToAppURL(content['@id']),
           image_field: 'image',
-        };
-
-        onChange(id, [finalItem]);
-      } else if (content) {
-        const uploadResult = [
-          {
-            '@id': flattenToAppURL(content['@id']),
-            image_field: 'image',
-            title: content.title,
-          },
-        ];
-        onChange(id, uploadResult);
-      }
+          title: content.title,
+        },
+      ];
+      onChange(id, uploadResult);
     }
   }, [
     request.loading,
@@ -204,10 +221,14 @@ export const AttachedImageWidget = (props) => {
   useEffect(() => {
     const searchKey = `image-exists-check-${block}`;
     const searchResult = searchResults?.[searchKey];
+    const isSearchLoading = Boolean(searchResult?.loading);
+    const wasSearchLoading = searchRequestWasLoading.current;
+    searchRequestWasLoading.current = isSearchLoading;
 
     if (
       searchResult?.loaded &&
-      !searchResult.loading &&
+      !isSearchLoading &&
+      wasSearchLoading &&
       checkingExists &&
       pendingImageData
     ) {
