@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
 import ObjectListInlineWidget from './ObjectListInlineWidget';
 import configureStore from 'redux-mock-store';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 jest.mock('@plone/volto/components', () => ({
   FormFieldWrapper: ({ children }) => <div>{children}</div>,
