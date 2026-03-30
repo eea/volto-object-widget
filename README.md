@@ -3,16 +3,16 @@
 [![Releases](https://img.shields.io/github/v/release/eea/volto-object-widget)](https://github.com/eea/volto-object-widget/releases)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-object-widget%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-object-widget/job/master/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-master)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-object-widget%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-object-widget/job/develop/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget-develop)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&branch=develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget&branch=develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&branch=develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget&branch=develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&branch=develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget&branch=develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-object-widget&branch=develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-object-widget&branch=develop)
 
 [Volto](https://github.com/plone/volto) add-on: Various Volto schema-based widgets.
 
@@ -171,6 +171,11 @@ To use this widget, in the schema, set the `widget` field to `object_by_type`.
 
 Go to http://localhost:3000
 
+`make start` now defaults to Volto 18. To run the same setup against Volto 17, use:
+
+      VOLTO_VERSION=17 make
+      VOLTO_VERSION=17 make start
+
 ### Add volto-object-widget to your Volto project
 
 1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
@@ -184,29 +189,38 @@ Go to http://localhost:3000
 * If you already have a volto project, just update `package.json`:
 
    ```JSON
-   "addons": [
-       "@eeacms/volto-object-widget"
-   ],
-
    "dependencies": {
        "@eeacms/volto-object-widget": "*"
    }
    ```
 
-* If not, create one:
+   and `volto.config.js`:
 
-   ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-object-widget
-   cd my-volto-project
+   ```JavaScript
+   const addons = ['@eeacms/volto-object-widget'];
    ```
 
-1. Install new add-ons and restart Volto:
+* If not, create one with Cookieplone, as recommended by the official Plone documentation for Volto 18+:
 
    ```
-   yarn
-   yarn start
+   uvx cookieplone project
+   cd project-title
    ```
+
+1. Install or update dependencies, then start the project:
+
+   ```
+   make install
+   ```
+
+   For a Cookieplone project, start the backend and frontend in separate terminals:
+
+   ```
+   make backend-start
+   make frontend-start
+   ```
+
+   For a legacy Volto 17 project, install the package with `yarn` and restart the frontend as usual.
 
 1. Go to http://localhost:3000
 
