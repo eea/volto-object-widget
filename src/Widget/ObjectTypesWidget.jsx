@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, Tab } from 'semantic-ui-react';
-import { ObjectWidget } from '@plone/volto/components';
+import { ObjectWidget } from '@plone/volto/components/manage/Widgets';
 import { connect } from 'react-redux';
 
 const getDeviceConfig = (width) => {

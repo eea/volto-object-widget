@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import loadable from '@loadable/component';
 import React, {
   useState,
@@ -22,15 +22,17 @@ import {
   Modal,
   Header,
 } from 'semantic-ui-react';
-import { FormFieldWrapper, Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
-import { createContent, searchContent } from '@plone/volto/actions';
+import { createContent } from '@plone/volto/actions/content/content';
+import { searchContent } from '@plone/volto/actions/search/search';
 import {
   flattenHTMLToAppURL,
   flattenToAppURL,
   isInternalURL,
   getBaseUrl,
-} from '@plone/volto/helpers';
+} from '@plone/volto/helpers/Url/Url';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';

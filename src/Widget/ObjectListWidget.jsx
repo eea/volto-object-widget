@@ -2,11 +2,11 @@ import { Input, Button, Grid, Modal, Segment } from 'semantic-ui-react';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
 import {
-  Icon as VoltoIcon,
   FormFieldWrapper,
   ObjectWidget,
-} from '@plone/volto/components';
+} from '@plone/volto/components/manage/Widgets';
 
 import penSVG from '@plone/volto/icons/pen.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';

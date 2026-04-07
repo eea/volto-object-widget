@@ -6,7 +6,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import { UniversalLink } from '@plone/volto/components';
+import UniversalLink from '@plone/volto/components/manage/UniversalLink/UniversalLink';
 import VoltoInternalUrlWidget from '@plone/volto/components/manage/Widgets/InternalUrlWidget';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
 
