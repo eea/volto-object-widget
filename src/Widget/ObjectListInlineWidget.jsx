@@ -3,10 +3,8 @@ import { Accordion, Button, Segment } from 'semantic-ui-react';
 import React from 'react';
 import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
 import DragDropList from '@plone/volto/components/manage/DragDropList/DragDropList';
-import {
-  FormFieldWrapper,
-  ObjectWidget,
-} from '@plone/volto/components/manage/Widgets';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
+import ObjectWidget from '@plone/volto/components/manage/Widgets/ObjectWidget';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import addSVG from '@plone/volto/icons/add.svg';
 import dragSVG from '@plone/volto/icons/drag.svg';

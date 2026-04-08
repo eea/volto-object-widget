@@ -3,10 +3,8 @@ import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import VoltoIcon from '@plone/volto/components/theme/Icon/Icon';
-import {
-  FormFieldWrapper,
-  ObjectWidget,
-} from '@plone/volto/components/manage/Widgets';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
+import ObjectWidget from '@plone/volto/components/manage/Widgets/ObjectWidget';
 
 import penSVG from '@plone/volto/icons/pen.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';

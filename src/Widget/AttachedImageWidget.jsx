@@ -21,9 +21,10 @@ import {
   Input,
   Modal,
   Header,
+  Image,
 } from 'semantic-ui-react';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
-import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
 import { createContent } from '@plone/volto/actions/content/content';
 import { searchContent } from '@plone/volto/actions/search/search';
@@ -429,7 +430,7 @@ export const AttachedImageWidget = (props) => {
                 <strong>{intl.formatMessage(messages.location)}</strong>{' '}
                 {flattenToAppURL(existingImage['@id'])}
               </p>
-              <img
+              <Image
                 src={`${flattenToAppURL(
                   existingImage['@id'],
                 )}/@@images/image/thumb`}
@@ -460,7 +461,7 @@ export const AttachedImageWidget = (props) => {
 
       {imageSrc && imageSrc.download && (
         <div className="preview">
-          <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
+          <Image src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
           <Button.Group>
             <Button
               basic
@@ -499,7 +500,7 @@ export const AttachedImageWidget = (props) => {
                   className="no-image-wrapper"
                   style={{ textAlign: 'center' }}
                 >
-                  <img src={imageBlockSVG} alt="" />
+                  <Image src={imageBlockSVG} alt="" />
                   <div className="toolbar-inner">
                     <Button.Group>
                       <Button

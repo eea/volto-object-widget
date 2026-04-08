@@ -4,7 +4,7 @@ import { Button, Dimmer, Input } from 'semantic-ui-react';
 import { readAsDataURL } from 'promise-file-reader';
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
-import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import loadable from '@loadable/component';
 import { flattenToAppURL, isInternalURL } from '@plone/volto/helpers/Url/Url';
 import { useSelector } from 'react-redux';

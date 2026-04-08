@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
-import { Field } from '@plone/volto/components/manage/Form';
+import Field from '@plone/volto/components/manage/Form/Field';
 
 const MappingWidget = (props) => {
   const {

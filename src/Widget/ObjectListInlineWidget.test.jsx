@@ -5,9 +5,25 @@ import ObjectListInlineWidget from './ObjectListInlineWidget';
 import configureStore from 'redux-mock-store';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components', () => ({
-  FormFieldWrapper: ({ children }) => <div>{children}</div>,
-  DragDropList: ({ childList, onMoveItem, children }) => {
+jest.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
+  return function MockFormFieldWrapper({ children }) {
+    return <div>{children}</div>;
+  };
+});
+
+jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+  return function MockObjectWidget({ onChange }) {
+    return (
+      <div className="objectwidget-mock">
+        <div>ObjectWidget</div>
+        <input onChange={onChange} />
+      </div>
+    );
+  };
+});
+
+jest.mock('@plone/volto/components/manage/DragDropList/DragDropList', () => {
+  return ({ childList, onMoveItem, children }) => {
     // Create mock drag info without jest functions to avoid DOM warnings
     const draginfo = {
       innerRef: () => {},
@@ -36,15 +52,12 @@ jest.mock('@plone/volto/components', () => ({
         ))}
       </div>
     );
-  },
-  ObjectWidget: ({ onChange }) => (
-    <div className="objectwidget-mock">
-      <div>ObjectWidget</div>
-      <input onChange={onChange} />
-    </div>
-  ),
-  Icon: () => <div>VoltoIcon</div>,
-}));
+  };
+});
+
+jest.mock('@plone/volto/components/theme/Icon/Icon', () => () => (
+  <div>VoltoIcon</div>
+));
 
 jest.mock('uuid', () => ({
   v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
