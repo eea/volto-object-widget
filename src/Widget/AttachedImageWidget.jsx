@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import loadable from '@loadable/component';
 import React, {
   useState,
@@ -21,16 +21,19 @@ import {
   Input,
   Modal,
   Header,
+  Image,
 } from 'semantic-ui-react';
-import { FormFieldWrapper, Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import withObjectBrowser from '@plone/volto/components/manage/Sidebar/ObjectBrowser';
-import { createContent, searchContent } from '@plone/volto/actions';
+import { createContent } from '@plone/volto/actions/content/content';
+import { searchContent } from '@plone/volto/actions/search/search';
 import {
   flattenHTMLToAppURL,
   flattenToAppURL,
   isInternalURL,
   getBaseUrl,
-} from '@plone/volto/helpers';
+} from '@plone/volto/helpers/Url/Url';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';
@@ -427,7 +430,7 @@ export const AttachedImageWidget = (props) => {
                 <strong>{intl.formatMessage(messages.location)}</strong>{' '}
                 {flattenToAppURL(existingImage['@id'])}
               </p>
-              <img
+              <Image
                 src={`${flattenToAppURL(
                   existingImage['@id'],
                 )}/@@images/image/thumb`}
@@ -458,7 +461,7 @@ export const AttachedImageWidget = (props) => {
 
       {imageSrc && imageSrc.download && (
         <div className="preview">
-          <img src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
+          <Image src={imageSrc?.download ?? imageSrc?.['@id']} alt="Preview" />
           <Button.Group>
             <Button
               basic
@@ -497,7 +500,7 @@ export const AttachedImageWidget = (props) => {
                   className="no-image-wrapper"
                   style={{ textAlign: 'center' }}
                 >
-                  <img src={imageBlockSVG} alt="" />
+                  <Image src={imageBlockSVG} alt="" />
                   <div className="toolbar-inner">
                     <Button.Group>
                       <Button

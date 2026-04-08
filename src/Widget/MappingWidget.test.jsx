@@ -3,15 +3,17 @@ import { render, fireEvent } from '@testing-library/react';
 import MappingWidget from './MappingWidget';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components', () => ({
-  Field: ({ id, value, onChange }) => (
-    <input
-      data-testid={`field-${id}`}
-      value={value || ''}
-      onChange={(e) => onChange(id, e.target.value)}
-    />
-  ),
-}));
+jest.mock('@plone/volto/components/manage/Form/Field', () => {
+  return function MockField({ id, value, onChange }) {
+    return (
+      <input
+        data-testid={`field-${id}`}
+        value={value || ''}
+        onChange={(e) => onChange(id, e.target.value)}
+      />
+    );
+  };
+});
 
 describe('MappingWidget', () => {
   beforeEach(() => {
