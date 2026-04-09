@@ -13,11 +13,17 @@ jest.mock('uuid', () => ({
   v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
 }));
 
-jest.mock('@plone/volto/components', () => {
-  const React = require('react');
-  return {
-    Icon: () => <svg />,
-    FormFieldWrapper: ({ children, id, title, description, className }) => (
+jest.mock('@plone/volto/components/theme/Icon/Icon', () => () => <svg />);
+
+jest.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
+  return function MockFormFieldWrapper({
+    children,
+    id,
+    title,
+    description,
+    className,
+  }) {
+    return (
       <div
         className={`inline required field help ${className} field-wrapper-${id}`}
       >
@@ -30,39 +36,45 @@ jest.mock('@plone/volto/components', () => {
         {children}
         {description ? <p className="help">{description}</p> : null}
       </div>
-    ),
-    ObjectWidget: ({ id, schema }) => {
-      const [activeId, setActiveId] = React.useState(schema.fieldsets[0].id);
-      const activeFieldset =
-        schema.fieldsets.find((fieldset) => fieldset.id === activeId) ||
-        schema.fieldsets[0];
-      const field = activeFieldset.fields[0];
-      const fieldTitle = schema.properties[field]?.title || field;
-      return (
-        <div>
-          <div className="ui attached tabular menu">
-            {schema.fieldsets.map((fieldset) => (
-              <button
-                type="button"
-                key={fieldset.id}
-                className={fieldset.id === activeId ? 'active item' : 'item'}
-                onClick={() => setActiveId(fieldset.id)}
-              >
-                {fieldset.title}
-              </button>
-            ))}
-          </div>
-          <div className="ui bottom attached segment active tab">
-            <div
-              className="mocked-default-widget"
-              id={`mocked-field-${field}-0-${id}`}
+    );
+  };
+});
+
+jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+  const React = require('react');
+
+  return function MockObjectWidget({ id, schema }) {
+    const [activeId, setActiveId] = React.useState(schema.fieldsets[0].id);
+    const activeFieldset =
+      schema.fieldsets.find((fieldset) => fieldset.id === activeId) ||
+      schema.fieldsets[0];
+    const field = activeFieldset.fields[0];
+    const fieldTitle = schema.properties[field]?.title || field;
+
+    return (
+      <div>
+        <div className="ui attached tabular menu">
+          {schema.fieldsets.map((fieldset) => (
+            <button
+              type="button"
+              key={fieldset.id}
+              className={fieldset.id === activeId ? 'active item' : 'item'}
+              onClick={() => setActiveId(fieldset.id)}
             >
-              {fieldTitle} - No description
-            </div>
+              {fieldset.title}
+            </button>
+          ))}
+        </div>
+        <div className="ui bottom attached segment active tab">
+          <div
+            className="mocked-default-widget"
+            id={`mocked-field-${field}-0-${id}`}
+          >
+            {fieldTitle} - No description
           </div>
         </div>
-      );
-    },
+      </div>
+    );
   };
 });
 

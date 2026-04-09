@@ -3,15 +3,20 @@ import { render, fireEvent } from '@testing-library/react';
 import ObjectByTypeWidget from './ObjectByTypeWidget';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components', () => ({
-  Icon: ({ name }) => <div data-testid={`icon-${name}`}>Icon</div>,
-  ObjectWidget: ({ id, onChange }) => (
-    <div data-testid={`objectwidget-${id}`}>
-      <div>ObjectWidget</div>
-      <input id={`objectwidget-${id}`} onChange={onChange} />
-    </div>
-  ),
-}));
+jest.mock('@plone/volto/components/theme/Icon/Icon', () => {
+  return ({ name }) => <div data-testid={`icon-${name}`}>Icon</div>;
+});
+
+jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+  return function MockObjectWidget({ id, onChange }) {
+    return (
+      <div data-testid={`objectwidget-${id}`}>
+        <div>ObjectWidget</div>
+        <input id={`objectwidget-${id}`} onChange={onChange} />
+      </div>
+    );
+  };
+});
 
 describe('ObjectByTypeWidget', () => {
   beforeEach(() => {

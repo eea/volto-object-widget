@@ -3,9 +3,9 @@ import { render, fireEvent } from '@testing-library/react';
 import BlockEdit from './BlockEdit';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components', () => ({
-  SidebarPortal: ({ children }) => <div>{children}</div>,
-}));
+jest.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => {
+  return ({ children }) => <div>{children}</div>;
+});
 jest.mock('@plone/volto/components/manage/Form/InlineForm', () => (props) => (
   <div>
     <div>InlineForm</div>
@@ -15,6 +15,9 @@ jest.mock('@plone/volto/components/manage/Form/InlineForm', () => (props) => (
       onChange={(e) => props.onChangeField('foo', e.target.value)}
     />
   </div>
+));
+jest.mock('@plone/volto/components/theme/Image/Image', () => (props) => (
+  <img {...props} alt={props.alt || ''} />
 ));
 
 describe('BlockEdit', () => {
