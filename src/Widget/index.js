@@ -7,3 +7,4 @@ export { default as ObjectTypesWidget } from './ObjectTypesWidget';
 export { default as AttachedFileWidget } from './AttachedFileWidget';
 export { default as UrlWidget } from './UrlWidget';
 export { default as InternalUrlWidget } from './InternalUrlWidget';
+export { default as JsonWidget } from './JsonWidget/JsonWidget';
