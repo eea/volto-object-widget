@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button, Segment, TextArea, Modal } from 'semantic-ui-react';
-import { FormFieldWrapper } from '@plone/volto/components';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import { initEditor, destroyEditor, validateEditor } from './helpers';
 import 'jsoneditor/dist/jsoneditor.min.css';
 import './json-widget.css';
@@ -16,9 +16,10 @@ const JsonWidget = (props) => {
   const initialValue = value ? JSON.parse(JSON.stringify(value)) : {};
 
   useEffect(() => {
+    const editor = editorRef.current;
     return () => {
-      if (editorRef.current) {
-        destroyEditor(editorRef.current);
+      if (editor) {
+        destroyEditor(editor);
       }
     };
   }, []);
