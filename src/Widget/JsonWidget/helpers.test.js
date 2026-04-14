@@ -1,8 +1,4 @@
-import {
-  initEditor,
-  destroyEditor,
-  validateEditor,
-} from './helpers';
+import { initEditor, destroyEditor, validateEditor } from './helpers';
 
 jest.mock('jsoneditor/dist/jsoneditor.min', () => ({
   default: jest.fn().mockImplementation(() => ({
