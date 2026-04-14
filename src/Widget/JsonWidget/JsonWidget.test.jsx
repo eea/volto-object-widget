@@ -1,16 +1,17 @@
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import JsonWidget from './JsonWidget';
 jest.mock('jsoneditor/dist/jsoneditor.min.css', () => {});
 jest.mock('./json-widget.css', () => {});
-import JsonWidget from './JsonWidget';
 
 // Mock semantic-ui-react components to simple HTML elements
 jest.mock('semantic-ui-react', () => {
   const Button = (props) => <button {...props}>{props.children}</button>;
   const Segment = (props) => <div {...props}>{props.children}</div>;
   const TextArea = (props) => <textarea {...props} />; // readOnly will be passed
-  const Modal = ({ open, children }) => (open ? <div data-testid="modal">{children}</div> : null);
+  const Modal = ({ open, children }) =>
+    open ? <div data-testid="modal">{children}</div> : null;
   Modal.Content = ({ children }) => <div>{children}</div>;
   Modal.Actions = ({ children }) => <div>{children}</div>;
   return { Button, Segment, TextArea, Modal };
@@ -72,6 +73,10 @@ describe('JsonWidget', () => {
     const applyBtn = screen.getByText('Apply');
     // Click Apply; onChange should be called with mocked editor value
     fireEvent.click(applyBtn);
-    await waitFor(() => expect(defaultProps.onChange).toHaveBeenCalledWith('test-json', { mocked: 'value' }));
+    await waitFor(() =>
+      expect(defaultProps.onChange).toHaveBeenCalledWith('test-json', {
+        mocked: 'value',
+      }),
+    );
   });
 });
