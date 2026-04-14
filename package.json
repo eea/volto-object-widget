@@ -17,6 +17,9 @@
     "type": "git",
     "url": "git@github.com:eea/volto-object-widget.git"
   },
+  "dependencies": {
+    "jsoneditor": "10.2.0"
+  },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "^3.6.2",

@@ -1,0 +1,23 @@
+.ui.form .json-widget,
+.json-widget {
+  textarea,
+  textarea:focus {
+    cursor: pointer;
+    max-width: unset;
+    min-height: 100px;
+    width: 100%;
+    background-color: #f5f5f5;
+    border: none;
+  }
+}
+
+.json-widget-modal.ui.modal {
+  &.fullscreen {
+    margin: 0 !important;
+    max-height: 95vh;
+  }
+
+  .content {
+    padding: 0;
+  }
+}

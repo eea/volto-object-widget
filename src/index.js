@@ -8,6 +8,7 @@ import {
   ObjectTypesWidget,
   UrlWidget,
   InternalUrlWidget,
+  JsonWidget,
 } from './Widget';
 import { default as installDemo } from './demo';
 
@@ -31,6 +32,7 @@ const applyConfig = (config) => {
     config.widgets.widget.object_types_widget = ObjectTypesWidget;
     config.widgets.widget.url = UrlWidget;
     config.widgets.widget.internal_url = InternalUrlWidget;
+    config.widgets.widget.json = JsonWidget;
   }
 
   if (process.env.RAZZLE_CI) {
