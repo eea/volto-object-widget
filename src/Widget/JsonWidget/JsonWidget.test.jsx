@@ -1,6 +1,8 @@
 import React from 'react';
+import { Provider } from 'react-intl-redux';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import configureStore from 'redux-mock-store';
 import JsonWidget from './JsonWidget';
 jest.mock('jsoneditor/dist/jsoneditor.min.css', () => {});
 jest.mock('./json-widget.css', () => {});
@@ -18,15 +20,15 @@ jest.mock('semantic-ui-react', () => {
 });
 
 // Mock FormFieldWrapper from @plone/volto/components
-jest.mock('@plone/volto/components', () => ({
-  FormFieldWrapper: ({ children, title, description, className }) => (
+jest.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
+  return ({ children, title, description, className }) => (
     <div className={className} data-testid="form-field-wrapper">
       {title && <label>{title}</label>}
       {description && <p>{description}</p>}
       {children}
     </div>
-  ),
-}));
+  );
+});
 
 // Mock JsonWidget helper functions to avoid loading jsoneditor
 jest.mock('./helpers', () => ({
@@ -43,6 +45,19 @@ jest.mock('./helpers', () => ({
   validateEditor: jest.fn(() => Promise.resolve({ valid: true, errors: [] })),
 }));
 
+const mockStore = configureStore([]);
+const store = mockStore({
+  screen: {
+    page: {
+      width: 768,
+    },
+  },
+  intl: {
+    locale: 'en',
+    messages: {},
+  },
+});
+
 describe('JsonWidget', () => {
   const defaultProps = {
     id: 'test-json',
@@ -55,7 +70,11 @@ describe('JsonWidget', () => {
   };
 
   test('renders preview of JSON value', () => {
-    render(<JsonWidget {...defaultProps} />);
+    render(
+      <Provider store={store}>
+        <JsonWidget {...defaultProps} />
+      </Provider>,
+    );
     const textarea = screen.getByRole('textbox');
     expect(textarea).toBeInTheDocument();
     // preview should be pretty‑printed JSON
@@ -63,7 +82,11 @@ describe('JsonWidget', () => {
   });
 
   test('opens modal and applies changes', async () => {
-    render(<JsonWidget {...defaultProps} />);
+    render(
+      <Provider store={store}>
+        <JsonWidget {...defaultProps} />
+      </Provider>,
+    );
     // click the textarea to open editor
     fireEvent.click(screen.getByRole('textbox'));
     // modal should appear
