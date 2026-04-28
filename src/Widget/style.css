@@ -42,11 +42,11 @@
 
 .url-widget-link {
   display: inline-block;
-  max-width: 100%;
   overflow: hidden;
+  max-width: 100%;
   text-overflow: ellipsis;
-  white-space: nowrap;
   vertical-align: bottom;
+  white-space: nowrap;
 }
 
 .url-widget-link-wrapper {
