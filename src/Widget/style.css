@@ -40,5 +40,18 @@
   right: 2rem;
 }
 
+.url-widget-link {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.url-widget-link-wrapper {
+  padding: 0 1em 0.5em;
+}
+
 /* TODO: stop using maybe-already-used class names and !important, use LESS
 .overrides files instead */

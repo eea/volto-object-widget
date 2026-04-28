@@ -14,18 +14,21 @@ export const InternalUrlWidget = (props) => {
   const { value } = props;
 
   return (
-    <VoltoInternalUrlWidget
-      {...props}
-      title={
-        value ? (
-          <UniversalLink href={value} openLinkInNewTab={true}>
-            {props.title}
+    <>
+      <VoltoInternalUrlWidget {...props} />
+      {value ? (
+        <div className="url-widget-link-wrapper">
+          <UniversalLink
+            className="url-widget-link"
+            href={value}
+            openLinkInNewTab={true}
+            title={value}
+          >
+            {value}
           </UniversalLink>
-        ) : (
-          props.title
-        )
-      }
-    />
+        </div>
+      ) : null}
+    </>
   );
 };
 
