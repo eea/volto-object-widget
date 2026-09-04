@@ -28,36 +28,43 @@ vi.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
 });
 
 vi.mock('@plone/volto/components/manage/DragDropList/DragDropList', () => {
-  return { default: ({ childList, onMoveItem, children }) => {
-    // Create mock drag info without jest functions to avoid DOM warnings
-    const draginfo = {
-      innerRef: () => {},
-      draggableProps: {},
-      dragHandleProps: {},
-    };
-    return (
-      <div>
-        <div>DragDropList</div>
-        {childList.map((child, index) => (
-          <div
-            key={index}
-            role="button"
-            tabIndex={0}
-            className="dragdrop-list-item-mock"
-            onKeyDown={() => {}}
-            onClick={() => {
-              onMoveItem({
-                source: { index: 0 },
-                destination: { index: 1 },
-              });
-            }}
-          >
-            {children({ child: child[1], childId: child[0], index, draginfo })}
-          </div>
-        ))}
-      </div>
-    );
-  } };
+  return {
+    default: ({ childList, onMoveItem, children }) => {
+      // Create mock drag info without jest functions to avoid DOM warnings
+      const draginfo = {
+        innerRef: () => {},
+        draggableProps: {},
+        dragHandleProps: {},
+      };
+      return (
+        <div>
+          <div>DragDropList</div>
+          {childList.map((child, index) => (
+            <div
+              key={index}
+              role="button"
+              tabIndex={0}
+              className="dragdrop-list-item-mock"
+              onKeyDown={() => {}}
+              onClick={() => {
+                onMoveItem({
+                  source: { index: 0 },
+                  destination: { index: 1 },
+                });
+              }}
+            >
+              {children({
+                child: child[1],
+                childId: child[0],
+                index,
+                draginfo,
+              })}
+            </div>
+          ))}
+        </div>
+      );
+    },
+  };
 });
 
 vi.mock('@plone/volto/components/theme/Icon/Icon', () => ({

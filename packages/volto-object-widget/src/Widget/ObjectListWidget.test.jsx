@@ -28,18 +28,18 @@ vi.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
       className,
     }) {
       return (
-      <div
-        className={`inline required field help ${className} field-wrapper-${id}`}
-      >
-        <label
-          htmlFor={`field-${id}`}
-          id={`fieldset-undefined-field-label-${id}`}
+        <div
+          className={`inline required field help ${className} field-wrapper-${id}`}
         >
-          {title}
-        </label>
-        {children}
-        {description ? <p className="help">{description}</p> : null}
-      </div>
+          <label
+            htmlFor={`field-${id}`}
+            id={`fieldset-undefined-field-label-${id}`}
+          >
+            {title}
+          </label>
+          {children}
+          {description ? <p className="help">{description}</p> : null}
+        </div>
       );
     },
   };
@@ -58,28 +58,28 @@ vi.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
       const fieldTitle = schema.properties[field]?.title || field;
 
       return (
-      <div>
-        <div className="ui attached tabular menu">
-          {schema.fieldsets.map((fieldset) => (
-            <button
-              type="button"
-              key={fieldset.id}
-              className={fieldset.id === activeId ? 'active item' : 'item'}
-              onClick={() => setActiveId(fieldset.id)}
+        <div>
+          <div className="ui attached tabular menu">
+            {schema.fieldsets.map((fieldset) => (
+              <button
+                type="button"
+                key={fieldset.id}
+                className={fieldset.id === activeId ? 'active item' : 'item'}
+                onClick={() => setActiveId(fieldset.id)}
+              >
+                {fieldset.title}
+              </button>
+            ))}
+          </div>
+          <div className="ui bottom attached segment active tab">
+            <div
+              className="mocked-default-widget"
+              id={`mocked-field-${field}-0-${id}`}
             >
-              {fieldset.title}
-            </button>
-          ))}
-        </div>
-        <div className="ui bottom attached segment active tab">
-          <div
-            className="mocked-default-widget"
-            id={`mocked-field-${field}-0-${id}`}
-          >
-            {fieldTitle} - No description
+              {fieldTitle} - No description
+            </div>
           </div>
         </div>
-      </div>
       );
     },
   };
