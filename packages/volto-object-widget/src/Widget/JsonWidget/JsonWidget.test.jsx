@@ -1,14 +1,15 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { Provider } from 'react-intl-redux';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import configureStore from 'redux-mock-store';
 import JsonWidget from './JsonWidget';
-jest.mock('jsoneditor/dist/jsoneditor.min.css', () => {});
-jest.mock('./json-widget.css', () => {});
+vi.mock('jsoneditor/dist/jsoneditor.min.css', () => {});
+vi.mock('./json-widget.css', () => {});
 
 // Mock semantic-ui-react components to simple HTML elements
-jest.mock('semantic-ui-react', () => {
+vi.mock('semantic-ui-react', () => {
   const Button = (props) => <button {...props}>{props.children}</button>;
   const Segment = (props) => <div {...props}>{props.children}</div>;
   const TextArea = (props) => <textarea {...props} />; // readOnly will be passed
@@ -20,29 +21,31 @@ jest.mock('semantic-ui-react', () => {
 });
 
 // Mock FormFieldWrapper from @plone/volto/components
-jest.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
-  return ({ children, title, description, className }) => (
-    <div className={className} data-testid="form-field-wrapper">
-      {title && <label>{title}</label>}
-      {description && <p>{description}</p>}
-      {children}
-    </div>
-  );
+vi.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
+  return {
+    default: ({ children, title, description, className }) => (
+      <div className={className} data-testid="form-field-wrapper">
+        {title && <label>{title}</label>}
+        {description && <p>{description}</p>}
+        {children}
+      </div>
+    ),
+  };
 });
 
 // Mock JsonWidget helper functions to avoid loading jsoneditor
-jest.mock('./helpers', () => ({
-  initEditor: jest.fn(({ onInit, editor }) => {
+vi.mock('./helpers', () => ({
+  initEditor: vi.fn(({ onInit, editor }) => {
     // Provide a fake editor with get and destroy methods
     editor.current = {
       get: () => ({ mocked: 'value' }),
       validate: () => Promise.resolve([]),
-      destroy: jest.fn(),
+      destroy: vi.fn(),
     };
     if (onInit) onInit();
   }),
-  destroyEditor: jest.fn(),
-  validateEditor: jest.fn(() => Promise.resolve({ valid: true, errors: [] })),
+  destroyEditor: vi.fn(),
+  validateEditor: vi.fn(() => Promise.resolve({ valid: true, errors: [] })),
 }));
 
 const mockStore = configureStore([]);
@@ -64,7 +67,7 @@ describe('JsonWidget', () => {
     title: 'JSON Widget',
     description: 'Edit JSON data',
     value: { a: 1, b: 2 },
-    onChange: jest.fn(),
+    onChange: vi.fn(),
     required: false,
     error: [],
   };

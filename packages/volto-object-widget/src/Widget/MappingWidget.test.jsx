@@ -1,23 +1,26 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import MappingWidget from './MappingWidget';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components/manage/Form/Field', () => {
-  return function MockField({ id, value, onChange }) {
-    return (
-      <input
-        data-testid={`field-${id}`}
-        value={value || ''}
-        onChange={(e) => onChange(id, e.target.value)}
-      />
-    );
+vi.mock('@plone/volto/components/manage/Form/Field', () => {
+  return {
+    default: function MockField({ id, value, onChange }) {
+      return (
+        <input
+          data-testid={`field-${id}`}
+          value={value || ''}
+          onChange={(e) => onChange(id, e.target.value)}
+        />
+      );
+    },
   };
 });
 
 describe('MappingWidget', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   const options = [
     { id: 'option1', title: 'Option 1' },
@@ -39,7 +42,7 @@ describe('MappingWidget', () => {
   });
 
   it('updates value on field change', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { getByTestId } = render(
       <MappingWidget
         id="test"

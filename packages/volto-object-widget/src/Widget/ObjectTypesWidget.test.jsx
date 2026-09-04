@@ -1,12 +1,15 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { Provider } from 'react-intl-redux';
 import { render } from '@testing-library/react';
 import configureStore from 'redux-mock-store';
 import { ObjectTypesWidget } from './ObjectTypesWidget';
 
-jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
-  return function MockObjectWidget() {
-    return <div>Mock ObjectWidget</div>;
+vi.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+  return {
+    default: function MockObjectWidget() {
+      return <div>Mock ObjectWidget</div>;
+    },
   };
 });
 

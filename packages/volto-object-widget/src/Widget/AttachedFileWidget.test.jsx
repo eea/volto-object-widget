@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -5,12 +6,12 @@ import AttachedFileWidget from './AttachedFileWidget';
 import { Provider } from 'react-intl-redux';
 import configureStore from 'redux-mock-store';
 
-jest.mock('@plone/volto/components/manage/Sidebar/ObjectBrowser', () => {
-  return (Component) => Component;
+vi.mock('@plone/volto/components/manage/Sidebar/ObjectBrowser', () => {
+  return { default: (Component) => Component };
 });
 
-jest.mock('promise-file-reader', () => ({
-  readAsDataURL: jest.fn(() =>
+vi.mock('promise-file-reader', () => ({
+  readAsDataURL: vi.fn(() =>
     Promise.resolve('data:text/plain;base64,SGVsbG8sIFdvcmxkIQ=='),
   ),
 }));
@@ -20,7 +21,7 @@ const store = mockStore({
   intl: {
     locale: 'en',
     messages: {},
-    formatMessage: jest.fn(),
+    formatMessage: vi.fn(),
     subrequests: {},
   },
   router: {
@@ -30,11 +31,11 @@ const store = mockStore({
 });
 
 describe('AttachedFileWidget', () => {
-  const mockOnChange = jest.fn();
-  const mockOpenObjectBrowser = jest.fn();
+  const mockOnChange = vi.fn();
+  const mockOpenObjectBrowser = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders without crashing', () => {

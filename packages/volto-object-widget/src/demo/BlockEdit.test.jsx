@@ -1,36 +1,39 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import BlockEdit from './BlockEdit';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => {
-  return ({ children }) => <div>{children}</div>;
+vi.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => {
+  return { default: ({ children }) => <div>{children}</div> };
 });
-jest.mock('@plone/volto/components/manage/Form/InlineForm', () => (props) => (
-  <div>
-    <div>InlineForm</div>
-    <input
-      id="inlineform"
-      type="text"
-      onChange={(e) => props.onChangeField('foo', e.target.value)}
-    />
-  </div>
-));
-jest.mock('@plone/volto/components/theme/Image/Image', () => (props) => (
-  <img {...props} alt={props.alt || ''} />
-));
+vi.mock('@plone/volto/components/manage/Form/InlineForm', () => ({
+  default: (props) => (
+    <div>
+      <div>InlineForm</div>
+      <input
+        id="inlineform"
+        type="text"
+        onChange={(e) => props.onChangeField('foo', e.target.value)}
+      />
+    </div>
+  ),
+}));
+vi.mock('@plone/volto/components/theme/Image/Image', () => ({
+  default: (props) => <img {...props} alt={props.alt || ''} />,
+}));
 
 describe('BlockEdit', () => {
   const defaultProps = {
     data: {},
     block: 'test-block-id',
-    onSelectBlock: jest.fn(),
-    onChangeBlock: jest.fn(),
+    onSelectBlock: vi.fn(),
+    onChangeBlock: vi.fn(),
     selected: false,
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders without crashing', () => {
@@ -53,7 +56,7 @@ describe('BlockEdit', () => {
   });
 
   it('calls onSelectBlock when clicked', () => {
-    const onSelectBlock = jest.fn();
+    const onSelectBlock = vi.fn();
     const { getByRole } = render(
       <BlockEdit {...defaultProps} onSelectBlock={onSelectBlock} />,
     );
@@ -62,7 +65,7 @@ describe('BlockEdit', () => {
   });
 
   it('calls onChangeBlock when onChangeField is called', () => {
-    const onChangeBlock = jest.fn();
+    const onChangeBlock = vi.fn();
     const { container } = render(
       <BlockEdit {...defaultProps} onChangeBlock={onChangeBlock} />,
     );

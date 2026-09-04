@@ -1,9 +1,10 @@
+import { vi } from 'vitest';
 import { getImageScaleParams } from '@eeacms/volto-object-widget/helpers';
 import { getFieldURL } from '@plone/volto/helpers/Url/Url';
 
-jest.mock('@plone/volto/helpers', () => ({
-  flattenToAppURL: jest.fn((url) => url),
-  isInternalURL: jest.fn((url) => !url?.startsWith('http://external')),
+vi.mock('@plone/volto/helpers', () => ({
+  flattenToAppURL: vi.fn((url) => url),
+  isInternalURL: vi.fn((url) => !url?.startsWith('http://external')),
 }));
 
 describe('getImageScaleParams', () => {
