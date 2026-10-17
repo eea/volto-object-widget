@@ -5,8 +5,8 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import configureStore from 'redux-mock-store';
 import JsonWidget from './JsonWidget';
-vi.mock('jsoneditor/dist/jsoneditor.min.css', () => {});
-vi.mock('./json-widget.css', () => {});
+vi.mock('jsoneditor/dist/jsoneditor.min.css', () => ({}));
+vi.mock('./json-widget.css', () => ({}));
 
 // Mock semantic-ui-react components to simple HTML elements
 vi.mock('semantic-ui-react', () => {
