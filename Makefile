@@ -144,11 +144,13 @@ test-ci:		## Run unit tests in CI
 start-ci:		## Start frontend in production mode (used by CI)
 	# Instrument the build (babel-plugin-istanbul) so Cypress can collect
 	# end-to-end coverage; the original babel config is restored on exit.
+	# RAZZLE_CI gates the demo block registration in packages/volto-object-widget/src/index.js,
+	# which the integration tests rely on.
 	cp core/packages/volto/babel.config.js core/packages/volto/babel.config.js.orig
 	trap 'mv -f core/packages/volto/babel.config.js.orig core/packages/volto/babel.config.js' EXIT
 	cp .coverage.babel.config.js core/packages/volto/babel.config.js
-	pnpm build
-	pnpm start:prod
+	RAZZLE_CI=true pnpm build
+	RAZZLE_CI=true pnpm start:prod
 
 .PHONY: check-ci
 check-ci:		## Wait for frontend to be ready
