@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
@@ -5,61 +6,72 @@ import ObjectListInlineWidget from './ObjectListInlineWidget';
 import configureStore from 'redux-mock-store';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
-  return function MockFormFieldWrapper({ children }) {
-    return <div>{children}</div>;
+vi.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
+  return {
+    default: function MockFormFieldWrapper({ children }) {
+      return <div>{children}</div>;
+    },
   };
 });
 
-jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
-  return function MockObjectWidget({ onChange }) {
-    return (
-      <div className="objectwidget-mock">
-        <div>ObjectWidget</div>
-        <input onChange={onChange} />
-      </div>
-    );
+vi.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+  return {
+    default: function MockObjectWidget({ onChange }) {
+      return (
+        <div className="objectwidget-mock">
+          <div>ObjectWidget</div>
+          <input onChange={onChange} />
+        </div>
+      );
+    },
   };
 });
 
-jest.mock('@plone/volto/components/manage/DragDropList/DragDropList', () => {
-  return ({ childList, onMoveItem, children }) => {
-    // Create mock drag info without jest functions to avoid DOM warnings
-    const draginfo = {
-      innerRef: () => {},
-      draggableProps: {},
-      dragHandleProps: {},
-    };
-    return (
-      <div>
-        <div>DragDropList</div>
-        {childList.map((child, index) => (
-          <div
-            key={index}
-            role="button"
-            tabIndex={0}
-            className="dragdrop-list-item-mock"
-            onKeyDown={() => {}}
-            onClick={() => {
-              onMoveItem({
-                source: { index: 0 },
-                destination: { index: 1 },
-              });
-            }}
-          >
-            {children({ child: child[1], childId: child[0], index, draginfo })}
-          </div>
-        ))}
-      </div>
-    );
+vi.mock('@plone/volto/components/manage/DragDropList/DragDropList', () => {
+  return {
+    default: ({ childList, onMoveItem, children }) => {
+      // Create mock drag info without jest functions to avoid DOM warnings
+      const draginfo = {
+        innerRef: () => {},
+        draggableProps: {},
+        dragHandleProps: {},
+      };
+      return (
+        <div>
+          <div>DragDropList</div>
+          {childList.map((child, index) => (
+            <div
+              key={index}
+              role="button"
+              tabIndex={0}
+              className="dragdrop-list-item-mock"
+              onKeyDown={() => {}}
+              onClick={() => {
+                onMoveItem({
+                  source: { index: 0 },
+                  destination: { index: 1 },
+                });
+              }}
+            >
+              {children({
+                child: child[1],
+                childId: child[0],
+                index,
+                draginfo,
+              })}
+            </div>
+          ))}
+        </div>
+      );
+    },
   };
 });
 
-jest.mock('@plone/volto/components/theme/Icon/Icon', () => () => (
-  <div>VoltoIcon</div>
-));
+vi.mock('@plone/volto/components/theme/Icon/Icon', () => ({
+  default: () => <div>VoltoIcon</div>,
+}));
 
-jest.mock('uuid', () => ({
+vi.mock('uuid', () => ({
   v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
 }));
 
@@ -68,13 +80,13 @@ const store = mockStore({
   intl: {
     locale: 'en',
     messages: {},
-    formatMessage: jest.fn(),
+    formatMessage: vi.fn(),
   },
 });
 
 describe('ObjectListInlineWidget', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   it('renders without crashing', () => {
     const { container } = render(
@@ -91,7 +103,7 @@ describe('ObjectListInlineWidget', () => {
   });
 
   it('renders Add button and adds an item on click', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { getByText } = render(
       <Provider store={store}>
         <ObjectListInlineWidget
@@ -113,7 +125,7 @@ describe('ObjectListInlineWidget', () => {
   });
 
   it('moves an item by calling onMoveItem', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { container } = render(
       <Provider store={store}>
         <ObjectListInlineWidget
@@ -147,7 +159,7 @@ describe('ObjectListInlineWidget', () => {
   });
 
   it('renders ObjectWidget', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { container, getByText } = render(
       <Provider store={store}>
         <ObjectListInlineWidget

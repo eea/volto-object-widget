@@ -1,26 +1,31 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ObjectByTypeWidget from './ObjectByTypeWidget';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components/theme/Icon/Icon', () => {
-  return ({ name }) => <div data-testid={`icon-${name}`}>Icon</div>;
+vi.mock('@plone/volto/components/theme/Icon/Icon', () => {
+  return {
+    default: ({ name }) => <div data-testid={`icon-${name}`}>Icon</div>,
+  };
 });
 
-jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
-  return function MockObjectWidget({ id, onChange }) {
-    return (
-      <div data-testid={`objectwidget-${id}`}>
-        <div>ObjectWidget</div>
-        <input id={`objectwidget-${id}`} onChange={onChange} />
-      </div>
-    );
+vi.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+  return {
+    default: function MockObjectWidget({ id, onChange }) {
+      return (
+        <div data-testid={`objectwidget-${id}`}>
+          <div>ObjectWidget</div>
+          <input id={`objectwidget-${id}`} onChange={onChange} />
+        </div>
+      );
+    },
   };
 });
 
 describe('ObjectByTypeWidget', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   const schemas = [
     { id: 'type1', schema: { title: 'Type 1' }, icon: 'icon1' },

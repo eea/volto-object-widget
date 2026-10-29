@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
@@ -9,72 +10,78 @@ import ObjectListWidget, {
 } from './ObjectListWidget';
 
 // Mock uuid to avoid node:crypto import issues
-jest.mock('uuid', () => ({
+vi.mock('uuid', () => ({
   v4: () => 'mock-uuid-' + Math.random().toString(36).substr(2, 9),
 }));
 
-jest.mock('@plone/volto/components/theme/Icon/Icon', () => () => <svg />);
+vi.mock('@plone/volto/components/theme/Icon/Icon', () => ({
+  default: () => <svg />,
+}));
 
-jest.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
-  return function MockFormFieldWrapper({
-    children,
-    id,
-    title,
-    description,
-    className,
-  }) {
-    return (
-      <div
-        className={`inline required field help ${className} field-wrapper-${id}`}
-      >
-        <label
-          htmlFor={`field-${id}`}
-          id={`fieldset-undefined-field-label-${id}`}
+vi.mock('@plone/volto/components/manage/Widgets/FormFieldWrapper', () => {
+  return {
+    default: function MockFormFieldWrapper({
+      children,
+      id,
+      title,
+      description,
+      className,
+    }) {
+      return (
+        <div
+          className={`inline required field help ${className} field-wrapper-${id}`}
         >
-          {title}
-        </label>
-        {children}
-        {description ? <p className="help">{description}</p> : null}
-      </div>
-    );
+          <label
+            htmlFor={`field-${id}`}
+            id={`fieldset-undefined-field-label-${id}`}
+          >
+            {title}
+          </label>
+          {children}
+          {description ? <p className="help">{description}</p> : null}
+        </div>
+      );
+    },
   };
 });
 
-jest.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
+vi.mock('@plone/volto/components/manage/Widgets/ObjectWidget', () => {
   const React = require('react');
 
-  return function MockObjectWidget({ id, schema }) {
-    const [activeId, setActiveId] = React.useState(schema.fieldsets[0].id);
-    const activeFieldset =
-      schema.fieldsets.find((fieldset) => fieldset.id === activeId) ||
-      schema.fieldsets[0];
-    const field = activeFieldset.fields[0];
-    const fieldTitle = schema.properties[field]?.title || field;
+  return {
+    default: function MockObjectWidget({ id, schema }) {
+      const [activeId, setActiveId] = React.useState(schema.fieldsets[0].id);
+      const activeFieldset =
+        schema.fieldsets.find((fieldset) => fieldset.id === activeId) ||
+        schema.fieldsets[0];
+      const field = activeFieldset.fields[0];
+      const fieldTitle = schema.properties[field]?.title || field;
 
-    return (
-      <div>
-        <div className="ui attached tabular menu">
-          {schema.fieldsets.map((fieldset) => (
-            <button
-              type="button"
-              key={fieldset.id}
-              className={fieldset.id === activeId ? 'active item' : 'item'}
-              onClick={() => setActiveId(fieldset.id)}
+      return (
+        <div>
+          <div className="ui attached tabular menu">
+            {schema.fieldsets.map((fieldset) => (
+              <button
+                type="button"
+                key={fieldset.id}
+                className={fieldset.id === activeId ? 'active item' : 'item'}
+                onClick={() => setActiveId(fieldset.id)}
+              >
+                {fieldset.title}
+              </button>
+            ))}
+          </div>
+          <div className="ui bottom attached segment active tab">
+            <div
+              className="mocked-default-widget"
+              id={`mocked-field-${field}-0-${id}`}
             >
-              {fieldset.title}
-            </button>
-          ))}
-        </div>
-        <div className="ui bottom attached segment active tab">
-          <div
-            className="mocked-default-widget"
-            id={`mocked-field-${field}-0-${id}`}
-          >
-            {fieldTitle} - No description
+              {fieldTitle} - No description
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    },
   };
 });
 
@@ -731,7 +738,7 @@ test('renders a modal object list form component and tests it in various ways', 
   // in the modal there should be just a single item with the link: https://duckduckgo.com
   // (actual result: empty snapshot because of https://github.com/Semantic-Org/Semantic-UI-React/issues/3959)
 
-  window.HTMLElement.prototype.scrollIntoView = jest.fn();
+  window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
   // add 20 objects to the modal
   for (let i = 0; i < 20; ++i) {
