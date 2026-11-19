@@ -1,9 +1,10 @@
+import { vi } from 'vitest';
 import { initEditor, destroyEditor, validateEditor } from './helpers';
 
-jest.mock('jsoneditor/dist/jsoneditor.min', () => ({
-  default: jest.fn().mockImplementation(() => ({
-    validate: jest.fn().mockResolvedValue([]),
-    destroy: jest.fn(),
+vi.mock('jsoneditor/dist/jsoneditor.min', () => ({
+  default: vi.fn().mockImplementation(() => ({
+    validate: vi.fn().mockResolvedValue([]),
+    destroy: vi.fn(),
   })),
 }));
 
@@ -15,7 +16,7 @@ describe('JsonWidget helpers', () => {
       const el = document.createElement('div');
       document.body.appendChild(el);
       const editor = { current: null };
-      const onInit = jest.fn();
+      const onInit = vi.fn();
 
       try {
         await initEditor({
@@ -80,7 +81,7 @@ describe('JsonWidget helpers', () => {
 
     it('calls destroy on editor instance', () => {
       const mockEditor = {
-        destroy: jest.fn(),
+        destroy: vi.fn(),
       };
       destroyEditor(mockEditor);
       expect(mockEditor.destroy).toHaveBeenCalled();
@@ -91,7 +92,7 @@ describe('JsonWidget helpers', () => {
     it('returns valid when no validation errors', async () => {
       const mockEditor = {
         current: {
-          validate: jest.fn().mockResolvedValue([]),
+          validate: vi.fn().mockResolvedValue([]),
         },
       };
       const result = await validateEditor(mockEditor);
@@ -101,7 +102,7 @@ describe('JsonWidget helpers', () => {
     it('returns invalid when validation errors exist', async () => {
       const mockEditor = {
         current: {
-          validate: jest.fn().mockResolvedValue(['error 1', 'error 2']),
+          validate: vi.fn().mockResolvedValue(['error 1', 'error 2']),
         },
       };
       const result = await validateEditor(mockEditor);
